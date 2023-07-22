@@ -2,8 +2,6 @@
 
 #include <cstdlib>
 #include <SFML/Graphics.hpp>
-#include "imgui/imgui-SFML.h"
-#include "imgui/imgui.h"
 
 struct Flags
 {

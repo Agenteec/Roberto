@@ -15,14 +15,30 @@ project ("Roberto")
 find_package(SFML COMPONENTS system window graphics CONFIG REQUIRED)
 
 find_package(box2d CONFIG REQUIRED)
+
+find_package(nlohmann_json CONFIG REQUIRED)
+
+find_package(TGUI CONFIG REQUIRED)
+
+find_package(OpenSSL REQUIRED)
 # Добавление путей к заголовочным файлам SFML
 include_directories(${SFML_INCLUDE_DIR})
 include_directories(${Box2D_INCLUDE_DIR})
-
+file(GLOB_RECURSE SOURCES "src/*.cpp" "include/*.h")
 # Добавьте источник в исполняемый файл этого проекта.
-add_executable (Roberto "Roberto.cpp" "include/Roberto.h" "include/Window.h" "include/Gui.h" "Gui.cpp")
+add_executable (Roberto ${SOURCES})
+#"Roberto.cpp" "include/Roberto.h" "include/Window.h" "Window.cpp" "include/Gui.h" "Gui.cpp" "include/Settings.h" "Settings.cpp" "include/FeatureTester.h" "FeatureTester.cpp" "FeatureTesterM.cpp"
 target_include_directories(Roberto PRIVATE "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(Roberto PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d)
+target_link_libraries(Roberto PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES})
+
+# Укажите директорию с файлами для копирования
+set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Resources)
+
+# Укажите директорию, в которую нужно скопировать файлы
+set(DESTINATION_DIR ${CMAKE_BINARY_DIR})
+
+# Копируйте файлы
+file(COPY ${SOURCE_DIR} DESTINATION ${DESTINATION_DIR})
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Roberto PROPERTY CXX_STANDARD 20)

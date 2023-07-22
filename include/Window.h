@@ -8,21 +8,21 @@
 #include <ctime>
 #include <iomanip>
 
-class Window
+#include "FeatureTester.h"
+#include "Settings.h"
+#include "GUI.h"
+
+
+class MainWindow
 {
-public:
-	Window();
-	~Window();
-	std::string GetBuildVersionString();
-	
 private:
 	sf::RenderWindow window;
+	Flags flags;
+	FeatureTester test;
+public:
+	MainWindow();
+	MainWindow(const Settings& settings);
+	std::string GetBuildVersionString();
+	void Display();
+private:
 };
-
-Window::Window()
-{
-}
-
-Window::~Window()
-{
-}
