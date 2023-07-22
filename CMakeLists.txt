@@ -29,6 +29,7 @@ file(GLOB_RECURSE SOURCES "src/*.cpp" "include/*.h")
 add_executable (Roberto ${SOURCES})
 #"Roberto.cpp" "include/Roberto.h" "include/Window.h" "Window.cpp" "include/Gui.h" "Gui.cpp" "include/Settings.h" "Settings.cpp" "include/FeatureTester.h" "FeatureTester.cpp" "FeatureTesterM.cpp"
 target_include_directories(Roberto PRIVATE "${PROJECT_SOURCE_DIR}/include")
+set(TGUI_STATIC_LIBRARIES TRUE)
 target_link_libraries(Roberto PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES})
 
 # Укажите директорию с файлами для копирования

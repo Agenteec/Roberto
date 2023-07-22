@@ -17,12 +17,12 @@ class MainWindow
 {
 private:
 	sf::RenderWindow window;
-	Flags flags;
+	tgui::GuiSFML gui;
+	GUI guiManager;
 	FeatureTester test;
 public:
 	MainWindow();
 	MainWindow(const Settings& settings);
 	std::string GetBuildVersionString();
 	void Display();
-private:
 };

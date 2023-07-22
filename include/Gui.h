@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <SFML/Graphics.hpp>
+#include <TGUI/TGUI.hpp>
 
 struct Flags
 {
@@ -18,8 +19,14 @@ struct Flags
 };
 class GUI
 {
+
+
 public:
-	static void MainMenu(Flags& flags, const sf::Vector2u& size);
-	static void TestsMenu(Flags& flags, int& test);
+	GUI();
+	void MainMenu(tgui::Gui& gui);
+	void TestsMenu(int& test);
+	void MainMenuInit(tgui::Gui& gui);
+	void TestMenuInit(tgui::Gui& gui);
+	Flags flags;
 };
 

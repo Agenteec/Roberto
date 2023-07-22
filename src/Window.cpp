@@ -3,15 +3,15 @@
 
 
 MainWindow::MainWindow() :
-	window(sf::VideoMode(800, 600), L"Roberto"),
-	flags()
+	window(sf::VideoMode(800, 600), L"Roberto")
 {
+	gui.setTarget(window);
 }
 
 MainWindow::MainWindow(const Settings& settings) :
-	window(settings.videoSettings.videoMode, "Roberto", (settings.videoSettings.fullscreen ? sf::Style::Fullscreen : sf::Style::Default), settings.videoSettings.ñontext),
-	flags()
+	window(settings.videoSettings.videoMode, "Roberto", (settings.videoSettings.fullscreen ? sf::Style::Fullscreen : sf::Style::Default), settings.videoSettings.ñontext)
 {
+	gui.setTarget(window);
 }
 
 std::string MainWindow::GetBuildVersionString()
@@ -30,6 +30,7 @@ std::string MainWindow::GetBuildVersionString()
 
 void MainWindow::Display()
 {
+	guiManager.MainMenuInit(gui);
 	sf::Clock clock;
 	while (window.isOpen())
 	{
@@ -41,18 +42,21 @@ void MainWindow::Display()
 			
 			if (event.type == sf::Event::Closed)
 				window.close();
+			gui.handleEvent(event);
 		}
 		
-		if (flags.onMainMenu)
+		if (guiManager.flags.onMainMenu)
 		{
-			GUI::MainMenu(flags, window.getSize());
+		guiManager.MainMenu(gui);
 		}
-		if (flags.onTest)
+		if (guiManager.flags.onTest)
 		{
-			GUI::TestsMenu(flags, test.testNumber);
+			guiManager.TestsMenu(test.testNumber);
 		}
 		test.TestSelector();
 		window.clear(sf::Color(230, 230, 230, 255));
+		gui.draw();
+
 		window.display();
 
 	}
