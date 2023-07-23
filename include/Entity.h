@@ -25,7 +25,7 @@ public:
 
 	void setBodyPosition(const b2Vec2 &vec);
 
-	void update(const float& deltaTime) override;
+	void virtual update(const float& deltaTime);
 
 private: 
 

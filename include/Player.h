@@ -1,43 +1,49 @@
 #pragma once
 #include <Entity.h>
 
-struct FlagsWASD
+struct ControlFlags
 {
-	FlagsWASD() :
-		wPressed(false),
-		aPressed(false),
-		sPressed(false),
-		dPressed(false)
+	ControlFlags() :
+		upPressed(false),
+		leftPressed(false),
+		downPressed(false),
+		rightPressed(false),
+		attackPressed(false)
+
 	{
 
 	}
 
-	bool wPressed;
-	bool aPressed;
-	bool sPressed;
-	bool dPressed;
+	bool upPressed;
+	bool leftPressed;
+	bool downPressed;
+	bool rightPressed;
+	bool attackPressed;
 };
 
-void move(const FlagsWASD& wasd, sf::Sprite& sprite, const float& deltaTime, const float& speed);
 
 class Player : public Entity
 {
 public:
 
 	Player();
+	ControlFlags controlFlags;
+
+	void update(const float& deltaTime) override;
 
 	void setHealthPoints(const float& healthPoints);
 	void setMaxHealthPoints(const float& maxHealthPoints);
 	void setSpeed(const float& speed);
 	void setHittedFlag(const bool& hitted);
 
-	float getHealthPoints();
-	float getMaxHealthPoints();
-	float getSpeed();
+	const float& getHealthPoints();
+	const float& getMaxHealthPoints();
+	const float& getSpeed();
 	bool isHitted();
 
 private:
 	float healthPoints, maxHealthPoints, speed;
 	bool hitted;
+	bool live;
 };
 

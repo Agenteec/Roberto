@@ -1,23 +1,24 @@
 #include "Player.h"
 
-void move(const FlagsWASD& wasd, sf::Sprite& sprite, const float& deltaTime, const float& speed)
-{
-	if (wasd.wPressed)
-		sprite.move(0, -1.f * deltaTime * speed);
-	if (wasd.sPressed)
-		sprite.move(0, 1.f * deltaTime * speed);
-	if (wasd.aPressed)
-		sprite.move(-1.f * deltaTime * speed, 0);
-	if (wasd.dPressed)
-		sprite.move(1.f * deltaTime * speed, 0);
-}
-
 Player::Player() :
 	healthPoints(100.f),
 	maxHealthPoints(100.f),
 	speed(950.f),
 	hitted(false)
 {}
+
+void Player::update(const float& deltaTime)
+{
+	if (controlFlags.upPressed)
+		body->ApplyForceToCenter(b2Vec2(0, -1.f * deltaTime * speed), true);
+	if (controlFlags.downPressed)
+		body->ApplyForceToCenter(b2Vec2(0, 1.f * deltaTime * speed), true);
+	if (controlFlags.leftPressed)
+		body->ApplyForceToCenter(b2Vec2 ( - 1.f * deltaTime * speed, 0), true);
+	if (controlFlags.rightPressed)
+		body->ApplyForceToCenter(b2Vec2(1.f * deltaTime * speed, 0), true);
+	Entity::update(deltaTime);
+}
 
 void Player::setHealthPoints(const float& healthPoints)
 {
@@ -39,17 +40,17 @@ void Player::setHittedFlag(const bool& hitted)
 	this->hitted = hitted;
 }
 
-float Player::getHealthPoints()
+const float& Player::getHealthPoints()
 {
 	return healthPoints;
 }
 
-float Player::getMaxHealthPoints()
+const float& Player::getMaxHealthPoints()
 {
 	return maxHealthPoints;
 }
 
-float Player::getSpeed()
+const float& Player::getSpeed()
 {
 	return speed;
 }
