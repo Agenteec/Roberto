@@ -12,14 +12,21 @@ void move(const FlagsWASD& wasd, sf::Sprite& sprite, const float& deltaTime, con
 		sprite.move(1.f * deltaTime * speed, 0);
 }
 
-void Player::setHp(const float& hp)
+Player::Player() :
+	healthPoints(100.f),
+	maxHealthPoints(100.f),
+	speed(950.f),
+	hitted(false)
+{}
+
+void Player::setHealthPoints(const float& healthPoints)
 {
-	this->hp = hp;
+	this->healthPoints = healthPoints;
 }
 
-void Player::setMaxHp(const float& maxHp)
+void Player::setMaxHealthPoints(const float& maxHealthPoints)
 {
-	this->maxHp = maxHp;
+	this->maxHealthPoints = maxHealthPoints;
 }
 
 void Player::setSpeed(const float& speed)
@@ -32,14 +39,14 @@ void Player::setHittedFlag(const bool& hitted)
 	this->hitted = hitted;
 }
 
-float Player::getHp()
+float Player::getHealthPoints()
 {
-	return hp;
+	return healthPoints;
 }
 
-float Player::getMaxHp()
+float Player::getMaxHealthPoints()
 {
-	return maxHp;
+	return maxHealthPoints;
 }
 
 float Player::getSpeed()

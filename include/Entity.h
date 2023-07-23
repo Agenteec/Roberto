@@ -3,8 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include <box2d/box2d.h>
 #include "GlobalConsts.h"
+#include "GameObject.h"
 
-class Entity : public sf::Sprite
+class Entity : public GameObject
 {
 public:
 	b2BodyDef bodyDef;
@@ -24,7 +25,7 @@ public:
 
 	void setBodyPosition(const b2Vec2 &vec);
 
-	void update();
+	void update(const float& deltaTime) override;
 
 private: 
 

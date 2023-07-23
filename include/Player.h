@@ -24,25 +24,20 @@ class Player : public Entity
 {
 public:
 
-	Player() :
-		hp(100.f),
-		maxHp(100.f),
-		speed(950.f),
-		hitted(false)
-	{}
+	Player();
 
-	void setHp(const float& hp);
-	void setMaxHp(const float& maxHp);
+	void setHealthPoints(const float& healthPoints);
+	void setMaxHealthPoints(const float& maxHealthPoints);
 	void setSpeed(const float& speed);
 	void setHittedFlag(const bool& hitted);
 
-	float getHp();
-	float getMaxHp();
+	float getHealthPoints();
+	float getMaxHealthPoints();
 	float getSpeed();
 	bool isHitted();
 
 private:
-	float hp, maxHp, speed;
+	float healthPoints, maxHealthPoints, speed;
 	bool hitted;
 };
 

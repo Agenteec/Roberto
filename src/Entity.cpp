@@ -44,7 +44,7 @@ void Entity::setBodyPosition(const b2Vec2& vec)
 	body->SetTransform(vec, body->GetAngle());
 }
 
-void Entity::update()
+void Entity::update(const float& deltaTime)
 {
 	b2Vec2 pos = body->GetPosition();
 	setPosition(pos.x * SCALE, pos.y * SCALE);
