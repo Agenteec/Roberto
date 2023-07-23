@@ -32,7 +32,7 @@ void MainWindow::Display()
 {
 	guiManager.MainMenuInit(gui);
 	sf::Clock clock;
-	
+
 	while (window.isOpen())
 	{
 		float deltaTime = clock.restart().asSeconds();
