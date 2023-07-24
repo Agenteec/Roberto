@@ -1,12 +1,13 @@
 //#include <SFML/Graphics.hpp>
 //#include <tmxlite/Map.hpp>
 //#include <tmxlite/TileLayer.hpp>
+//#include <iostream>
 //
 //int main()
 //{
 //    // Загрузка карты Tiled из файла
 //    tmx::Map map;
-//    if (!map.load("path/to/your/map.tmx"))
+//    if (!map.load("Resources/maps/TestMap.tmx"))
 //    {
 //        std::cout << "Error loading map." << std::endl;
 //        return 1;
