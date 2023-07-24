@@ -11,7 +11,7 @@
 #include "FeatureTester.h"
 #include "Settings.h"
 #include "GUI.h"
-
+#include "Game.h"
 
 class MainWindow
 {
@@ -20,6 +20,7 @@ private:
 	tgui::GuiSFML gui;
 	GUI guiManager;
 	FeatureTester test;
+	Game game;
 public:
 	MainWindow();
 	MainWindow(const Settings& settings);

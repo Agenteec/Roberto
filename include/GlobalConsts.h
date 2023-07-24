@@ -1,3 +1,7 @@
 #pragma once
 
-static const float SCALE;
+class GlobalConsts
+{
+public:
+	static const float SCALE;
+};

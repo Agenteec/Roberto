@@ -9,7 +9,20 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
+# Укажите путь к установленным файлам vcpkg
+if(WIN32)
+    execute_process(COMMAND cmd /c echo %USERPROFILE% OUTPUT_VARIABLE USER_PROFILE)
+    string(STRIP "${USER_PROFILE}" USER_PROFILE)
+else()
+    message(FATAL_ERROR "This script is designed for Windows only.")
+endif()
+set(VCPKG_PATH "${USER_PROFILE}/vcpkg")
 
+# Укажите путь к пакету Thor в vcpkg
+set(THOR_INCLUDE_DIR "${VCPKG_PATH}/installed/${VCPKG_TARGET_TRIPLET}/include")
+set(THOR_LIBRARY_DIR "${VCPKG_PATH}/installed/${VCPKG_TARGET_TRIPLET}/lib")
+# Добавьте пути к заголовочным файлам Thor
+include_directories(${THOR_INCLUDE_DIR})
 project ("Roberto")
 
 find_package(SFML COMPONENTS system window graphics CONFIG REQUIRED)
@@ -21,16 +34,23 @@ find_package(nlohmann_json CONFIG REQUIRED)
 find_package(TGUI CONFIG REQUIRED)
 
 find_package(OpenSSL REQUIRED)
+#message("${VCPKG_PATH}/installed/${VCPKG_TARGET_TRIPLET}")
+#find_package(tmxlite CONFIG REQUIRED HINTS "${VCPKG_PATH}/installed/${VCPKG_TARGET_TRIPLET}")
+
+#find_package(tmxlite REQUIRED HINTS "${VCPKG_PATH}/installed/${VCPKG_TARGET_TRIPLET}")
 # Добавление путей к заголовочным файлам SFML
 include_directories(${SFML_INCLUDE_DIR})
 include_directories(${Box2D_INCLUDE_DIR})
 file(GLOB_RECURSE SOURCES "src/*.cpp" "include/*.h")
 # Добавьте источник в исполняемый файл этого проекта.
 add_executable (Roberto ${SOURCES})
+add_executable (tester "tester/main.cpp")
+target_link_libraries(tester PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES} ${THOR_LIBRARY_DIR}/thor.lib)# tmxlite::tmxlite)
+
 #"Roberto.cpp" "include/Roberto.h" "include/Window.h" "Window.cpp" "include/Gui.h" "Gui.cpp" "include/Settings.h" "Settings.cpp" "include/FeatureTester.h" "FeatureTester.cpp" "FeatureTesterM.cpp"
 target_include_directories(Roberto PRIVATE "${PROJECT_SOURCE_DIR}/include")
 set(TGUI_STATIC_LIBRARIES TRUE)
-target_link_libraries(Roberto PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES})
+target_link_libraries(Roberto PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES} ${THOR_LIBRARY_DIR}/thor.lib)# tmxlite::tmxlite)
 
 # Укажите директорию с файлами для копирования
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Resources)

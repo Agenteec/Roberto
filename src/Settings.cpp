@@ -30,6 +30,9 @@ bool Settings::LoadFromJson(std::string file)
 	audioSettings.mute = settingsJson["audio"]["mute"];
 
 	keyboardSettings.moveUpKey = static_cast<sf::Keyboard::Key>(settingsJson["keyboard"]["move_up_key"]);
+	keyboardSettings.moveLeftKey = static_cast<sf::Keyboard::Key>(settingsJson["keyboard"]["move_left_key"]);
+	keyboardSettings.moveRightKey = static_cast<sf::Keyboard::Key>(settingsJson["keyboard"]["move_right_key"]);
+	keyboardSettings.moveDownKey = static_cast<sf::Keyboard::Key>(settingsJson["keyboard"]["move_down_key"]);
 
 	mouseSettings.shootButton = static_cast<sf::Mouse::Button>(settingsJson["mouse"]["shoot_button"]);
 	inputFile.close();
@@ -45,23 +48,22 @@ bool Settings::SaveFromJson(std::string file)
 		{"resolution_y", videoSettings.videoMode.height},
 		{"fullscreen", videoSettings.fullscreen},
 		{"antialiasing_level", videoSettings.сontext.antialiasingLevel}
-		// Добавить другие настройки видео по необходимости
 	};
 
 	settingsJson["audio"] = {
 		{"volume", audioSettings.volume},
 		{"mute", audioSettings.mute}
-		// Добавить другие настройки звука по необходимости
 	};
 
 	settingsJson["keyboard"] = {
-		{"move_up_key", static_cast<int>(keyboardSettings.moveUpKey)}
-		// Добавить другие настройки клавиатуры по необходимости
+		{"move_up_key", static_cast<int>(keyboardSettings.moveUpKey)},
+		{"move_left_key", static_cast<int>(keyboardSettings.moveLeftKey)},
+		{"move_right_key", static_cast<int>(keyboardSettings.moveRightKey)},
+		{"move_down_key", static_cast<int>(keyboardSettings.moveDownKey)}
 	};
 
 	settingsJson["mouse"] = {
 		{"shoot_button", static_cast<int>(mouseSettings.shootButton)}
-		// Добавить другие настройки мыши по необходимости
 	};
 
 	std::ofstream outputFile(file);
