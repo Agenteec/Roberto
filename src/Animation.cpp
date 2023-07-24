@@ -50,5 +50,3 @@ int Animation::getSize()
 {
 	return size;
 }
-
-void play()
