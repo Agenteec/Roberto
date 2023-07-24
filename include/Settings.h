@@ -57,15 +57,23 @@ public:
 class KeyboardSettings {
 public:
     sf::Keyboard::Key moveUpKey;
-    // Другие настройки клавиатуры
+    sf::Keyboard::Key moveDownKey;
+    sf::Keyboard::Key moveLeftKey;
+    sf::Keyboard::Key moveRightKey;
 
     KeyboardSettings() :
-        moveUpKey(sf::Keyboard::W)
+        moveUpKey(sf::Keyboard::W),
+        moveDownKey(sf::Keyboard::S),
+        moveLeftKey(sf::Keyboard::A),
+        moveRightKey(sf::Keyboard::D)
+
     {}
     friend std::ostream& operator<<(std::ostream& os, const KeyboardSettings& settings) {
         os << "Keyboard Settings:" << std::endl;
         os << "Move Up Key: " << KeyToString(settings.moveUpKey) << std::endl;
-        // Add other keyboard settings if needed
+        os << "Move Down Key: " << KeyToString(settings.moveDownKey) << std::endl;
+        os << "Move Left Key: " << KeyToString(settings.moveLeftKey) << std::endl;
+        os << "Move Right Key: " << KeyToString(settings.moveRightKey) << std::endl;
         return os;
     }
 };

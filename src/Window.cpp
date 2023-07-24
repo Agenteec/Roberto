@@ -32,9 +32,10 @@ void MainWindow::Display()
 {
 	guiManager.MainMenuInit(gui);
 	sf::Clock clock;
+	
 	while (window.isOpen())
 	{
-
+		float deltaTime = clock.restart().asSeconds();
 		sf::Event event;
 
 		while (window.pollEvent(event))
@@ -43,11 +44,16 @@ void MainWindow::Display()
 			if (event.type == sf::Event::Closed)
 				window.close();
 			gui.handleEvent(event);
+			if (guiManager.flags.onGame)
+				game.handleEvent(event);
 		}
+
+		if (guiManager.flags.onGame)
+			game.update(deltaTime, window);
 		
 		if (guiManager.flags.onMainMenu)
 		{
-		guiManager.MainMenu(gui);
+			guiManager.MainMenu(gui);
 		}
 		if (guiManager.flags.onTest)
 		{
@@ -56,6 +62,9 @@ void MainWindow::Display()
 		test.TestSelector();
 		window.clear(sf::Color(230, 230, 230, 255));
 		gui.draw();
+
+		if (guiManager.flags.onGame)
+			game.draw(window);
 
 		window.display();
 

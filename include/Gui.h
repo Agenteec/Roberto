@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
+#include <vector>
 
 struct Flags
 {
@@ -23,10 +24,14 @@ class GUI
 
 public:
 	GUI();
+	void SettingsMenu(tgui::Gui& gui);
+	void GameMenu(tgui::Gui& gui);
 	void MainMenu(tgui::Gui& gui);
 	void TestsMenu(int& test);
+	void GameMenuInit(tgui::Gui& gui);
 	void MainMenuInit(tgui::Gui& gui);
 	void TestMenuInit(tgui::Gui& gui);
 	Flags flags;
+	tgui::Group::Ptr mainMenuWindow;
 };
 

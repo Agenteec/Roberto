@@ -1,21 +1,26 @@
 ﻿#include "Gui.h"
 void GUI::MainMenuInit(tgui::Gui& gui)
 {
-	auto window = tgui::Group::create();
-	window->setSize("100%", "100%");
+	mainMenuWindow = tgui::Group::create();
+	mainMenuWindow->setSize("100%", "100%");
 	auto buttonLocalGame = tgui::Button::create(L"Локальная игра");
 	buttonLocalGame->setPosition("25%", "15%");
 	buttonLocalGame->setSize("50%", "10%");
 	buttonLocalGame->onClick([&]() {
 		flags.onGame = 1;
 		flags.onMainMenu = 0;
+		mainMenuWindow->setVisible(false);
+		mainMenuWindow->setEnabled(false);
 		});
 
 	auto buttonNetworkGame = tgui::Button::create(L"Сетевая игра");
 	buttonNetworkGame->setPosition("25%", "30%");
 	buttonNetworkGame->setSize("50%", "10%");
 	buttonNetworkGame->onClick ([&]() {
-		
+		flags.onGame = 1;
+		flags.onMainMenu = 0;
+		mainMenuWindow->setVisible(false);
+		mainMenuWindow->setEnabled(false);
 		});
 
 	auto buttonSettings = tgui::Button::create(L"Настройки");
@@ -41,20 +46,36 @@ void GUI::MainMenuInit(tgui::Gui& gui)
 		});
 
 	// Добавляем кнопки в окно
-	window->add(buttonLocalGame);
-	window->add(buttonNetworkGame);
-	window->add(buttonSettings);
-	window->add(buttonTest);
-	window->add(buttonExit);
+	mainMenuWindow->add(buttonLocalGame);
+	mainMenuWindow->add(buttonNetworkGame);
+	mainMenuWindow->add(buttonSettings);
+	mainMenuWindow->add(buttonTest);
+	mainMenuWindow->add(buttonExit);
 
 	// Добавляем окно в GUI
-	gui.add(window);
+	gui.add(mainMenuWindow);
 }
 GUI::GUI():
 	flags()
 {
 
 }
+
+void GUI::GameMenuInit(tgui::Gui& gui)
+{
+	
+}
+
+void GUI::SettingsMenu(tgui::Gui& gui)
+{
+
+}
+
+void GUI::TestMenuInit(tgui::Gui& gui)
+{
+
+}
+
 void GUI::MainMenu(tgui::Gui& gui)
 {
 		
