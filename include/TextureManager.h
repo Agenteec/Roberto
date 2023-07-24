@@ -1,13 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <unordered_map>
-#include <memory>
-
+#include <Thor/Resources.hpp>
 class TextureManager
 {
-
+	thor::ResourceLoader<sf::Texture> textureLoader;
 public:
 	void loadTextures(const std::pair<std::string, std::string>* textureList, const int& size);
-	std::unordered_map<std::string, sf::Texture> hashMapTextures;
+	std::map<std::string, sf::Texture&> textures;
+
 
 };
