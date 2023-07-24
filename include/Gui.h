@@ -8,13 +8,15 @@
 struct Flags
 {
 	bool onGame;
+	bool onGameMenu;
 	bool onMainMenu;
-	bool onSettings;
+	bool onSettingsMenu;
 	bool onTest;
 	Flags() :
 		onGame(false),
+		onGameMenu(false),
 		onMainMenu(true),
-		onSettings(false),
+		onSettingsMenu(false),
 		onTest(false)
 	{}
 };
@@ -24,14 +26,17 @@ class GUI
 
 public:
 	GUI();
-	void SettingsMenu(tgui::Gui& gui);
-	void GameMenu(tgui::Gui& gui);
-	void MainMenu(tgui::Gui& gui);
+	void SettingsMenu(const bool& flag);
+	void GameMenu(const bool& flag);
+	void MainMenu(const bool& flag);
 	void TestsMenu(int& test);
 	void GameMenuInit(tgui::Gui& gui);
 	void MainMenuInit(tgui::Gui& gui);
+	void SettingsMenuInit(tgui::Gui& gui);
 	void TestMenuInit(tgui::Gui& gui);
 	Flags flags;
 	tgui::Group::Ptr mainMenuWindow;
+	tgui::Group::Ptr gameMenuWindow;
+	tgui::Group::Ptr settingsMenuWindow;
 };
 

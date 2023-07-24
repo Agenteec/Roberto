@@ -1,7 +1,5 @@
 #include "window.h"
 
-
-
 MainWindow::MainWindow() :
 	window(sf::VideoMode(800, 600), L"Roberto")
 {
@@ -31,6 +29,10 @@ std::string MainWindow::GetBuildVersionString()
 void MainWindow::Display()
 {
 	guiManager.MainMenuInit(gui);
+	guiManager.GameMenuInit(gui);
+	guiManager.SettingsMenuInit(gui);
+	guiManager.flags.onMainMenu = true;
+	
 	sf::Clock clock;
 	
 	while (window.isOpen())
@@ -46,25 +48,48 @@ void MainWindow::Display()
 			gui.handleEvent(event);
 			if (guiManager.flags.onGame)
 				game.handleEvent(event);
+
+			if (event.type == sf::Event::KeyPressed)
+			{
+				if (event.key.code == sf::Keyboard::Escape)
+				{
+
+					guiManager.MainMenu(false);
+					guiManager.GameMenu(true);
+					
+				}
+			}
 		}
 
 		if (guiManager.flags.onGame)
+		{
 			game.update(deltaTime, window);
-		
+		}
+		if (guiManager.flags.onGameMenu)
+		{
+			guiManager.GameMenu(true);
+		}
 		if (guiManager.flags.onMainMenu)
 		{
-			guiManager.MainMenu(gui);
+			guiManager.MainMenu(true);
+		}
+		if (guiManager.flags.onSettingsMenu)
+		{
+			guiManager.SettingsMenu(true);
 		}
 		if (guiManager.flags.onTest)
 		{
 			guiManager.TestsMenu(test.testNumber);
 		}
+
 		test.TestSelector();
 		window.clear(sf::Color(230, 230, 230, 255));
 		gui.draw();
 
 		if (guiManager.flags.onGame)
+		{
 			game.draw(window);
+		}
 
 		window.display();
 
