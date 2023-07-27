@@ -1,0 +1,9 @@
+Package: thor
+Version: 2.0
+Port-Version: 6
+Depends: aurora, sfml, vcpkg-cmake
+Architecture: x64-windows
+Multi-Arch: same
+Abi: ba02bfcfe346677ea43dc994a995eb5c33604f486fe7311cc71ed1f6e39d6561
+Description: Extends the multimedia library SFML with higher-level features
+Type: Port

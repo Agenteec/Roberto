@@ -25,6 +25,9 @@ include_directories(${VCPKG_INCLUDE_DIR})
 
 include_directories(${CMAKE_SOURCE_DIR}/modules/tmxlite/include)
 link_directories(${CMAKE_SOURCE_DIR}/modules/tmxlite/lib)
+include_directories(${CMAKE_SOURCE_DIR}/modules/thor/include)
+link_directories(${CMAKE_SOURCE_DIR}/modules/thor/lib)
+
 
 # Попробуйте использовать прямые слеши в пути к папке vcpkg
 project ("Roberto")
@@ -39,7 +42,7 @@ find_package(TGUI CONFIG REQUIRED)
 
 find_package(OpenSSL REQUIRED)
 
-#Настройка конфигурации tmxlite
+#Настройка конфигурации
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(TMXLITE_LIB ${TMXLITE_LIB} "libtmxlite-s-d")
 elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -57,9 +60,9 @@ add_executable (Roberto ${SOURCES})
 add_executable (tester "tester/main.cpp" "include/SFMLOrthogonalLayer.hpp")
 add_executable (sfmlTest "sfmlTest/main.cpp")
 
-target_link_libraries(tester PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES} ${VCPKG_LIBRARY_DIR}/thor.lib ${TMXLITE_LIB})
+target_link_libraries(tester PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES} thor ${TMXLITE_LIB})
 target_link_libraries(sfmlTest PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES})
-target_link_libraries(Roberto PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES} ${VCPKG_LIBRARY_DIR}/thor.lib ${TMXLITE_LIB})
+target_link_libraries(Roberto PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES} thor ${TMXLITE_LIB})
 
 target_include_directories(Roberto PRIVATE "${PROJECT_SOURCE_DIR}/include")
 
