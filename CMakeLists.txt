@@ -7,13 +7,13 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-# Укажите путь к установленным файлам vcpkg
 if(WIN32)
     execute_process(COMMAND cmd /c echo %USERPROFILE% OUTPUT_VARIABLE USER_PROFILE)
     string(STRIP "${USER_PROFILE}" USER_PROFILE)
 else()
     message(FATAL_ERROR "This script is designed for Windows only.")
 endif()
+
 set(VCPKG_PATH "${USER_PROFILE}/vcpkg")
 set(VCPKG_INCLUDE_DIR "${VCPKG_PATH}/installed/${VCPKG_TARGET_TRIPLET}/include")
 set(VCPKG_LIBRARY_DIR "${VCPKG_PATH}/installed/${VCPKG_TARGET_TRIPLET}/lib")
@@ -61,13 +61,10 @@ target_link_libraries(tester PRIVATE sfml-system sfml-network sfml-graphics sfml
 target_link_libraries(sfmlTest PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES})
 target_link_libraries(Roberto PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES} ${VCPKG_LIBRARY_DIR}/thor.lib ${TMXLITE_LIB})
 
-#"Roberto.cpp" "include/Roberto.h" "include/Window.h" "Window.cpp" "include/Gui.h" "Gui.cpp" "include/Settings.h" "Settings.cpp" "include/FeatureTester.h" "FeatureTester.cpp" "FeatureTesterM.cpp"
 target_include_directories(Roberto PRIVATE "${PROJECT_SOURCE_DIR}/include")
 
-# Укажите директорию с файлами для копирования
+# Копирование ресурсов игры
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Resources)
-
-# Укажите директорию, в которую нужно скопировать файлы
 set(DESTINATION_DIR ${CMAKE_BINARY_DIR})
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
