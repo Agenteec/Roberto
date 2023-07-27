@@ -40,7 +40,7 @@ int main()
     sf::Sprite tt;
     tt.setTexture(t);
     tmx::Map map;
-    std::string path = "Resources/maps/demo.tmx";
+    std::string path = "Resources/maps/testMap.tmx";
     //path = "demo.tmx";
     if (!map.load(path))
     {
@@ -70,6 +70,7 @@ int main()
     sf::View view(window.getDefaultView());
     sf::Vector2f pos = view.getCenter();
     sf::Clock globalClock;
+    float zoom = 1.f;
     while (window.isOpen())
     {
 
@@ -102,10 +103,15 @@ int main()
                 if (event.key.code == sf::Keyboard::D)
                     wasd.dPressed = false;
             }
+            if (event.type == sf::Event::MouseWheelScrolled)
+            {
+                std::cout<<event.mouseWheelScroll.delta <<std::endl;
+            }
         }
 
         sf::Time duration = globalClock.restart();
         moveSprite(wasd, pos, duration.asSeconds(), 600.f);
+        view.zoom();
         view.setCenter(view.getCenter() + (pos - view.getCenter()) * 100.f * duration.asSeconds());
         window.setView(view);
         layerZero.update(duration);
