@@ -1,6 +1,5 @@
-#include <SFML/Graphics.hpp>
+﻿#include <SFML/Graphics.hpp>
 #include <tmxlite/Map.hpp>
-#include <tmxlite/TileLayer.hpp>
 #include "../include/SFMLOrthogonalLayer.hpp"
 #include <vector>
 #include <iostream>
@@ -35,11 +34,20 @@ int main()
 {
     WASD wasd;
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
-    std::vector<tmx::Layer::Ptr> layers;
-
+    //std::vector<tmx::Layer::Ptr> layers;
+    sf::Texture t;
+    t.loadFromFile("Resources/png/entitys/dog.png");
+    sf::Sprite tt;
+    tt.setTexture(t);
     tmx::Map map;
-    if (!map.load("Resources/maps/testMap.tmx"))
+    std::string path = "Resources/maps/demo.tmx";
+    //path = "demo.tmx";
+    if (!map.load(path))
     {
+        window.draw(tt);
+        window.display();
+        std::cout << path << std::endl;
+        system("pause");
         window.close();
         return EXIT_FAILURE;
     }
