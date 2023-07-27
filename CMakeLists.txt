@@ -69,6 +69,7 @@ target_include_directories(Roberto PRIVATE "${PROJECT_SOURCE_DIR}/include")
 # Копирование ресурсов игры
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Resources)
 set(DESTINATION_DIR ${CMAKE_BINARY_DIR})
+file(COPY ${SOURCE_DIR} DESTINATION ${DESTINATION_DIR})
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Roberto PROPERTY CXX_STANDARD 20)
