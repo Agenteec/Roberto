@@ -1,3 +1,4 @@
-#include "GlobalCosts.h"
+#include "GlobalConsts.h"
 
-static const float SCALE = 100.f;
+
+const float GlobalConsts::SCALE = 100.f;

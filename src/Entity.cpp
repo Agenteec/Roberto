@@ -3,7 +3,7 @@
 void Entity::initBody(b2World* world, const sf::Vector2f &pos)
 {
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(pos.x / SCALE, pos.y / SCALE);
+	bodyDef.position.Set(pos.x / GlobalConsts::SCALE, pos.y / GlobalConsts::SCALE);
 	body = world->CreateBody(&bodyDef);
 }
 
@@ -24,7 +24,7 @@ void Entity::setBodyOvalShape(const float &radius_x, const float &radius_y, cons
 
 void Entity::setBodyBoxShape(const sf::Vector2f& size)
 {
-	bodyShape.SetAsBox(size.x / 2.f / SCALE, size.y / 2.f / SCALE);
+	bodyShape.SetAsBox(size.x / 2.f / GlobalConsts::SCALE, size.y / 2.f / GlobalConsts::SCALE);
 	fixture = body->CreateFixture(&bodyShape, 1.0f);
 }
 
@@ -36,7 +36,7 @@ void Entity::setBodyPolygonShape(const b2Vec2* vertices, const int num_segments)
 void Entity::setBodyPosition(const sf::Vector2f& vec)
 {
 	setPosition(vec);
-	body->SetTransform(b2Vec2(vec.x / SCALE, vec.y / SCALE), body->GetAngle());
+	body->SetTransform(b2Vec2(vec.x / GlobalConsts::SCALE, vec.y / GlobalConsts::SCALE), body->GetAngle());
 }
 
 void Entity::setBodyPosition(const b2Vec2& vec)
@@ -47,7 +47,7 @@ void Entity::setBodyPosition(const b2Vec2& vec)
 void Entity::update(const float& deltaTime)
 {
 	b2Vec2 pos = body->GetPosition();
-	setPosition(pos.x * SCALE, pos.y * SCALE);
+	setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
 	setRotation(body->GetAngle() * 180.f / 3.14);
 }
 
