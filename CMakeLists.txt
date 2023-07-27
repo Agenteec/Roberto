@@ -62,7 +62,7 @@ target_link_libraries(sfmlTest PRIVATE sfml-system sfml-network sfml-graphics sf
 target_link_libraries(Roberto PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES} ${VCPKG_LIBRARY_DIR}/thor.lib ${TMXLITE_LIB})
 
 #"Roberto.cpp" "include/Roberto.h" "include/Window.h" "Window.cpp" "include/Gui.h" "Gui.cpp" "include/Settings.h" "Settings.cpp" "include/FeatureTester.h" "FeatureTester.cpp" "FeatureTesterM.cpp"
-#target_include_directories(Roberto PRIVATE "${PROJECT_SOURCE_DIR}/include")
+target_include_directories(Roberto PRIVATE "${PROJECT_SOURCE_DIR}/include")
 
 # Укажите директорию с файлами для копирования
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Resources)
