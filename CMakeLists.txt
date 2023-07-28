@@ -49,8 +49,10 @@ file(GLOB_RECURSE SOURCES "src/*.cpp" "include/*.h")
 add_executable (Roberto ${SOURCES})
 add_executable (tester "tester/main.cpp")
 add_executable (sfmlTest "sfmlTest/main.cpp")
+add_executable (rostikTest "rostikTest/main.cpp")
 target_link_libraries(tester PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES} ${VCPKG_LIBRARY_DIR}/thor.lib ${VCPKG_LIBRARY_DIR}/tmxlite.lib)
 target_link_libraries(sfmlTest PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES})#
+target_link_libraries(rostikTest PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES} ${VCPKG_LIBRARY_DIR}/thor.lib ${VCPKG_LIBRARY_DIR}/tmxlite.lib)
 
 #"Roberto.cpp" "include/Roberto.h" "include/Window.h" "Window.cpp" "include/Gui.h" "Gui.cpp" "include/Settings.h" "Settings.cpp" "include/FeatureTester.h" "FeatureTester.cpp" "FeatureTesterM.cpp"
 target_include_directories(Roberto PRIVATE "${PROJECT_SOURCE_DIR}/include")
