@@ -2,9 +2,22 @@
 
 
 Game::Game():
-	gameStatus(1)
+	gameStatus(1),
+	world(b2Vec2(0.f,0.f))
 {
 
+}
+
+void Game::init(sf::Texture& playerTexture, const std::string& mapPath)
+{
+	//Temp
+	level.load(mapPath);
+	
+	player.setTexture(playerTexture);
+	player.setBodyBoxShape(player.getOrigin());
+	player.initBody(&world, sf::Vector2f(200.f, 200.f));
+	camera.setTracking(&player);
+	//Temp
 }
 
 void Game::handleEvent(sf::Event& event)
@@ -36,7 +49,9 @@ void Game::handleEvent(sf::Event& event)
 
 void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
+	world.Step(deltaTime.asSeconds() * 0.1f, 6, 2);
 	player.update(deltaTime);
+	camera.update(deltaTime, window);
 	for (auto& gameObject : gameObjects)
 	{
 		gameObject.update(deltaTime);
@@ -49,4 +64,5 @@ void Game::draw(sf::RenderWindow& window)
 	{
 		window.draw(gameObject);
 	}
+	window.draw(player);
 }

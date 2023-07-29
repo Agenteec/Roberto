@@ -4,7 +4,8 @@ Player::Player() :
 	healthPoints(100.f),
 	maxHealthPoints(100.f),
 	speed(950.f),
-	hitted(false)
+	hitted(false),
+	Entity()
 {}
 
 void Player::update(const sf::Time& deltaTime)

@@ -1,5 +1,9 @@
 #include "Entity.h"
 
+Entity::Entity():body(nullptr)
+{
+}
+
 void Entity::initBody(b2World* world, const sf::Vector2f &pos)
 {
 	bodyDef.type = b2_dynamicBody;
@@ -46,6 +50,10 @@ void Entity::setBodyPosition(const b2Vec2& vec)
 
 void Entity::update(const sf::Time& deltaTime)
 {
+	if (body == nullptr)
+	{
+		return;
+	}
 	b2Vec2 pos = body->GetPosition();
 	setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
 	setRotation(body->GetAngle() * 180.f / 3.14);

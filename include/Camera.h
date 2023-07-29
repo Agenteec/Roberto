@@ -14,7 +14,7 @@ public:
 
 	void setTracking(GameObject* trackingObject);
 
-	void update(const float& deltaTime, sf::RenderWindow& window);
+	void update(const sf::Time& deltaTime, sf::RenderWindow& window);
 
 	void setMoveSpeed(const float& speed);
 

@@ -13,6 +13,8 @@ public:
 	b2Fixture* fixture;
 	b2PolygonShape bodyShape;
 	
+	Entity();
+
 	void initBody(b2World* world, const sf::Vector2f &pos);
 
 	void setBodyOvalShape(const float& radius_x, const float& radius_y, const int num_segments = 16);

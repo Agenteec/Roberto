@@ -18,6 +18,7 @@ void GUI::MainMenuInit(tgui::Gui& gui)
 	buttonNetworkGame->onClick ([&]() {
 		MainMenu(false);
 		flags.onGame = 1;
+		flags.isGameInit = 1;
 		});
 
 	auto buttonSettings = tgui::Button::create(L"Настройки");

@@ -28,6 +28,11 @@ std::string MainWindow::GetBuildVersionString()
 
 void MainWindow::Display()
 {
+	//Temp
+	bool isGameInit = true;
+	sf::Texture player;
+	player.loadFromFile("Resources/png/entitys/dog.png");
+	//Temp
 	guiManager.MainMenuInit(gui);
 	guiManager.GameMenuInit(gui);
 	guiManager.SettingsMenuInit(gui);
@@ -67,6 +72,11 @@ void MainWindow::Display()
 		}
 		if (guiManager.flags.onGameMenu)
 		{
+			if (guiManager.flags.isGameInit)
+			{
+				game.init(player, "Resources/maps/testMap.tmx");
+				guiManager.flags.isGameInit = !guiManager.flags.isGameInit;
+			}
 			guiManager.GameMenu(true);
 		}
 		if (guiManager.flags.onMainMenu)
@@ -82,7 +92,8 @@ void MainWindow::Display()
 			guiManager.TestsMenu(test.testNumber);
 		}
 
-		test.TestSelector();
+
+		//test.TestSelector();
 		window.clear(sf::Color(230, 230, 230, 255));
 		gui.draw();
 

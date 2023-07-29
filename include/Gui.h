@@ -12,12 +12,16 @@ struct Flags
 	bool onMainMenu;
 	bool onSettingsMenu;
 	bool onTest;
+
+	bool isGameInit;
+
 	Flags() :
 		onGame(false),
 		onGameMenu(false),
 		onMainMenu(true),
 		onSettingsMenu(false),
-		onTest(false)
+		onTest(false),
+		isGameInit(false)
 	{}
 };
 class GUI
