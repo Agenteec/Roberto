@@ -29,7 +29,7 @@ public:
 	Player();
 	ControlFlags controlFlags;
 
-	void update(const float& deltaTime) override;
+	void update(const sf::Time& deltaTime) override;
 
 	void setHealthPoints(const float& healthPoints);
 	void setMaxHealthPoints(const float& maxHealthPoints);

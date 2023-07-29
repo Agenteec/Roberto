@@ -12,14 +12,24 @@ bool Level::load(const std::string path)
         MapLayer* layer = new MapLayer(map, i);
         mapLayers.push_back(layer);
     }
-
+    return true;
 	
 }
 
-void Level::update()
+void Level::update(const sf::Time& time)
 {
+    for (MapLayer* layer : mapLayers)
+    {
+        layer->update(time);
+    }
 }
 
-void Level::draw(sf::RenderWindow& window, const sf::Time& time)
+void Level::draw(sf::RenderWindow& window)
 {
+    for (MapLayer* layer : mapLayers)
+    {
+        
+        
+        window.draw(*layer);
+    }
 }

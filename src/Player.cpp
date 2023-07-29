@@ -7,16 +7,17 @@ Player::Player() :
 	hitted(false)
 {}
 
-void Player::update(const float& deltaTime)
+void Player::update(const sf::Time& deltaTime)
 {
+	float dts = deltaTime.asSeconds();
 	if (controlFlags.upPressed)
-		body->ApplyForceToCenter(b2Vec2(0, -1.f * deltaTime * speed), true);
+		body->ApplyForceToCenter(b2Vec2(0, -1.f * dts * speed), true);
 	if (controlFlags.downPressed)
-		body->ApplyForceToCenter(b2Vec2(0, 1.f * deltaTime * speed), true);
+		body->ApplyForceToCenter(b2Vec2(0, 1.f * dts * speed), true);
 	if (controlFlags.leftPressed)
-		body->ApplyForceToCenter(b2Vec2 ( - 1.f * deltaTime * speed, 0), true);
+		body->ApplyForceToCenter(b2Vec2 ( - 1.f * dts * speed, 0), true);
 	if (controlFlags.rightPressed)
-		body->ApplyForceToCenter(b2Vec2(1.f * deltaTime * speed, 0), true);
+		body->ApplyForceToCenter(b2Vec2(1.f * dts * speed, 0), true);
 	Entity::update(deltaTime);
 }
 

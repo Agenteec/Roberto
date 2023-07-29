@@ -34,7 +34,7 @@ void Game::handleEvent(sf::Event& event)
 	}
 }
 
-void Game::update(const float& deltaTime, sf::RenderWindow& window)
+void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
 	player.update(deltaTime);
 	for (auto& gameObject : gameObjects)

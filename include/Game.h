@@ -14,6 +14,6 @@ public:
 
 	std::vector<GameObject> gameObjects;
 	void handleEvent(sf::Event& event);
-	void update(const float &deltaTime, sf::RenderWindow& window);
+	void update(const sf::Time &deltaTime, sf::RenderWindow& window);
 	void draw(sf::RenderWindow &window);
 };
