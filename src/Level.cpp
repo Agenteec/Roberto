@@ -6,28 +6,28 @@ bool Level::load(const std::string& path)
 	{
 		return false;
 	}
-    const auto& layers = map.getLayers();
-    for (int i = 0; i < layers.size(); i++)
-    {
-        MapLayer* layer = new MapLayer(map, i);
-        mapLayers.push_back(layer);
-    }
-    return true;
+	const auto& layers = map.getLayers();
+	for (int i = 0; i < layers.size(); i++)
+	{
+		MapLayer* layer = new MapLayer(map, i);
+		mapLayers.push_back(layer);
+	}
+	return true;
 	
 }
 
 void Level::update(const sf::Time& time)
 {
-    for (MapLayer* layer : mapLayers)
-    {
-        layer->update(time);
-    }
+	for (MapLayer* layer : mapLayers)
+	{
+		layer->update(time);
+	}
 }
 
 void Level::draw(sf::RenderWindow& window)
 {
-    for (MapLayer* layer : mapLayers)
-    {  
-        window.draw(*layer);
-    }
+	for (MapLayer* layer : mapLayers)
+	{  
+		window.draw(*layer);
+	}
 }
