@@ -37,7 +37,7 @@ void MainWindow::Display()
 	
 	while (window.isOpen())
 	{
-		float deltaTime = clock.restart().asSeconds();
+		sf::Time deltaTime = clock.restart();
 		sf::Event event;
 
 		while (window.pollEvent(event))

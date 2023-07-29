@@ -1,6 +1,6 @@
 #include "Level.h"
 
-bool Level::load(const std::string path)
+bool Level::load(const std::string& path)
 {
 	if (!map.load(path))
 	{
@@ -27,9 +27,7 @@ void Level::update(const sf::Time& time)
 void Level::draw(sf::RenderWindow& window)
 {
     for (MapLayer* layer : mapLayers)
-    {
-        
-        
+    {  
         window.draw(*layer);
     }
 }
