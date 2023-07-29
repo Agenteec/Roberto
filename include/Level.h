@@ -13,7 +13,8 @@ class Level
 public:
 	tmx::Map map;
 	std::vector<MapLayer*> mapLayers;
-	bool init(const std::string)
-
+	bool load(const std::string path);
+	void update(const sf::Time& time);
+	void draw(sf::RenderWindow& window);
 
 };

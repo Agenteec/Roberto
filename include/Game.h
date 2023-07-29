@@ -2,12 +2,12 @@
 #include <vector>
 #include "Player.h"
 #include "Camera.h"
-
+#include "Level.h"
 class Game 
 {
 	Camera camera;
 	Player player;
-
+	Level level;
 	int gameStatus;
 public:
 	Game();
