@@ -33,7 +33,8 @@ void moveSprite(const WASD& wasd, sf::Vector2f& sprite, const float& deltaTime, 
 int main()
 {
     WASD wasd;
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
+    sf::RenderWindow window(sf::VideoMode(1024, 728), "SFML window");
+    window.setFramerateLimit(30);
     sf::Font font;
     font.loadFromFile("Resources/fonts/impact.ttf");
     sf::Text fpsText;
@@ -46,8 +47,7 @@ int main()
     sf::Sprite tt;
     tt.setTexture(t);
     tmx::Map map;
-    std::string path = "Resources/maps/testMap.tmx";
-    //path = "demo.tmx";
+    std::string path = "Resources/maps/demo.tmx";
     if (!map.load(path))
     {
         window.draw(tt);
@@ -59,14 +59,12 @@ int main()
 
     const auto& layers = map.getLayers();
     std::cout << "Layers size:" << layers.size() << std::endl;
-    //std::vector<MapLayer> mapLayers;
-    //for (size_t i = 0; i < layers.size()-1; i++)
-    //{
-    //    mapLayers.push_back(MapLayer(map, i));
-    //}
-    MapLayer l0(map, 0);
-    MapLayer l1(map, 1);
-    MapLayer l2(map, 2);
+    std::vector<MapLayer*> mapLayers;
+    for (int i = 0; i < layers.size(); i++)
+    {
+        MapLayer* layer = new MapLayer(map, i);
+        mapLayers.push_back(layer);
+    }
     sf::View view(window.getDefaultView());
     sf::Vector2f pos = view.getCenter();
     float targetZoom = 1.f;
@@ -74,9 +72,23 @@ int main()
     float elapsedTime = 0.f;
     int frames = 0;
     sf::Clock clock;
+    const sf::Time fixedUpdateTime = sf::seconds(1.f / 60.f);
+    sf::Time accumulatedTime = sf::Time::Zero;
     while (window.isOpen())
     {
         sf::Time deltaTime = clock.restart();
+        accumulatedTime += deltaTime;
+
+        while (accumulatedTime >= fixedUpdateTime)
+        {
+            for (MapLayer* layer : mapLayers)
+            {
+                layer->update(fixedUpdateTime);
+            }
+
+            accumulatedTime -= fixedUpdateTime;
+        }
+        
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -116,8 +128,6 @@ int main()
                 }
             }
         }
-
-        
         moveSprite(wasd, pos, deltaTime.asSeconds(), 600.f);
         #pragma region ZOOM
         float currentZoom = view.getSize().x / window.getSize().x;
@@ -134,9 +144,7 @@ int main()
             view.zoom(1.0f + zoomStep);
         }
         #pragma endregion
-
-        view.setCenter(view.getCenter() + (pos - view.getCenter()) * 30.f * deltaTime.asSeconds()*targetZoom);
-        //fpsText.setPosition(view.getCenter().x + 200, view.getCenter().y - 150);
+        view.setCenter(view.getCenter() + (pos - view.getCenter()) * 15.f * deltaTime.asSeconds()*targetZoom);
         sf::Vector2f viewSize = view.getSize();
         sf::Vector2f viewCenter = view.getCenter();
 
@@ -156,20 +164,18 @@ int main()
 
         }
         window.clear(sf::Color(200,200,255));
-        //for (size_t i = 0; i < mapLayers.size(); i++)
-        //{
-        //    //mapLayers[i].update(deltaTime);
-        //    window.draw(mapLayers[i]);
-
-        //}
-
-        l0.update(deltaTime);
-        window.draw(l0);
-        window.draw(l1);
-        window.draw(l2);
+        for (MapLayer* layer : mapLayers)
+        {
+            //layer->update(fixedUpdateTime);
+            //layer->update(deltaTime);
+            window.draw(*layer);
+        }
         window.draw(fpsText);
         window.display();
     }
-
+    for (MapLayer* layer : mapLayers)
+    {
+        delete layer;
+    }
     return 0;
 }
