@@ -47,7 +47,7 @@ int main()
     sf::Sprite tt;
     tt.setTexture(t);
     tmx::Map map;
-    std::string path = "Resources/maps/demo.tmx";
+    std::string path = "Resources/maps/testMap.tmx";
     if (!map.load(path))
     {
         window.draw(tt);

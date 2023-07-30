@@ -12,7 +12,7 @@ public:
 	b2Body* body;
 	b2Fixture* fixture;
 	b2PolygonShape bodyShape;
-	
+	float resistanceCoefficient;
 	Entity();
 
 	void initBody(b2World* world, const sf::Vector2f &pos);
@@ -29,8 +29,18 @@ public:
 
 	void virtual update(const sf::Time& deltaTime);
 
+	void setPhysicalProperties(const float& density, const float& friction, const float& restitution);
+
+	void applyResistance() {
+		b2Vec2 velocity = body->GetLinearVelocity();
+
+		b2Vec2 resistance_force = -resistanceCoefficient * velocity;
+
+		body->ApplyForceToCenter(resistance_force, true);
+	}
+
 private: 
 
-	void setPhysicalProperties(const float &density, const float &friction, const float &restitution);
+	
 };
 

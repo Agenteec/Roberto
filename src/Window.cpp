@@ -29,7 +29,6 @@ std::string MainWindow::GetBuildVersionString()
 void MainWindow::Display()
 {
 	//Temp
-	bool isGameInit = true;
 	sf::Texture player;
 	player.loadFromFile("Resources/png/entitys/dog.png");
 	//Temp
@@ -69,14 +68,14 @@ void MainWindow::Display()
 		if (guiManager.flags.onGame)
 		{
 			game.update(deltaTime, window);
-		}
-		if (guiManager.flags.onGameMenu)
-		{
 			if (guiManager.flags.isGameInit)
 			{
 				game.init(player, "Resources/maps/testMap.tmx");
 				guiManager.flags.isGameInit = !guiManager.flags.isGameInit;
 			}
+		}
+		if (guiManager.flags.onGameMenu)
+		{
 			guiManager.GameMenu(true);
 		}
 		if (guiManager.flags.onMainMenu)

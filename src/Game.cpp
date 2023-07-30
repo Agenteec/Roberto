@@ -10,12 +10,17 @@ Game::Game():
 
 void Game::init(sf::Texture& playerTexture, const std::string& mapPath)
 {
+
 	//Temp
 	level.load(mapPath);
 	
 	player.setTexture(playerTexture);
-	player.setBodyBoxShape(player.getOrigin());
+	player.setScale(0.3f, 0.3f);
+	player.setOrigin(sf::Vector2f(player.getLocalBounds().width / 2.f, player.getLocalBounds().height / 2.f));
+	
 	player.initBody(&world, sf::Vector2f(200.f, 200.f));
+	player.setBodyBoxShape(sf::Vector2f(player.getLocalBounds().width, player.getLocalBounds().height));
+	//player.setPhysicalProperties();
 	camera.setTracking(&player);
 	//Temp
 }
@@ -49,9 +54,10 @@ void Game::handleEvent(sf::Event& event)
 
 void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
-	world.Step(deltaTime.asSeconds() * 0.1f, 6, 2);
+	world.Step(1.f/60.f, 6, 2);
 	player.update(deltaTime);
 	camera.update(deltaTime, window);
+	level.update(deltaTime);
 	for (auto& gameObject : gameObjects)
 	{
 		gameObject.update(deltaTime);
@@ -64,5 +70,6 @@ void Game::draw(sf::RenderWindow& window)
 	{
 		window.draw(gameObject);
 	}
+	level.draw(window);
 	window.draw(player);
 }

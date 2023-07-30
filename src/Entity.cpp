@@ -1,6 +1,8 @@
 #include "Entity.h"
 
-Entity::Entity():body(nullptr)
+Entity::Entity() :
+	body(nullptr),
+	resistanceCoefficient(0.1f)
 {
 }
 
@@ -54,6 +56,7 @@ void Entity::update(const sf::Time& deltaTime)
 	{
 		return;
 	}
+	applyResistance();
 	b2Vec2 pos = body->GetPosition();
 	setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
 	setRotation(body->GetAngle() * 180.f / 3.14);

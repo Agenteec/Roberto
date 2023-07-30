@@ -6,7 +6,9 @@ bool Level::load(const std::string& path)
 	{
 		return false;
 	}
+
 	const auto& layers = map.getLayers();
+	std::cout << "Layers size:" << layers.size() << std::endl;
 	for (int i = 0; i < layers.size(); i++)
 	{
 		MapLayer* layer = new MapLayer(map, i);

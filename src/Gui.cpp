@@ -10,6 +10,7 @@ void GUI::MainMenuInit(tgui::Gui& gui)
 	buttonLocalGame->onClick([&]() {
 		MainMenu(false);
 		flags.onGame = 1;
+		flags.isGameInit = 1;
 		});
 
 	auto buttonNetworkGame = tgui::Button::create(L"Сетевая игра");
