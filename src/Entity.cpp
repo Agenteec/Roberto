@@ -21,7 +21,7 @@ void Entity::setBodyOvalShape(const float &radius_x, const float &radius_y, cons
 
 	for (int i = 0; i < num_segments; ++i) {
 		float angle = 2.0f * b2_pi * static_cast<float>(i) / fnum_segments;
-		vertices[i].Set(radius_x / GlobalConsts::SCALE * cos(angle), radius_y / GlobalConsts::SCALE * sin(angle));
+		vertices[i].Set(radius_x * getScale().x / GlobalConsts::SCALE * cos(angle), radius_y * getScale().y / GlobalConsts::SCALE * sin(angle));
 	}
 
 	bodyShape.Set(vertices, num_segments);
@@ -32,18 +32,9 @@ void Entity::setBodyOvalShape(const float &radius_x, const float &radius_y, cons
 void Entity::setBodyBoxShape(const sf::Vector2f& size, const float& density)
 {
 	
-	std::cout << "size:" << size.x << "/" << size.y << std::endl;
-	sf::Vector2f scaledSize = size;
-	scaledSize.x *= getScale().x;
-	scaledSize.y *= getScale().y;
-	b2Vec2 boxSize(scaledSize.x  / 2.f / GlobalConsts::SCALE, scaledSize.y  / 2.f / GlobalConsts::SCALE);
-	std::cout << "boxSize:" << boxSize.x << "/" << boxSize.y << std::endl;
-	bodyShape.SetAsBox(boxSize.x, boxSize.y);
+	b2Vec2 boxSize(size.x  / 2.f / GlobalConsts::SCALE, size.y  / 2.f / GlobalConsts::SCALE);
+	bodyShape.SetAsBox(boxSize.x* getScale().x, boxSize.y* getScale().x);
 	fixture = body->CreateFixture(&bodyShape, density);
-
-	//b2Vec2 boxSize(size.x / 2.f / GlobalConsts::SCALE, size.y / 2.f / GlobalConsts::SCALE);
-	//bodyShape.SetAsBox(boxSize.x, boxSize.y);
-	//fixture = body->CreateFixture(&bodyShape, density);
 }
 
 void Entity::setBodyPolygonShape(const b2Vec2* vertices, const int num_segments)

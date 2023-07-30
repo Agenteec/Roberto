@@ -21,8 +21,8 @@ void Game::init(const std::string& mapPath)
 	level.load(mapPath);
 	
 	player.setTexture(*textureManager.textures["Resources/png/entitys/dog.png"]);
-	//player.setScale(0.3f, 0.3f);
-	player.setOrigin(sf::Vector2f(player.getLocalBounds().width * player.getScale().x / 2.f, player.getLocalBounds().height * player.getScale().y / 2.f));
+	player.setScale(0.3f, 0.3f);
+	player.setOrigin(sf::Vector2f(player.getLocalBounds().width / 2.f, player.getLocalBounds().height / 2.f));
 	
 	player.initBody(&world, sf::Vector2f(200.f, 200.f));
 	//player.setBodyBoxShape(sf::Vector2f(player.getLocalBounds().width, player.getLocalBounds().height),0.1f);
@@ -33,7 +33,7 @@ void Game::init(const std::string& mapPath)
 	{
 		Entity* box = new Entity();
 		box->setTexture(*textureManager.textures["Resources/png/entitys/box/box0.png"]);
-		//box->setScale(1.f, 1.f);
+		box->setScale(1.f, 1.f);
 		box->setOrigin(sf::Vector2f(box->getLocalBounds().width * box->getScale().x / 2.f, box->getLocalBounds().height * box->getScale().y / 2.f));
 		box->initBody(&world, sf::Vector2f(400.f, 400.f));
 		box->setBodyBoxShape(sf::Vector2f(box->getLocalBounds().width, box->getLocalBounds().height));
