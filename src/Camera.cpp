@@ -18,7 +18,7 @@ void Camera::setTracking(GameObject* trackingObject)
 void Camera::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
 	float dts = deltaTime.asSeconds();
-	/*#pragma region ZOOM
+	#pragma region ZOOM
 	float currentZoom = getSize().x / window.getSize().x;
 
 	float zoomDiff = targetZoom - currentZoom;
@@ -32,7 +32,7 @@ void Camera::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 		float zoomStep = zoomDiff * zoomSpeed * dts;
 		zoom(1.0f + zoomStep);
 	}
-	#pragma endregion*/
+	#pragma endregion
 
 	#pragma region Tracking
 	if (trackingObject != nullptr)
