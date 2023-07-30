@@ -7,8 +7,10 @@ int main()
 {
     Settings settings;
     settings.LoadFromJson();
+    settings.SaveFromJson();
     std::cout << settings << std::endl;
     MainWindow* window = new MainWindow(settings);
+
     window->Display();
 
 }

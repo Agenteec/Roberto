@@ -26,15 +26,15 @@ void Game::init(const std::string& mapPath)
 	
 	player.initBody(&world, sf::Vector2f(200.f, 200.f));
 	//player.setBodyBoxShape(sf::Vector2f(player.getLocalBounds().width, player.getLocalBounds().height),0.1f);
-	player.setBodyOvalShape(player.getLocalBounds().width / 2.f, player.getLocalBounds().height / 2.f,8, 0.01f);
+	player.setBodyOvalShape(player.getLocalBounds().width / 2.f, player.getLocalBounds().height / 2.f,8, 0.05f);
 	//player.setPhysicalProperties();
 	camera.setTracking(&player);
 	for (size_t i = 0; i < 50; i++)
 	{
 		Entity* box = new Entity();
 		box->setTexture(*textureManager.textures["Resources/png/entitys/box/box0.png"]);
-		box->setScale(1.f, 1.f);
-		box->setOrigin(sf::Vector2f(box->getLocalBounds().width * box->getScale().x / 2.f, box->getLocalBounds().height * box->getScale().y / 2.f));
+		box->setScale(0.5f, 0.5f);
+		box->setOrigin(sf::Vector2f(box->getLocalBounds().width / 2.f, box->getLocalBounds().height / 2.f));
 		box->initBody(&world, sf::Vector2f(400.f, 400.f));
 		box->setBodyBoxShape(sf::Vector2f(box->getLocalBounds().width, box->getLocalBounds().height));
 		gameObjects.push_back(box);

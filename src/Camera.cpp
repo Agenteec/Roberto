@@ -3,9 +3,9 @@
 Camera::Camera(): 
 	View(),
 	trackingObject(nullptr),
-	moveSpeed(2.f),
+	moveSpeed(3.f),
 	zoomSpeed(2.f),
-	targetZoom(2.5f)
+	targetZoom(1.5f)
 {
 
 }
