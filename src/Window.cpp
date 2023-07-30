@@ -28,10 +28,6 @@ std::string MainWindow::GetBuildVersionString()
 
 void MainWindow::Display()
 {
-	//Temp
-	sf::Texture player;
-	player.loadFromFile("Resources/png/entitys/dog.png");
-	//Temp
 	guiManager.MainMenuInit(gui);
 	guiManager.GameMenuInit(gui);
 	guiManager.SettingsMenuInit(gui);
@@ -70,7 +66,7 @@ void MainWindow::Display()
 			game.update(deltaTime, window);
 			if (guiManager.flags.isGameInit)
 			{
-				game.init(player, "Resources/maps/testMap.tmx");
+				game.init("Resources/maps/testMap.tmx");
 				guiManager.flags.isGameInit = !guiManager.flags.isGameInit;
 			}
 		}

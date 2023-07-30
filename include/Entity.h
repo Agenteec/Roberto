@@ -17,9 +17,9 @@ public:
 
 	void initBody(b2World* world, const sf::Vector2f &pos);
 
-	void setBodyOvalShape(const float& radius_x, const float& radius_y, const int num_segments = 16);
+	void setBodyOvalShape(const float& radius_x, const float& radius_y, const int num_segments = 8, const float& density = 1.f);
 
-	void setBodyBoxShape(const sf::Vector2f &size);
+	void setBodyBoxShape(const sf::Vector2f &size, const float& density = 1.f);
 
 	void setBodyPolygonShape(const b2Vec2* vertices, const int num_segments = 4);
 

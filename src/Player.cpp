@@ -3,7 +3,7 @@
 Player::Player() :
 	healthPoints(100.f),
 	maxHealthPoints(100.f),
-	speed(10.f),
+	speed(2.f),
 	hitted(false),
 	Entity()
 {}

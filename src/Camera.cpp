@@ -5,7 +5,7 @@ Camera::Camera():
 	trackingObject(nullptr),
 	moveSpeed(2.f),
 	zoomSpeed(2.f),
-	targetZoom(1.0f)
+	targetZoom(2.5f)
 {
 
 }

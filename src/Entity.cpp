@@ -1,7 +1,8 @@
 #include "Entity.h"
-
+#include <iostream>
 Entity::Entity() :
 	body(nullptr),
+	fixture(nullptr),
 	resistanceCoefficient(0.1f)
 {
 }
@@ -13,25 +14,36 @@ void Entity::initBody(b2World* world, const sf::Vector2f &pos)
 	body = world->CreateBody(&bodyDef);
 }
 
-void Entity::setBodyOvalShape(const float &radius_x, const float &radius_y, const int num_segments)
+void Entity::setBodyOvalShape(const float &radius_x, const float &radius_y, const int num_segments, const float& density)
 {
 	float fnum_segments = static_cast<float>(num_segments);
 	b2Vec2 *vertices = new b2Vec2[num_segments];
 
 	for (int i = 0; i < num_segments; ++i) {
 		float angle = 2.0f * b2_pi * static_cast<float>(i) / fnum_segments;
-		vertices[i].Set(radius_x * cos(angle), radius_y * sin(angle));
+		vertices[i].Set(radius_x / GlobalConsts::SCALE * cos(angle), radius_y / GlobalConsts::SCALE * sin(angle));
 	}
 
 	bodyShape.Set(vertices, num_segments);
-
-	delete[] vertices;
+	fixture = body->CreateFixture(&bodyShape, density);
+	//delete[] vertices;
 }
 
-void Entity::setBodyBoxShape(const sf::Vector2f& size)
+void Entity::setBodyBoxShape(const sf::Vector2f& size, const float& density)
 {
-	bodyShape.SetAsBox(size.x / 2.f / GlobalConsts::SCALE, size.y / 2.f / GlobalConsts::SCALE);
-	fixture = body->CreateFixture(&bodyShape, 1.0f);
+	
+	std::cout << "size:" << size.x << "/" << size.y << std::endl;
+	sf::Vector2f scaledSize = size;
+	scaledSize.x *= getScale().x;
+	scaledSize.y *= getScale().y;
+	b2Vec2 boxSize(scaledSize.x  / 2.f / GlobalConsts::SCALE, scaledSize.y  / 2.f / GlobalConsts::SCALE);
+	std::cout << "boxSize:" << boxSize.x << "/" << boxSize.y << std::endl;
+	bodyShape.SetAsBox(boxSize.x, boxSize.y);
+	fixture = body->CreateFixture(&bodyShape, density);
+
+	//b2Vec2 boxSize(size.x / 2.f / GlobalConsts::SCALE, size.y / 2.f / GlobalConsts::SCALE);
+	//bodyShape.SetAsBox(boxSize.x, boxSize.y);
+	//fixture = body->CreateFixture(&bodyShape, density);
 }
 
 void Entity::setBodyPolygonShape(const b2Vec2* vertices, const int num_segments)
