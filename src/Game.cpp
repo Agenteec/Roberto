@@ -2,9 +2,41 @@
 
 
 Game::Game():
-	gameStatus(1)
+	gameStatus(1),
+	world(b2Vec2(0.f,0.f))
 {
 
+}
+
+void Game::init(const std::string& mapPath)
+{
+	const int texturesCount = 3;
+	//   Path \ Name
+	std::pair<std::string, std::string> textures[texturesCount] =
+	{
+	std::pair < std::string, std::string>("Resources/png/entitys/dog.png", "player1"),
+	std::pair < std::string, std::string>("Resources/png/entitys/box/box0.png","box0"),
+	std::pair < std::string, std::string>("Resources/png/walls/wall1.png","wall1")
+	};
+	textureManager.loadTextures(textures, texturesCount);
+	//Temp
+	level.load(mapPath);
+	level.parse(gameObjects, &textureManager, world);
+	
+	player.setTexture(*textureManager.textures["player1"]);
+	player.setScale(0.3f, 0.3f);
+	player.setOrigin(sf::Vector2f(player.getLocalBounds().width / 2.f, player.getLocalBounds().height / 2.f));
+	sf::Vector2f playerSpawnPoint;
+	for (auto point:  level.playerSpawn)
+	{
+		playerSpawnPoint = point;
+	}
+	player.initBody(&world, playerSpawnPoint);
+	player.setBodyOvalShape(player.getLocalBounds().width / 2.f, player.getLocalBounds().height / 2.f,8, 0.05f);
+	camera.setTracking(&player);
+	
+
+	//Temp
 }
 
 void Game::handleEvent(sf::Event& event)
@@ -34,19 +66,26 @@ void Game::handleEvent(sf::Event& event)
 	}
 }
 
-void Game::update(const float& deltaTime, sf::RenderWindow& window)
+void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
+	world.Step(1.f/60.f, 8, 3);
 	player.update(deltaTime);
+	camera.update(deltaTime, window);
+	level.update(deltaTime);
 	for (auto& gameObject : gameObjects)
 	{
-		gameObject.update(deltaTime);
+		gameObject->update(deltaTime);
 	}
 }
 
 void Game::draw(sf::RenderWindow& window)	
 {
+	level.draw(window);
+
 	for (auto& gameObject : gameObjects)
 	{
-		window.draw(gameObject);
+		window.draw(*gameObject);
 	}
+
+	window.draw(player);
 }

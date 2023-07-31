@@ -12,12 +12,14 @@ public:
 	b2Body* body;
 	b2Fixture* fixture;
 	b2PolygonShape bodyShape;
-	
-	void initBody(b2World* world, const sf::Vector2f &pos);
+	float resistanceCoefficient;
+	Entity();
 
-	void setBodyOvalShape(const float& radius_x, const float& radius_y, const int num_segments = 16);
+	void initBody(b2World* world, const sf::Vector2f &pos, const float& angle = 0.f, const b2BodyType& bodyType = b2_dynamicBody);
 
-	void setBodyBoxShape(const sf::Vector2f &size);
+	void setBodyOvalShape(const float& radius_x, const float& radius_y, const int num_segments = 8, const float& density = 1.f);
+
+	void setBodyBoxShape(const sf::Vector2f &size, const float& density = 1.f);
 
 	void setBodyPolygonShape(const b2Vec2* vertices, const int num_segments = 4);
 
@@ -25,10 +27,20 @@ public:
 
 	void setBodyPosition(const b2Vec2 &vec);
 
-	void virtual update(const float& deltaTime);
+	void virtual update(const sf::Time& deltaTime);
+
+	void setPhysicalProperties(const float& density, const float& friction, const float& restitution);
+
+	void applyResistance() {
+		b2Vec2 velocity = body->GetLinearVelocity();
+
+		b2Vec2 resistance_force = -resistanceCoefficient * velocity;
+
+		body->ApplyForceToCenter(resistance_force, true);
+	}
 
 private: 
 
-	void setPhysicalProperties(const float &density, const float &friction, const float &restitution);
+	
 };
 

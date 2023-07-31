@@ -3,20 +3,23 @@
 Player::Player() :
 	healthPoints(100.f),
 	maxHealthPoints(100.f),
-	speed(950.f),
-	hitted(false)
+	speed(2.8f),
+	hitted(false),
+	debugMode(false),
+	Entity()
 {}
 
-void Player::update(const float& deltaTime)
+void Player::update(const sf::Time& deltaTime)
 {
+	float dts = deltaTime.asSeconds();
 	if (controlFlags.upPressed)
-		body->ApplyForceToCenter(b2Vec2(0, -1.f * deltaTime * speed), true);
+		body->ApplyLinearImpulseToCenter(b2Vec2(0, -1.f * dts * speed), true);
 	if (controlFlags.downPressed)
-		body->ApplyForceToCenter(b2Vec2(0, 1.f * deltaTime * speed), true);
+		body->ApplyLinearImpulseToCenter(b2Vec2(0, 1.f * dts * speed), true);
 	if (controlFlags.leftPressed)
-		body->ApplyForceToCenter(b2Vec2 ( - 1.f * deltaTime * speed, 0), true);
+		body->ApplyLinearImpulseToCenter(b2Vec2 ( - 1.f * dts * speed, 0), true);
 	if (controlFlags.rightPressed)
-		body->ApplyForceToCenter(b2Vec2(1.f * deltaTime * speed, 0), true);
+		body->ApplyLinearImpulseToCenter(b2Vec2(1.f * dts * speed, 0), true);
 	Entity::update(deltaTime);
 }
 
@@ -40,6 +43,11 @@ void Player::setHittedFlag(const bool& hitted)
 	this->hitted = hitted;
 }
 
+void Player::setDebugMode(const bool& mode)
+{
+	this->debugMode = mode;
+}
+
 const float& Player::getHealthPoints()
 {
 	return healthPoints;
@@ -55,7 +63,12 @@ const float& Player::getSpeed()
 	return speed;
 }
 
-bool Player::isHitted()
+const bool& Player::isHitted()
 {
 	return hitted;
+}
+
+const bool& Player::getDebugMode()
+{
+	return debugMode;
 }

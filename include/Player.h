@@ -29,21 +29,25 @@ public:
 	Player();
 	ControlFlags controlFlags;
 
-	void update(const float& deltaTime) override;
+	void update(const sf::Time& deltaTime) override;
 
 	void setHealthPoints(const float& healthPoints);
 	void setMaxHealthPoints(const float& maxHealthPoints);
 	void setSpeed(const float& speed);
 	void setHittedFlag(const bool& hitted);
+	void setDebugMode(const bool& mode);
+
 
 	const float& getHealthPoints();
 	const float& getMaxHealthPoints();
 	const float& getSpeed();
-	bool isHitted();
+	const bool& isHitted();
+	const bool& getDebugMode();
 
 private:
 	float healthPoints, maxHealthPoints, speed;
 	bool hitted;
 	bool live;
+	bool debugMode;
 };
 

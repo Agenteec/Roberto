@@ -37,7 +37,7 @@ void MainWindow::Display()
 	
 	while (window.isOpen())
 	{
-		float deltaTime = clock.restart().asSeconds();
+		sf::Time deltaTime = clock.restart();
 		sf::Event event;
 
 		while (window.pollEvent(event))
@@ -64,6 +64,11 @@ void MainWindow::Display()
 		if (guiManager.flags.onGame)
 		{
 			game.update(deltaTime, window);
+			if (guiManager.flags.isGameInit)
+			{
+				game.init("Resources/maps/testMap.tmx");
+				guiManager.flags.isGameInit = !guiManager.flags.isGameInit;
+			}
 		}
 		if (guiManager.flags.onGameMenu)
 		{
@@ -82,7 +87,8 @@ void MainWindow::Display()
 			guiManager.TestsMenu(test.testNumber);
 		}
 
-		test.TestSelector();
+
+		//test.TestSelector();
 		window.clear(sf::Color(230, 230, 230, 255));
 		gui.draw();
 

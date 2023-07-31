@@ -59,11 +59,12 @@ file(GLOB_RECURSE SOURCES "src/*.cpp" "include/*.h")
 add_executable (Roberto ${SOURCES})
 add_executable (tester "tester/main.cpp" "include/SFMLOrthogonalLayer.hpp")
 add_executable (sfmlTest "sfmlTest/main.cpp")
+add_executable (rostikTest "rostikTest/main.cpp")
 
 target_link_libraries(tester PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES} thor ${TMXLITE_LIB})
 target_link_libraries(sfmlTest PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES})
 target_link_libraries(Roberto PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES} thor ${TMXLITE_LIB})
-
+target_link_libraries(rostikTest PRIVATE sfml-system sfml-network sfml-graphics sfml-window box2d::box2d nlohmann_json::nlohmann_json tgui ${OPENSSL_LIBRARIES} thor ${TMXLITE_LIB})
 target_include_directories(Roberto PRIVATE "${PROJECT_SOURCE_DIR}/include")
 
 # Копирование ресурсов игры

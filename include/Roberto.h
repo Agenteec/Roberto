@@ -4,6 +4,5 @@
 #pragma once
 
 #include <iostream>
-#include "Settings.h"
 #include "Window.h"
 // TODO: установите здесь ссылки на дополнительные заголовки, требующиеся для программы.

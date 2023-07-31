@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <tileset firstgid="1" source="../box0.tsx"/>
+ <object name="box0" class="dynamic" gid="1" width="90" height="90">
+  <properties>
+   <property name="density" type="float" value="1"/>
+   <property name="friction" type="float" value="0.1"/>
+   <property name="restitution" type="float" value="0.1"/>
+  </properties>
+ </object>
+</template>

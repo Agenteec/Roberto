@@ -33,47 +33,62 @@ void moveSprite(const WASD& wasd, sf::Vector2f& sprite, const float& deltaTime, 
 int main()
 {
     WASD wasd;
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
-    //std::vector<tmx::Layer::Ptr> layers;
+    sf::RenderWindow window(sf::VideoMode(1024, 728), "SFML window");
+    window.setFramerateLimit(30);
+    sf::Font font;
+    font.loadFromFile("Resources/fonts/impact.ttf");
+    sf::Text fpsText;
+    fpsText.setFont(font);
+    fpsText.setCharacterSize(24);
+    fpsText.setFillColor(sf::Color::Green);
+    fpsText.setPosition(10, 10);
     sf::Texture t;
     t.loadFromFile("Resources/png/entitys/dog.png");
     sf::Sprite tt;
     tt.setTexture(t);
     tmx::Map map;
     std::string path = "Resources/maps/testMap.tmx";
-    //path = "demo.tmx";
     if (!map.load(path))
     {
         window.draw(tt);
         window.display();
-        std::cout << path << std::endl;
         system("pause");
         window.close();
         return EXIT_FAILURE;
     }
-    //try
-    //{
-    //    
-    //    if (!map.load("Resources/maps/testMap.tmx"))
-    //    {
-    //        std::cout << "Error load map" << std::endl;
-    //    }
-    //}
-    //catch (const std::exception& e)
-    //{
-    //    std::cout << "Error load map:" << e.what() << std::endl;
-    //}
 
-    MapLayer layerZero(map, 0);
-    MapLayer layerOne(map, 1);
-    MapLayer layerTwo(map, 2);
+    const auto& layers = map.getLayers();
+    std::cout << "Layers size:" << layers.size() << std::endl;
+    std::vector<MapLayer*> mapLayers;
+    for (int i = 0; i < layers.size(); i++)
+    {
+        MapLayer* layer = new MapLayer(map, i);
+        mapLayers.push_back(layer);
+    }
     sf::View view(window.getDefaultView());
     sf::Vector2f pos = view.getCenter();
-    sf::Clock globalClock;
-    float zoom = 1.f;
+    float targetZoom = 1.f;
+    float zoomSpeed = 5.f;
+    float elapsedTime = 0.f;
+    int frames = 0;
+    sf::Clock clock;
+    const sf::Time fixedUpdateTime = sf::seconds(1.f / 60.f);
+    sf::Time accumulatedTime = sf::Time::Zero;
     while (window.isOpen())
     {
+        sf::Time deltaTime = clock.restart();
+        accumulatedTime += deltaTime;
 
+        while (accumulatedTime >= fixedUpdateTime)
+        {
+            for (MapLayer* layer : mapLayers)
+            {
+                layer->update(fixedUpdateTime);
+            }
+
+            accumulatedTime -= fixedUpdateTime;
+        }
+        
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -105,22 +120,62 @@ int main()
             }
             if (event.type == sf::Event::MouseWheelScrolled)
             {
-                std::cout<<event.mouseWheelScroll.delta <<std::endl;
+                float temp = targetZoom;
+                targetZoom -= static_cast<float>(event.mouseWheelScroll.delta) / 10.f;
+                if (targetZoom<=0.1f || targetZoom >= 5)
+                {
+                    targetZoom = temp;
+                }
             }
         }
+        moveSprite(wasd, pos, deltaTime.asSeconds(), 600.f);
+        #pragma region ZOOM
+        float currentZoom = view.getSize().x / window.getSize().x;
 
-        sf::Time duration = globalClock.restart();
-        moveSprite(wasd, pos, duration.asSeconds(), 600.f);
-        view.zoom();
-        view.setCenter(view.getCenter() + (pos - view.getCenter()) * 100.f * duration.asSeconds());
+        float zoomDiff = targetZoom - currentZoom;
+
+        if (std::abs(zoomDiff) <= 0.001f)
+        {
+            view.setSize(targetZoom * window.getSize().x, targetZoom * window.getSize().y);
+        }
+        else
+        {
+            float zoomStep = zoomDiff * zoomSpeed * deltaTime.asSeconds();
+            view.zoom(1.0f + zoomStep);
+        }
+        #pragma endregion
+        view.setCenter(view.getCenter() + (pos - view.getCenter()) * 15.f * deltaTime.asSeconds()*targetZoom);
+        sf::Vector2f viewSize = view.getSize();
+        sf::Vector2f viewCenter = view.getCenter();
+
+        sf::Vector2f screenPos = sf::Vector2f(window.getSize().x - fpsText.getLocalBounds().width - 10, 10);
+        sf::Vector2f worldPos = window.mapPixelToCoords(sf::Vector2i(screenPos), view);
+
+        fpsText.setPosition(worldPos);
         window.setView(view);
-        layerZero.update(duration);
-        window.clear(sf::Color::Black);
-        window.draw(layerZero);
-        window.draw(layerOne);
-        window.draw(layerTwo);
+        elapsedTime += deltaTime.asSeconds();
+        fpsText.setScale(view.getSize().x / window.getSize().x, view.getSize().x / window.getSize().x);
+        frames++;
+        if (elapsedTime >= 1.0f) {
+            float fps = frames / elapsedTime;
+            fpsText.setString("FPS: " + std::to_string(static_cast<int>(fps)));
+            frames = 0;
+            elapsedTime = 0;
+
+        }
+        window.clear(sf::Color(200,200,255));
+        for (MapLayer* layer : mapLayers)
+        {
+            //layer->update(fixedUpdateTime);
+            //layer->update(deltaTime);
+            window.draw(*layer);
+        }
+        window.draw(fpsText);
         window.display();
     }
-
+    for (MapLayer* layer : mapLayers)
+    {
+        delete layer;
+    }
     return 0;
 }
