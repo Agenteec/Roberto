@@ -7,10 +7,12 @@ Entity::Entity() :
 {
 }
 
-void Entity::initBody(b2World* world, const sf::Vector2f &pos)
+void Entity::initBody(b2World* world, const sf::Vector2f &pos, const float& angle, const b2BodyType& bodyType)
 {
-	bodyDef.type = b2_dynamicBody;
+	
+	bodyDef.type = bodyType;
 	bodyDef.position.Set(pos.x / GlobalConsts::SCALE, pos.y / GlobalConsts::SCALE);
+	bodyDef.angle =angle/180.f * b2_pi;
 	body = world->CreateBody(&bodyDef);
 }
 
@@ -32,10 +34,11 @@ void Entity::setBodyOvalShape(const float &radius_x, const float &radius_y, cons
 void Entity::setBodyBoxShape(const sf::Vector2f& size, const float& density)
 {
 	
-	b2Vec2 boxSize(size.x  / 2.f / GlobalConsts::SCALE, size.y  / 2.f / GlobalConsts::SCALE);
-	bodyShape.SetAsBox(boxSize.x* getScale().x, boxSize.y* getScale().x);
+	b2Vec2 boxSize(size.x * getScale().x / 2.f / GlobalConsts::SCALE, size.y * getScale().y / 2.f / GlobalConsts::SCALE);
+	bodyShape.SetAsBox(boxSize.x, boxSize.y);
 	fixture = body->CreateFixture(&bodyShape, density);
 }
+
 
 void Entity::setBodyPolygonShape(const b2Vec2* vertices, const int num_segments)
 {

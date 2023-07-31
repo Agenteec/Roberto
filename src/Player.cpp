@@ -3,8 +3,9 @@
 Player::Player() :
 	healthPoints(100.f),
 	maxHealthPoints(100.f),
-	speed(0.8f),
+	speed(2.8f),
 	hitted(false),
+	debugMode(false),
 	Entity()
 {}
 
@@ -42,6 +43,11 @@ void Player::setHittedFlag(const bool& hitted)
 	this->hitted = hitted;
 }
 
+void Player::setDebugMode(const bool& mode)
+{
+	this->debugMode = mode;
+}
+
 const float& Player::getHealthPoints()
 {
 	return healthPoints;
@@ -57,7 +63,12 @@ const float& Player::getSpeed()
 	return speed;
 }
 
-bool Player::isHitted()
+const bool& Player::isHitted()
 {
 	return hitted;
+}
+
+const bool& Player::getDebugMode()
+{
+	return debugMode;
 }

@@ -10,35 +10,30 @@ Game::Game():
 
 void Game::init(const std::string& mapPath)
 {
-	const int texturesCount = 2;
-	std::string textures[texturesCount] =
+	const int texturesCount = 3;
+	//   Path \ Name
+	std::pair<std::string, std::string> textures[texturesCount] =
 	{
-	"Resources/png/entitys/dog.png",
-	"Resources/png/entitys/box/box0.png"
+	std::pair < std::string, std::string>("Resources/png/entitys/dog.png", "player1"),
+	std::pair < std::string, std::string>("Resources/png/entitys/box/box0.png","box0"),
+	std::pair < std::string, std::string>("Resources/png/walls/wall1.png","wall1")
 	};
 	textureManager.loadTextures(textures, texturesCount);
 	//Temp
 	level.load(mapPath);
+	level.parse(gameObjects, &textureManager, world);
 	
-	player.setTexture(*textureManager.textures["Resources/png/entitys/dog.png"]);
+	player.setTexture(*textureManager.textures["player1"]);
 	player.setScale(0.3f, 0.3f);
 	player.setOrigin(sf::Vector2f(player.getLocalBounds().width / 2.f, player.getLocalBounds().height / 2.f));
-	
-	player.initBody(&world, sf::Vector2f(200.f, 200.f));
-	//player.setBodyBoxShape(sf::Vector2f(player.getLocalBounds().width, player.getLocalBounds().height),0.1f);
-	player.setBodyOvalShape(player.getLocalBounds().width / 2.f, player.getLocalBounds().height / 2.f,8, 0.05f);
-	//player.setPhysicalProperties();
-	camera.setTracking(&player);
-	for (size_t i = 0; i < 50; i++)
+	sf::Vector2f playerSpawnPoint;
+	for (auto point:  level.playerSpawn)
 	{
-		Entity* box = new Entity();
-		box->setTexture(*textureManager.textures["Resources/png/entitys/box/box0.png"]);
-		box->setScale(0.5f, 0.5f);
-		box->setOrigin(sf::Vector2f(box->getLocalBounds().width / 2.f, box->getLocalBounds().height / 2.f));
-		box->initBody(&world, sf::Vector2f(400.f, 400.f));
-		box->setBodyBoxShape(sf::Vector2f(box->getLocalBounds().width, box->getLocalBounds().height));
-		gameObjects.push_back(box);
+		playerSpawnPoint = point;
 	}
+	player.initBody(&world, playerSpawnPoint);
+	player.setBodyOvalShape(player.getLocalBounds().width / 2.f, player.getLocalBounds().height / 2.f,8, 0.05f);
+	camera.setTracking(&player);
 	
 
 	//Temp

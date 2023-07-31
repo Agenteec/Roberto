@@ -1,5 +1,5 @@
 #pragma once
-#define buildVersion "Alpha V(0.0.1)"
+#define buildVersion "Alpha V(0.0.4)"
 
 #include <SFML/Graphics.hpp>
 

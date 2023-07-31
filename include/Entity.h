@@ -15,7 +15,7 @@ public:
 	float resistanceCoefficient;
 	Entity();
 
-	void initBody(b2World* world, const sf::Vector2f &pos);
+	void initBody(b2World* world, const sf::Vector2f &pos, const float& angle = 0.f, const b2BodyType& bodyType = b2_dynamicBody);
 
 	void setBodyOvalShape(const float& radius_x, const float& radius_y, const int num_segments = 8, const float& density = 1.f);
 
