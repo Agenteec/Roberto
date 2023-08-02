@@ -6,7 +6,6 @@ class Camera : public sf::View
 	float moveSpeed;
 	float zoomSpeed;
 	float targetZoom;
-	sf::
 	GameObject* trackingObject;
 	sf::RectangleShape blind;
 public:
