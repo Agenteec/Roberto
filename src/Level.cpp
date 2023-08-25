@@ -125,9 +125,20 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 						float density = -1.f;
 						float friction = -1.f;
 						float restitution = -1.f;
+						float healthPoints = -1.f;
+						float maxHealthPoints = -1.f;
+						std::string* userData = new std::string;
+						*userData = "";
+
 						for (const auto& prop : properties)
 						{
 							std::string propName = prop.getName();
+							if (propName == "healthPoints")
+								healthPoints = prop.getFloatValue();
+							if (propName == "maxHealthPoints")
+								maxHealthPoints = prop.getFloatValue();
+							if (propName == "b2UserData")
+								*userData = prop.getStringValue();
 							if (propName == "density")
 								density = prop.getFloatValue();
 							if (propName == "restitution")
@@ -137,6 +148,8 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 						}
 
 						Entity* entity = new Entity();
+						entity->setHealthPoints(healthPoints);
+						entity->setMaxHealthPoints(maxHealthPoints);
 						entity->setTexture(*textureManager->textures[object.getName()]);
 						sf::Vector2f scale = sf::Vector2f(object.getAABB().width / entity->getLocalBounds().width, object.getAABB().height / entity->getLocalBounds().height);
 						entity->setScale(scale);
@@ -148,6 +161,8 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 							entity->setPhysicalProperties(density, friction, restitution);
 						}
 						
+						//entity->body->SetUserData(userData);
+
 						gameObjects.push_back(entity);
 					}
 				}
@@ -162,6 +177,7 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 							float density = -1.f;
 							float friction = -1.f;
 							float restitution = -1.f;
+							
 							for (const auto& prop : properties)
 							{
 								std::string propName = prop.getName();

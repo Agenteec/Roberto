@@ -67,6 +67,12 @@ void Game::handleEvent(sf::Event& event)
 	}
 }
 
+
+void Game::collisionDetector()
+{
+
+}
+
 void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
 	world.Step(1.f/60.f, 8, 3);

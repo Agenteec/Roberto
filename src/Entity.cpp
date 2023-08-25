@@ -1,6 +1,8 @@
 #include "Entity.h"
 #include <iostream>
 Entity::Entity() :
+	healthPoints(-1.f),
+	maxHealthPoints(-1.f),
 	body(nullptr),
 	fixture(nullptr),
 	resistanceCoefficient(0.1f)
@@ -73,4 +75,34 @@ void Entity::setPhysicalProperties(const float& density, const float& friction, 
 	fixture->SetDensity(density);
 	fixture->SetFriction(friction);
 	fixture->SetRestitution(restitution);
+}
+
+void Entity::setHealthPoints(const float& healthPoints)
+{
+	this->healthPoints = healthPoints;
+}
+
+void Entity::setMaxHealthPoints(const float& maxHealthPoints)
+{
+	this->maxHealthPoints = maxHealthPoints;
+}
+
+void Entity::setHittedFlag(const bool& hitted)
+{
+	this->hitted = hitted;
+}
+
+const float& Entity::getHealthPoints()
+{
+	return healthPoints;
+}
+
+const float& Entity::getMaxHealthPoints()
+{
+	return maxHealthPoints;
+}
+
+const bool& Entity::isHitted()
+{
+	return hitted;
 }

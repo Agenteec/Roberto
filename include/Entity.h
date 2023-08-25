@@ -39,8 +39,17 @@ public:
 		body->ApplyForceToCenter(resistance_force, true);
 	}
 
-private: 
+	void setHealthPoints(const float& healthPoints);
+	void setMaxHealthPoints(const float& maxHealthPoints);
+	void setHittedFlag(const bool& hitted);
 
-	
+	const float& getHealthPoints();
+	const float& getMaxHealthPoints();
+	const bool& isHitted();
+
+private: 
+	float healthPoints, maxHealthPoints;
+	bool hitted;
+
 };
 

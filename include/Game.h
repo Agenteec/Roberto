@@ -22,4 +22,5 @@ public:
 	void handleEvent(sf::Event& event);
 	void update(const sf::Time &deltaTime, sf::RenderWindow& window);
 	void draw(sf::RenderWindow &window);
+	void collisionDetector();
 };
