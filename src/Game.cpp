@@ -10,13 +10,14 @@ Game::Game():
 
 void Game::init(const std::string& mapPath)
 {
-	const int texturesCount = 3;
+	const int texturesCount = 4;
 	//   Path \ Name
 	std::pair<std::string, std::string> textures[texturesCount] =
 	{
 	std::pair < std::string, std::string>("Resources/png/entitys/dog.png", "player1"),
 	std::pair < std::string, std::string>("Resources/png/entitys/box/box0.png","box0"),
-	std::pair < std::string, std::string>("Resources/png/walls/wall1.png","wall1")
+	std::pair < std::string, std::string>("Resources/png/walls/wall1.png","wall1"),
+	std::pair < std::string, std::string>("Resources/png/entitys/pepsi.png","pepsi")
 	};
 	textureManager.loadTextures(textures, texturesCount);
 	//Temp

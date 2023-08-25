@@ -51,12 +51,10 @@ void MainWindow::Display()
 
 			if (event.type == sf::Event::KeyPressed)
 			{
-				if (event.key.code == sf::Keyboard::Escape)
+				if (!guiManager.flags.onMainMenu && event.key.code == sf::Keyboard::Escape)
 				{
-
-					guiManager.MainMenu(false);
-					guiManager.GameMenu(true);
-					
+					guiManager.flags.onGame = !guiManager.flags.onGame;
+					guiManager.GameMenu(!guiManager.flags.onGameMenu);
 				}
 			}
 		}
