@@ -1,6 +1,7 @@
 #include "Game.h"
 
 
+
 Game::Game():
 	gameStatus(1),
 	world(b2Vec2(0.f,0.f))
@@ -75,13 +76,45 @@ void Game::collisionDetector()
 
 void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
+	CollisionHandler ñollisionHandler;
 	world.Step(1.f/60.f, 8, 3);
 	player.update(deltaTime);
-	camera.update(deltaTime, window);
 	level.update(deltaTime);
+	camera.update(deltaTime, window);
 	for (auto& gameObject : gameObjects)
 	{
-		gameObject->update(deltaTime);
+		if (gameObject->getPhysicalObjectFlag())
+		{
+			gameObject->update(deltaTime);
+			b2Body* body = static_cast<Entity*>(gameObject)->body;
+			b2ContactEdge* contactEdge = body->GetContactList();
+			while (contactEdge) {
+				if (contactEdge->contact->IsTouching()) {
+					//Âûÿâëåíî ñòîëêíîâåíèå ñ îáúåêòîì
+					b2BodyUserData userDataPtr = body->GetUserData();
+					Entity* userDataA = reinterpret_cast<Entity*>(body->GetUserData().pointer);
+					Entity* userDataB = reinterpret_cast<Entity*>(contactEdge->other->GetUserData().pointer);
+					if (userDataA != nullptr && userDataB != nullptr) {
+						const ObjectType& objA  = userDataA->gameObjectData.getGameObjectType();
+						const ObjectType& objB  = userDataB->gameObjectData.getGameObjectType();
+						if (objA == ObjectType::PaperBoxType && objB == ObjectType::PaperBoxType)
+						{
+							std::cout << objectTypeToString(objA) << " collided with " << objectTypeToString(objB) << std::endl;
+						}
+						else
+						{
+							std::cout << objectTypeToString(objA) << " collided with " << objectTypeToString(objB) << std::endl;
+						}
+						
+					}
+				}
+				contactEdge = contactEdge->next;
+			}
+			
+
+
+		}
+		
 	}
 }
 

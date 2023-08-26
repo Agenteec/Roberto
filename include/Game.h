@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <box2d/box2d.h>
+#include "CollisionHandler.h"
 #include "Player.h"
 #include "Camera.h"
 #include "Level.h"

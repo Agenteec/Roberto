@@ -5,7 +5,8 @@ Camera::Camera():
 	trackingObject(nullptr),
 	moveSpeed(2.f),
 	zoomSpeed(2.f),
-	targetZoom(1.5f)
+	targetZoom(1.5f),
+	headsUpDisplay()
 {
 
 }
@@ -18,9 +19,10 @@ void Camera::setTracking(GameObject* trackingObject)
 void Camera::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
 	float dts = deltaTime.asSeconds();
+	headsUpDisplay.fpsText.setString("FPS: " + std::to_string(static_cast<int>(1.f/dts)));
 	#pragma region ZOOM
 	float currentZoom = getSize().x / window.getSize().x;
-
+	
 	float zoomDiff = targetZoom - currentZoom;
 
 	if (std::abs(zoomDiff) <= 0.01f)
@@ -43,9 +45,10 @@ void Camera::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 		setCenter(newPosition);
 	}
 	#pragma endregion
-
-
+	headsUpDisplay.fpsText.setPosition(this->getCenter().x + 400, this->getCenter().y - 350);
+	headsUpDisplay.draw(window);
 	window.setView(*this);
+	
 }
 
 void Camera::setMoveSpeed(const float& speed)

@@ -4,6 +4,7 @@
 #include <box2d/box2d.h>
 #include "GlobalConsts.h"
 #include "GameObject.h"
+#include "GameObjectData.h"
 
 class Entity : public GameObject
 {
@@ -12,6 +13,7 @@ public:
 	b2Body* body;
 	b2Fixture* fixture;
 	b2PolygonShape bodyShape;
+	GameObjectData gameObjectData;
 	float resistanceCoefficient;
 	Entity();
 
