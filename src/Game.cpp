@@ -73,7 +73,7 @@ void Game::handleEvent(sf::Event& event)
 void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
 	CollisionHandler ñollisionHandler;
-	world.Step(1.f/60.f, 8, 3);
+	world.Step(1.f/60.f, 128, 128);
 	player.update(deltaTime);
 	level.update(deltaTime);
 	camera.update(deltaTime, window);

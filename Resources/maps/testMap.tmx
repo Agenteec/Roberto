@@ -327,11 +327,11 @@
   <object id="357" name="grenade_launcher_ammo" type="dynamic" gid="569" x="928" y="868" width="28" height="9">
    <properties>
     <property name="b2UserData" value="ammo_grenade_launcher"/>
-    <property name="density" type="float" value="5"/>
+    <property name="density" type="float" value="0.2"/>
     <property name="friction" type="float" value="0.1"/>
     <property name="healthPoints" type="float" value="-1"/>
     <property name="maxHealthPoints" type="float" value="-1"/>
-    <property name="restitution" type="float" value="10"/>
+    <property name="restitution" type="float" value="0.05"/>
    </properties>
   </object>
   <object id="359" template="templates/box0.tx" type="dynamic" x="1099" y="811"/>
