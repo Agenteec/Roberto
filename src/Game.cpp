@@ -85,7 +85,7 @@ void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 		gameObject->update(deltaTime);
 
 	}
-	std::cout << "dts = " << deltaTime.asSeconds()<<std::endl;
+	//std::cout << "dts = " << deltaTime.asSeconds()<<std::endl;
 }
 
 void Game::draw(sf::RenderWindow& window)	
@@ -96,7 +96,7 @@ void Game::draw(sf::RenderWindow& window)
 	{
 		window.draw(*gameObject);
 
-		if (gameObject->getHitboxFlag() && gameObject->getPhysicalObjectFlag())
+		if (gameObject->getHitboxFlag() && gameObject->getPhysicalObjectFlag() && GlobalConsts::hitBoxOn)
 		{
 			Entity* entity = reinterpret_cast<Entity*>(gameObject);
 			entity->drawHitbox(window);
@@ -104,7 +104,7 @@ void Game::draw(sf::RenderWindow& window)
 	}
 
 	window.draw(player);
-	if(player.getHitboxFlag())
+	if(player.getHitboxFlag()&& GlobalConsts::hitBoxOn)
 		player.drawHitbox(window);
 }
 
@@ -138,15 +138,15 @@ void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*>
 				const ObjectType& objB = userDataB->gameObjectData.getGameObjectType();
 				if (objA == ObjectType::PaperBoxType && objB == ObjectType::PaperBoxType)
 				{
-					std::cout << ANSI_COLOR_RED;
-					std::cout << objectTypeToString(objA) << " collided with " << objectTypeToString(objB) << std::endl;
-					std::cout << ANSI_COLOR_RESET;
+					//std::cout << ANSI_COLOR_RED;
+					//std::cout << objectTypeToString(objA) << " collided with " << objectTypeToString(objB) << std::endl;
+					//std::cout << ANSI_COLOR_RESET;
 				}
 				else
 				{
-					std::cout << ANSI_COLOR_BLUE;
+					/*std::cout << ANSI_COLOR_BLUE;
 					std::cout << objectTypeToString(objA) << " collided with " << objectTypeToString(objB) << std::endl;
-					std::cout << ANSI_COLOR_RESET;
+					std::cout << ANSI_COLOR_RESET;*/
 				}
 
 			}

@@ -56,6 +56,10 @@ void MainWindow::Display()
 					guiManager.flags.onGame = !guiManager.flags.onGame;
 					guiManager.GameMenu(!guiManager.flags.onGameMenu);
 				}
+				if (event.key.code == sf::Keyboard::F3)
+				{
+					GlobalConsts::hitBoxOn = !GlobalConsts::hitBoxOn;
+				}
 			}
 		}
 

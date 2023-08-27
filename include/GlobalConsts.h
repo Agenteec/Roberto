@@ -11,4 +11,5 @@ class GlobalConsts
 {
 public:
 	static const float SCALE;
+	static bool hitBoxOn;
 };
