@@ -83,7 +83,7 @@ void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 	{
 		collisionHandler.handleCollision(gameObject, contactedBodies);
 		gameObject->update(deltaTime);
-		
+
 	}
 	std::cout << "dts = " << deltaTime.asSeconds()<<std::endl;
 }
@@ -95,9 +95,17 @@ void Game::draw(sf::RenderWindow& window)
 	for (auto& gameObject : gameObjects)
 	{
 		window.draw(*gameObject);
+
+		if (gameObject->getHitboxFlag() && gameObject->getPhysicalObjectFlag())
+		{
+			Entity* entity = reinterpret_cast<Entity*>(gameObject);
+			entity->drawHitbox(window);
+		}
 	}
 
 	window.draw(player);
+	if(player.getHitboxFlag())
+		player.drawHitbox(window);
 }
 
 void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*> &contactedBodies)

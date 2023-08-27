@@ -31,6 +31,8 @@ public:
 
 	void virtual update(const sf::Time& deltaTime);
 
+	void drawHitbox(sf::RenderWindow& window);
+
 	void setPhysicalProperties(const float& density, const float& friction, const float& restitution);
 
 	void applyResistance(const float& deltaTime);
@@ -46,12 +48,12 @@ public:
 	const bool& isHitted();
 
 
-
 private: 
 	//Коэффициент сопротивления(Для того, чтобы объекты постепенно останавливались) 
 	float resistanceCoefficient;
 	float healthPoints, maxHealthPoints;
 	bool hitted;
+	sf::Shape* hitBox;
 
 };
 

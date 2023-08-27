@@ -5,6 +5,7 @@ Entity::Entity() :
 	maxHealthPoints(-1.f),
 	body(nullptr),
 	fixture(nullptr),
+	hitBox(nullptr),
 	resistanceCoefficient(0.1f)
 {
 }
@@ -22,14 +23,25 @@ void Entity::setBodyOvalShape(const float &radius_x, const float &radius_y, cons
 {
 	float fnum_segments = static_cast<float>(num_segments);
 	b2Vec2 *vertices = new b2Vec2[num_segments];
+	sf::ConvexShape* hitbox;
+	hitbox = new sf::ConvexShape;
+	hitbox->setPointCount(num_segments);
 
 	for (int i = 0; i < num_segments; ++i) {
 		float angle = 2.0f * b2_pi * static_cast<float>(i) / fnum_segments;
 		vertices[i].Set(radius_x * getScale().x / GlobalConsts::SCALE * cos(angle), radius_y * getScale().y / GlobalConsts::SCALE * sin(angle));
+		hitbox->setPoint(i, sf::Vector2f(vertices[i].x * GlobalConsts::SCALE, vertices[i].y * GlobalConsts::SCALE));
 	}
 
 	bodyShape.Set(vertices, num_segments);
 	fixture = body->CreateFixture(&bodyShape, density);
+
+	b2Vec2 entityPosition = body->GetPosition();
+	hitbox->setPosition(entityPosition.x, entityPosition.y);
+	hitbox->setFillColor(sf::Color(0, 255, 0, 50));
+	hitbox->setOutlineColor(sf::Color::Green);
+	hitbox->setOutlineThickness(2.0f);
+	hitBox = hitbox;
 	//delete[] vertices;
 }
 
@@ -39,12 +51,38 @@ void Entity::setBodyBoxShape(const sf::Vector2f& size, const float& density)
 	b2Vec2 boxSize(size.x * getScale().x / 2.f / GlobalConsts::SCALE, size.y * getScale().y / 2.f / GlobalConsts::SCALE);
 	bodyShape.SetAsBox(boxSize.x, boxSize.y);
 	fixture = body->CreateFixture(&bodyShape, density);
+
+	b2Vec2 entityPosition = body->GetPosition();
+	sf::RectangleShape* hitbox;
+	hitbox = new sf::RectangleShape(sf::Vector2f(boxSize.x * GlobalConsts::SCALE * 2, boxSize.y * GlobalConsts::SCALE * 2));
+	hitbox->setPosition(entityPosition.x, entityPosition.y);
+	hitbox->setOrigin(hitbox->getSize() / 2.f);
+	hitbox->setFillColor(sf::Color(0, 255, 0, 50));
+	hitbox->setOutlineColor(sf::Color::Green);
+	hitbox->setOutlineThickness(2.0f);
+	hitBox = hitbox;
 }
 
 
 void Entity::setBodyPolygonShape(const b2Vec2* vertices, const int num_segments)
 {
 	bodyShape.Set(vertices, num_segments);
+
+	sf::ConvexShape* hitbox;
+	hitbox = new sf::ConvexShape;
+	hitbox->setPointCount(num_segments);
+
+	for (int i = 0; i < num_segments; ++i)
+	{
+		hitbox->setPoint(i, sf::Vector2f(vertices[i].x * GlobalConsts::SCALE, vertices[i].y * GlobalConsts::SCALE));
+	}
+
+	b2Vec2 entityPosition = body->GetPosition();
+	hitbox->setPosition(entityPosition.x, entityPosition.y);
+	hitbox->setFillColor(sf::Color(0, 255, 0, 50));
+	hitbox->setOutlineColor(sf::Color::Green);
+	hitbox->setOutlineThickness(2.0f);
+	hitBox = hitbox;
 }
 
 void Entity::setBodyPosition(const sf::Vector2f& vec)
@@ -68,6 +106,18 @@ void Entity::update(const sf::Time& deltaTime)
 	b2Vec2 pos = body->GetPosition();
 	setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
 	setRotation(body->GetAngle() * 180.f / 3.14);
+
+	if (hitBox != nullptr)
+	{
+		hitBox->setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
+		hitBox->setRotation(body->GetAngle() * 180.f / 3.14);
+	}
+		
+}
+
+void Entity::drawHitbox(sf::RenderWindow& window)
+{
+	window.draw(*hitBox);
 }
 
 void Entity::setPhysicalProperties(const float& density, const float& friction, const float& restitution)
