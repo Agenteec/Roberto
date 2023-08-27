@@ -122,6 +122,8 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 					{
 						const auto& properties = object.getProperties();
 						
+						//std::cout << "________________________________________________________________________________________" << ANSI_COLOR_YELLOW << object.getName() << std::endl;
+						//system("pause");
 						float density = -1.f;
 						float friction = -1.f;
 						float restitution = -1.f;
@@ -165,10 +167,26 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 							entity->gameObjectData.setGameObjectType(ObjectType::PaperBoxType);
 
 						}
+						if (userData == "weapon_grenade_launcher")
+						{
+
+							entity->gameObjectData.setGameObjectType(ObjectType::WeaponGrenadeLauncherType);
+
+						}
+						if (userData == "ammo_grenade_launcher")
+						{
+
+							entity->gameObjectData.setGameObjectType(ObjectType::AmmoGrenadeLauncherType);
+
+						}
 						b2BodyUserData& b2UserData = entity->body->GetUserData();
 						b2UserData.pointer = reinterpret_cast<uintptr_t>(entity);
 						gameObjects.push_back(entity);
 					}
+				}
+				if (object.getClass() == "trigger")
+				{
+
 				}
 				if (object.getClass() == "static")
 				{

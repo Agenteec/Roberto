@@ -7,7 +7,9 @@ enum ObjectType {
 	UndefinedType,
 	PaperBoxType,
 	PepsiType,
-	BulletType
+	BulletType,
+	WeaponGrenadeLauncherType,
+	AmmoGrenadeLauncherType
 };
 std::string objectTypeToString(ObjectType objectType);
 class GameObjectData

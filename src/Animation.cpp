@@ -50,3 +50,5 @@ int Animation::getSize()
 {
 	return size;
 }
+
+

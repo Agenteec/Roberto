@@ -23,6 +23,10 @@ std::string objectTypeToString(ObjectType objectType)
 		return "PepsiType";
 	case BulletType:
 		return "BulletType";
+	case WeaponGrenadeLauncherType:
+		return "WeaponGrenadeLauncherType";
+	case AmmoGrenadeLauncherType:
+		return "AmmoGrenadeLauncherType";
 	default:
 		return "UndefinedType";
 	}
