@@ -1,11 +1,22 @@
 #pragma once
+//Game.h
 #include <vector>
+#include <set>
 #include <box2d/box2d.h>
-#include "CollisionHandler.h"
 #include "Player.h"
 #include "Camera.h"
 #include "Level.h"
 #include "TextureManager.h"
+#include "GlobalConsts.h"
+
+/// <summary>
+/// Класс для обработки сколкновений
+/// </summary>
+class CollisionHandler {
+public:
+	//Обработка столкновений
+	void handleCollision(GameObject* gameObject, std::set<b2Body*>& contactedBodies);
+};
 class Game 
 {
 	Camera camera;
@@ -13,7 +24,7 @@ class Game
 	Level level;
 	TextureManager textureManager;
 	b2World world;
-	
+	CollisionHandler collisionHandler;
 	int gameStatus;
 public:
 	Game();
@@ -23,5 +34,6 @@ public:
 	void handleEvent(sf::Event& event);
 	void update(const sf::Time &deltaTime, sf::RenderWindow& window);
 	void draw(sf::RenderWindow &window);
-	void collisionDetector();
 };
+
+

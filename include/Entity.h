@@ -14,7 +14,7 @@ public:
 	b2Fixture* fixture;
 	b2PolygonShape bodyShape;
 	GameObjectData gameObjectData;
-	float resistanceCoefficient;
+	
 	Entity();
 
 	void initBody(b2World* world, const sf::Vector2f &pos, const float& angle = 0.f, const b2BodyType& bodyType = b2_dynamicBody);
@@ -33,23 +33,23 @@ public:
 
 	void setPhysicalProperties(const float& density, const float& friction, const float& restitution);
 
-	void applyResistance() {
-		b2Vec2 velocity = body->GetLinearVelocity();
+	void applyResistance(const float& deltaTime);
 
-		b2Vec2 resistance_force = -resistanceCoefficient * velocity;
-
-		body->ApplyForceToCenter(resistance_force, true);
-	}
-
+	void setResistanceCoefficient(const float& resistanceCoefficient);
 	void setHealthPoints(const float& healthPoints);
 	void setMaxHealthPoints(const float& maxHealthPoints);
 	void setHittedFlag(const bool& hitted);
 
+	const float& getResistanceCoefficient();
 	const float& getHealthPoints();
 	const float& getMaxHealthPoints();
 	const bool& isHitted();
 
+
+
 private: 
+	//Коэффициент сопротивления(Для того, чтобы объекты постепенно останавливались) 
+	float resistanceCoefficient;
 	float healthPoints, maxHealthPoints;
 	bool hitted;
 

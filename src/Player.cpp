@@ -7,7 +7,10 @@ Player::Player() :
 	hitted(false),
 	debugMode(false),
 	Entity()
-{}
+{
+	setResistanceCoefficient(0.1f);
+	bodyDef.fixedRotation = true;
+}
 
 void Player::update(const sf::Time& deltaTime)
 {

@@ -64,7 +64,7 @@ void Entity::update(const sf::Time& deltaTime)
 	{
 		return;
 	}
-	applyResistance();
+	applyResistance(deltaTime.asSeconds());
 	b2Vec2 pos = body->GetPosition();
 	setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
 	setRotation(body->GetAngle() * 180.f / 3.14);
@@ -75,6 +75,23 @@ void Entity::setPhysicalProperties(const float& density, const float& friction, 
 	fixture->SetDensity(density);
 	fixture->SetFriction(friction);
 	fixture->SetRestitution(restitution);
+}
+
+void Entity::applyResistance(const float& deltaTime)
+{
+	b2Vec2 velocity = body->GetLinearVelocity();
+
+	b2Vec2 resistance_force = -resistanceCoefficient * velocity ;
+
+	body->ApplyForceToCenter(resistance_force, true);
+
+
+}
+
+
+void Entity::setResistanceCoefficient(const float& resistanceCoefficient)
+{
+	this->resistanceCoefficient = resistanceCoefficient;
 }
 
 void Entity::setHealthPoints(const float& healthPoints)
@@ -90,6 +107,11 @@ void Entity::setMaxHealthPoints(const float& maxHealthPoints)
 void Entity::setHittedFlag(const bool& hitted)
 {
 	this->hitted = hitted;
+}
+
+const float& Entity::getResistanceCoefficient()
+{
+	return this->resistanceCoefficient;
 }
 
 const float& Entity::getHealthPoints()

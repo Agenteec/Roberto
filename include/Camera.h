@@ -2,6 +2,7 @@
 #include <sfml/Graphics.hpp>
 #include <iostream>
 #include "GameObject.h"
+//Не работающий HUD
 class HeadsUpDisplay
 {
 	
@@ -15,6 +16,7 @@ public:
 			std::cout << "Error load font!" << std::endl;
 		}
 		fpsText.setFont(font);
+		fpsText.setString(L"Привет --------------------------------------------------------------------------------------------");
 		fpsText.setCharacterSize(24);
 		fpsText.setFillColor(sf::Color::Green);
 		fpsText.setPosition(1000, 1000);
