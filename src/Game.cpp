@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <algorithm>
 
 
 
@@ -37,8 +38,11 @@ void Game::init(const std::string& mapPath)
 	}
 	player.initBody(&world, playerSpawnPoint);
 	player.setBodyOvalShape(player.getLocalBounds().width / 2.f, player.getLocalBounds().height / 2.f,8, 0.05f);
+	player.gameObjectData.setGameObjectType(ObjectType::PlayerType);
+	player.setPhysicalObjectFlag(true);
+	b2BodyUserData& b2UserData = player.body->GetUserData();
+	b2UserData.pointer = reinterpret_cast<uintptr_t>(&player);
 	camera.setTracking(&player);
-	
 
 	//Temp
 }
@@ -79,9 +83,10 @@ void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 	camera.update(deltaTime, window);
 	//Объекты которые уже прошли провекру на контакт с другими объектами
 	std::set<b2Body*> contactedBodies;
+	collisionHandler.handleCollision(&player, contactedBodies, world, gameObjects, true);
 	for (auto& gameObject : gameObjects)
 	{
-		collisionHandler.handleCollision(gameObject, contactedBodies);
+		collisionHandler.handleCollision(gameObject, contactedBodies, world, gameObjects );
 		gameObject->update(deltaTime);
 
 	}
@@ -108,16 +113,48 @@ void Game::draw(sf::RenderWindow& window)
 		player.drawHitbox(window);
 }
 
-void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*> &contactedBodies)
+void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*> &contactedBodies, b2World& world, std::vector<GameObject*>& gameObjects, const bool& isPlayer)
 {
+	std::set<GameObject*> objectsToRemove;
 	if (!gameObject->getPhysicalObjectFlag())
-	{
 		return;
-	}
-	b2Body* body = static_cast<Entity*>(gameObject)->body;
-	contactedBodies.insert(body);
+	//Достаём указательна базовый класс Entity
+	Entity* entityA = reinterpret_cast<Entity*>(gameObject);
 
-	b2ContactEdge* contactEdge = body->GetContactList();
+	if (entityA->body == nullptr)
+		return;
+	entityA->body->GetFixtureList();
+	contactedBodies.insert(entityA->body);
+	b2Fixture* fixture = entityA->body->GetFixtureList();
+	if (fixture->GetShape()->GetType() == b2Shape::e_polygon) {
+		
+		//while (fixture) {
+		//	b2ContactEdge* contactEdge = fixture->GetContactList(); // Получите указатель на контакт фикстуры
+
+		//	while (contactEdge) {
+		//		// Обработка контакта
+		//		// ...
+
+		//		contactEdge = contactEdge->next; // Перейти к следующему контакту
+		//	}
+
+		//	fixture = fixture->GetNext(); // Перейти к следующей фикстуре
+		//}
+		b2ContactEdge* contactEdge = entityA->body->GetContactList();
+		processContactEdge(entityA, contactEdge, contactedBodies, objectsToRemove, world);
+	}
+	else
+	{
+		/*b2ContactEdge* contactEdge = entityA->body->GetContactList();
+		processContactEdge(entityA,contactEdge, contactedBodies, objectsToRemove, world);*/
+		
+	}
+	
+	removeObjects(gameObjects, objectsToRemove, world);
+}
+void CollisionHandler::processContactEdge(Entity* entityA, b2ContactEdge* contactEdge, std::set<b2Body*>& contactedBodies, std::set<GameObject*>& objectsToRemove, b2World& world)
+{
+	//std::cout << contactEdge << std::endl;
 	while (contactEdge) {
 		if (contactEdge->contact->IsTouching()) {
 			//Выявлено столкновение с объектом
@@ -128,30 +165,56 @@ void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*>
 				continue;
 			}
 			//Достаём указательна базовый класс Entity
-			Entity* userDataA = reinterpret_cast<Entity*>(body->GetUserData().pointer);
-			Entity* userDataB = reinterpret_cast<Entity*>(contactEdge->other->GetUserData().pointer);
+
+			Entity* entityB = reinterpret_cast<Entity*>(contactEdge->other->GetUserData().pointer);
 
 
 
-			if (userDataA != nullptr && userDataB != nullptr) {
-				const ObjectType& objA = userDataA->gameObjectData.getGameObjectType();
-				const ObjectType& objB = userDataB->gameObjectData.getGameObjectType();
-				if (objA == ObjectType::PaperBoxType && objB == ObjectType::PaperBoxType)
+			if (entityA != nullptr && entityB != nullptr) {
+				const ObjectType& objA = entityA->gameObjectData.getGameObjectType();
+				const ObjectType& objB = entityB->gameObjectData.getGameObjectType();
+				if (objA == ObjectType::PlayerType )
 				{
-					//std::cout << ANSI_COLOR_RED;
-					//std::cout << objectTypeToString(objA) << " collided with " << objectTypeToString(objB) << std::endl;
-					//std::cout << ANSI_COLOR_RESET;
+					std::cout << ANSI_COLOR_RED;
+					std::cout << objectTypeToString(objA) << " collided with " << objectTypeToString(objB) << std::endl;
+					std::cout << ANSI_COLOR_RESET;
+					if (objB == ObjectType::ObjectWeaponType)
+					{
+						objectsToRemove.insert(entityB);
+					}
+					else if(objB == ObjectType::ObjectAmmoType)
+					{
+						objectsToRemove.insert(entityB);
+					}
+
 				}
 				else
 				{
-					/*std::cout << ANSI_COLOR_BLUE;
-					std::cout << objectTypeToString(objA) << " collided with " << objectTypeToString(objB) << std::endl;
-					std::cout << ANSI_COLOR_RESET;*/
+					
+					//objectsToRemove.insert(entityB);
+					
+					//std::cout << ANSI_COLOR_BLUE;
+					//std::cout << objectTypeToString(objA) << " collided with " << objectTypeToString(objB) << std::endl;
+					//std::cout << ANSI_COLOR_RESET;
+				}
+				if (true)
+				{
+
 				}
 
 			}
 		}
 		contactEdge = contactEdge->next;
 	}
-}
 
+}
+void CollisionHandler::removeObjects(std::vector<GameObject*>& gameObjects, std::set<GameObject*>& objectsToRemove, b2World& world)
+{
+	for (auto object: objectsToRemove)
+	{
+		world.DestroyBody(reinterpret_cast<Entity*>(object)->body);
+		
+		gameObjects.erase(std::remove_if(gameObjects.begin(), gameObjects.end(), [&](GameObject* obj) { return obj == object; }), gameObjects.end());
+	}
+	
+}

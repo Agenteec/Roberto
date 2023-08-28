@@ -170,13 +170,13 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 						if (userData == "weapon_grenade_launcher")
 						{
 
-							entity->gameObjectData.setGameObjectType(ObjectType::WeaponGrenadeLauncherType);
+							entity->gameObjectData.setGameObjectType(ObjectType::ObjectWeaponType);
 
 						}
 						if (userData == "ammo_grenade_launcher")
 						{
 
-							entity->gameObjectData.setGameObjectType(ObjectType::AmmoGrenadeLauncherType);
+							entity->gameObjectData.setGameObjectType(ObjectType::ObjectAmmoType);
 
 						}
 						b2BodyUserData& b2UserData = entity->body->GetUserData();

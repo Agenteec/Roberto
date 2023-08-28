@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="200" height="200" tilewidth="53" tileheight="53" infinite="0" nextlayerid="5" nextobjectid="362">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="200" height="200" tilewidth="53" tileheight="53" infinite="0" nextlayerid="5" nextobjectid="362">
  <tileset firstgid="1" source="clover 1.tsx"/>
  <tileset firstgid="82" source="dirt 1.tsx"/>
  <tileset firstgid="163" source="paving 6.tsx"/>
@@ -216,106 +216,107 @@
 </data>
  </layer>
  <objectgroup id="3" name="Walls" class="static" visible="0">
-  <object id="179" name="wall0" type="static" x="0" y="0" width="10600" height="53"/>
-  <object id="180" name="wall0" type="static" x="10547" y="53" width="53" height="10547"/>
-  <object id="183" name="wall0" type="static" x="0" y="10547" width="10600" height="53"/>
-  <object id="187" name="wall0" type="static" x="0" y="0" width="53" height="10600"/>
+  <object id="179" name="wall0" class="static" x="0" y="0" width="10600" height="53"/>
+  <object id="180" name="wall0" class="static" x="10547" y="53" width="53" height="10547"/>
+  <object id="183" name="wall0" class="static" x="0" y="10547" width="10600" height="53"/>
+  <object id="187" name="wall0" class="static" x="0" y="0" width="53" height="10600"/>
  </objectgroup>
  <objectgroup draworder="index" id="2" name="b2Objects">
-  <object id="1" name="spawnPoint" type="player" x="765" y="765">
+  <object id="1" name="spawnPoint" class="player" x="765" y="765">
    <point/>
   </object>
-  <object id="223" template="templates/box0.tx" type="dynamic" x="642.879" y="9992.33"/>
-  <object id="224" template="templates/box0.tx" type="dynamic" x="521.667" y="9724.7"/>
-  <object id="225" template="templates/box0.tx" type="dynamic" x="736.818" y="10367.1"/>
-  <object id="226" template="templates/box0.tx" type="dynamic" x="809.545" y="9573.18"/>
-  <object id="227" template="templates/box0.tx" type="dynamic" x="209.545" y="10158"/>
-  <object id="228" template="templates/box0.tx" type="dynamic" x="2848.94" y="2361.06"/>
-  <object id="229" template="templates/box0.tx" type="dynamic" x="827.727" y="2736.82" width="1459.7" height="90"/>
-  <object id="230" template="templates/box0.tx" type="dynamic" x="2858.03" y="1761.06"/>
-  <object id="231" template="templates/box0.tx" type="dynamic" x="1767.12" y="836.818"/>
-  <object id="232" template="templates/box0.tx" type="dynamic" x="2912.58" y="564.091"/>
-  <object id="233" template="templates/box0.tx" type="dynamic" x="2855" y="2158.03"/>
-  <object id="234" template="templates/box0.tx" type="dynamic" x="2891.36" y="1164.09"/>
-  <object id="235" template="templates/box0.tx" type="dynamic" x="2164.09" y="936.818"/>
-  <object id="236" template="templates/box0.tx" type="dynamic" x="2918.64" y="667.121"/>
-  <object id="237" template="templates/box0.tx" type="dynamic" x="2673.18" y="2712.58"/>
-  <object id="238" template="templates/box0.tx" type="dynamic" x="2845.91" y="2521.67"/>
-  <object id="239" template="templates/box0.tx" type="dynamic" x="597.667" y="2713.67"/>
-  <object id="240" template="templates/box0.tx" type="dynamic" x="2870.15" y="2709.55"/>
-  <object id="241" template="templates/box0.tx" type="dynamic" x="430.758" y="2718.64"/>
-  <object id="242" template="templates/box0.tx" type="dynamic" x="1189.27" y="992.48"/>
-  <object id="243" template="templates/box0.tx" type="dynamic" x="755" y="1036.82"/>
-  <object id="244" template="templates/box0.tx" type="dynamic" x="442.879" y="997.424"/>
-  <object id="245" template="templates/box0.tx" type="dynamic" x="205.063" y="856.269" rotation="30.4699"/>
-  <object id="246" template="templates/box0.tx" type="dynamic" x="309.545" y="588.333"/>
-  <object id="247" template="templates/box0.tx" type="dynamic" x="509.545" y="439.848"/>
-  <object id="248" template="templates/box0.tx" type="dynamic" x="836.818" y="433.788"/>
-  <object id="249" template="templates/box0.tx" type="dynamic" x="1048.94" y="485.303"/>
-  <object id="250" template="templates/box0.tx" type="dynamic" x="1008" y="902"/>
-  <object id="251" template="templates/box0.tx" type="dynamic" x="1099" y="992"/>
-  <object id="252" template="templates/box0.tx" type="dynamic" x="885.303" y="1215.61"/>
-  <object id="253" template="templates/box0.tx" type="dynamic" x="227.727" y="2691.36"/>
-  <object id="254" template="templates/box0.tx" type="dynamic" x="76.2121" y="2748.94"/>
-  <object id="255" template="templates/box0.tx" type="dynamic" x="470.152" y="727.727"/>
-  <object id="256" template="templates/box0.tx" type="dynamic" x="682.273" y="476.212"/>
-  <object id="257" template="templates/box0.tx" type="dynamic" x="100.455" y="301.364" rotation="90">
+  <object id="223" template="templates/box0.tx" class="dynamic" x="642.879" y="9992.33"/>
+  <object id="224" template="templates/box0.tx" class="dynamic" x="521.667" y="9724.7"/>
+  <object id="225" template="templates/box0.tx" class="dynamic" x="736.818" y="10367.1"/>
+  <object id="226" template="templates/box0.tx" class="dynamic" x="809.545" y="9573.18"/>
+  <object id="227" template="templates/box0.tx" class="dynamic" x="209.545" y="10158"/>
+  <object id="228" template="templates/box0.tx" class="dynamic" x="2848.94" y="2361.06"/>
+  <object id="229" template="templates/box0.tx" class="dynamic" x="827.727" y="2736.82" width="1459.7" height="90"/>
+  <object id="230" template="templates/box0.tx" class="dynamic" x="2858.03" y="1761.06"/>
+  <object id="231" template="templates/box0.tx" class="dynamic" x="1767.12" y="836.818"/>
+  <object id="232" template="templates/box0.tx" class="dynamic" x="2912.58" y="564.091"/>
+  <object id="233" template="templates/box0.tx" class="dynamic" x="2855" y="2158.03"/>
+  <object id="234" template="templates/box0.tx" class="dynamic" x="2891.36" y="1164.09"/>
+  <object id="235" template="templates/box0.tx" class="dynamic" x="2164.09" y="936.818"/>
+  <object id="236" template="templates/box0.tx" class="dynamic" x="2918.64" y="667.121"/>
+  <object id="237" template="templates/box0.tx" class="dynamic" x="2673.18" y="2712.58"/>
+  <object id="238" template="templates/box0.tx" class="dynamic" x="2845.91" y="2521.67"/>
+  <object id="239" template="templates/box0.tx" class="dynamic" x="597.667" y="2713.67"/>
+  <object id="240" template="templates/box0.tx" class="dynamic" x="2870.15" y="2709.55"/>
+  <object id="241" template="templates/box0.tx" class="dynamic" x="430.758" y="2718.64"/>
+  <object id="242" template="templates/box0.tx" class="dynamic" x="1295.27" y="1036.48"/>
+  <object id="243" template="templates/box0.tx" class="dynamic" x="755" y="1036.82"/>
+  <object id="244" template="templates/box0.tx" class="dynamic" x="442.879" y="997.424"/>
+  <object id="245" template="templates/box0.tx" class="dynamic" x="205.063" y="856.269" rotation="30.4699"/>
+  <object id="246" template="templates/box0.tx" class="dynamic" x="309.545" y="588.333"/>
+  <object id="247" template="templates/box0.tx" class="dynamic" x="509.545" y="439.848"/>
+  <object id="248" template="templates/box0.tx" class="dynamic" x="836.818" y="433.788"/>
+  <object id="249" template="templates/box0.tx" class="dynamic" x="1048.94" y="485.303"/>
+  <object id="250" template="templates/box0.tx" class="dynamic" x="1008" y="902"/>
+  <object id="251" template="templates/box0.tx" class="dynamic" x="1090" y="1066"/>
+  <object id="252" template="templates/box0.tx" class="dynamic" x="885.303" y="1215.61"/>
+  <object id="253" template="templates/box0.tx" class="dynamic" x="227.727" y="2691.36"/>
+  <object id="254" template="templates/box0.tx" class="dynamic" x="76.2121" y="2748.94"/>
+  <object id="255" template="templates/box0.tx" class="dynamic" x="470.152" y="727.727"/>
+  <object id="256" template="templates/box0.tx" class="dynamic" x="682.273" y="476.212"/>
+  <object id="257" template="templates/box0.tx" class="dynamic" x="100.455" y="301.364" rotation="90">
    <properties>
     <property name="friction" type="float" value="10"/>
    </properties>
   </object>
-  <object id="258" template="templates/box0.tx" type="dynamic" x="948.485" y="158.488" rotation="315">
+  <object id="258" template="templates/box0.tx" class="dynamic" x="948.485" y="158.488" rotation="315">
    <properties>
     <property name="density" type="float" value="50"/>
    </properties>
   </object>
-  <object id="259" template="templates/box0.tx" type="dynamic" x="1550.65" y="242.014" rotation="60">
+  <object id="259" template="templates/box0.tx" class="dynamic" x="1550.65" y="242.014" rotation="60">
    <properties>
     <property name="restitution" type="float" value="1"/>
    </properties>
   </object>
-  <object id="260" template="templates/box0.tx" type="dynamic" x="1481.81" y="461.515" rotation="45">
+  <object id="260" template="templates/box0.tx" class="dynamic" x="1481.81" y="461.515" rotation="45">
    <properties>
     <property name="restitution" type="float" value="2"/>
    </properties>
   </object>
-  <object id="261" template="templates/box0.tx" type="dynamic" x="1433.79" y="827.727"/>
-  <object id="262" template="templates/box0.tx" type="dynamic" x="1354.94" y="706.818"/>
-  <object id="263" template="templates/box0.tx" type="dynamic" x="1303.48" y="270.152">
+  <object id="261" template="templates/box0.tx" class="dynamic" x="1433.79" y="827.727"/>
+  <object id="262" template="templates/box0.tx" class="dynamic" x="1354.94" y="706.818"/>
+  <object id="263" template="templates/box0.tx" class="dynamic" x="1303.48" y="270.152">
    <properties>
     <property name="density" type="float" value="100"/>
    </properties>
   </object>
-  <object id="264" template="templates/box0.tx" type="dynamic" x="1700.45" y="1094.39"/>
-  <object id="265" template="templates/box0.tx" type="dynamic" x="2900.45" y="988.333"/>
-  <object id="266" template="templates/box0.tx" type="dynamic" x="2861.06" y="1555"/>
-  <object id="267" template="templates/box0.tx" type="dynamic" x="2488.33" y="2715.61"/>
-  <object id="268" template="templates/box0.tx" type="dynamic" x="2918.64" y="830.758"/>
-  <object id="269" template="templates/box0.tx" type="dynamic" x="2864.09" y="1970.15"/>
-  <object id="270" template="templates/box0.tx" type="dynamic" x="2106.52" y="1173.18"/>
-  <object id="271" template="templates/box0.tx" type="dynamic" x="2882.27" y="1361.06"/>
-  <object id="272" template="templates/box0.tx" type="dynamic" x="9967.12" y="555"/>
-  <object id="273" template="templates/box0.tx" type="dynamic" x="10409.5" y="342.879"/>
-  <object id="274" template="templates/box0.tx" type="dynamic" x="10270.2" y="573.182"/>
-  <object id="275" template="templates/box0.tx" type="dynamic" x="9912.58" y="188.333"/>
-  <object id="276" template="templates/box0.tx" type="dynamic" x="10261.1" y="233.788"/>
-  <object id="277" template="templates/box0.tx" type="dynamic" x="9997.42" y="764.091"/>
-  <object id="278" template="templates/box0.tx" type="dynamic" x="10264.1" y="1039.85"/>
-  <object id="279" template="templates/box0.tx" type="dynamic" x="9918.64" y="10176.2"/>
-  <object id="280" template="templates/box0.tx" type="dynamic" x="10179.2" y="10273.2"/>
-  <object id="281" template="templates/box0.tx" type="dynamic" x="9982.27" y="10352"/>
-  <object id="282" template="templates/box0.tx" type="dynamic" x="10279.2" y="10385.3"/>
-  <object id="283" template="templates/box0.tx" type="dynamic" x="10336.8" y="10121.7"/>
-  <object id="284" template="templates/box0.tx" type="dynamic" x="10173.2" y="9958.03"/>
-  <object id="288" name="pepsi" type="dynamic" gid="488" x="940.333" y="631" width="70" height="129.208">
+  <object id="264" template="templates/box0.tx" class="dynamic" x="1700.45" y="1094.39"/>
+  <object id="265" template="templates/box0.tx" class="dynamic" x="2900.45" y="988.333"/>
+  <object id="266" template="templates/box0.tx" class="dynamic" x="2861.06" y="1555"/>
+  <object id="267" template="templates/box0.tx" class="dynamic" x="2488.33" y="2715.61"/>
+  <object id="268" template="templates/box0.tx" class="dynamic" x="2918.64" y="830.758"/>
+  <object id="269" template="templates/box0.tx" class="dynamic" x="2864.09" y="1970.15"/>
+  <object id="270" template="templates/box0.tx" class="dynamic" x="2106.52" y="1173.18"/>
+  <object id="271" template="templates/box0.tx" class="dynamic" x="2882.27" y="1361.06"/>
+  <object id="272" template="templates/box0.tx" class="dynamic" x="9967.12" y="555"/>
+  <object id="273" template="templates/box0.tx" class="dynamic" x="10409.5" y="342.879"/>
+  <object id="274" template="templates/box0.tx" class="dynamic" x="10270.2" y="573.182"/>
+  <object id="275" template="templates/box0.tx" class="dynamic" x="9912.58" y="188.333"/>
+  <object id="276" template="templates/box0.tx" class="dynamic" x="10261.1" y="233.788"/>
+  <object id="277" template="templates/box0.tx" class="dynamic" x="9997.42" y="764.091"/>
+  <object id="278" template="templates/box0.tx" class="dynamic" x="10264.1" y="1039.85"/>
+  <object id="279" template="templates/box0.tx" class="dynamic" x="9918.64" y="10176.2"/>
+  <object id="280" template="templates/box0.tx" class="dynamic" x="10179.2" y="10273.2"/>
+  <object id="281" template="templates/box0.tx" class="dynamic" x="9982.27" y="10352"/>
+  <object id="282" template="templates/box0.tx" class="dynamic" x="10279.2" y="10385.3"/>
+  <object id="283" template="templates/box0.tx" class="dynamic" x="10336.8" y="10121.7"/>
+  <object id="284" template="templates/box0.tx" class="dynamic" x="10173.2" y="9958.03"/>
+  <object id="288" name="pepsi" class="dynamic" gid="488" x="1215.33" y="551" width="70" height="129.208">
    <properties>
     <property name="density" type="float" value="2"/>
     <property name="friction" type="float" value="0.1"/>
     <property name="restitution" type="float" value="0.1"/>
    </properties>
   </object>
-  <object id="354" name="grenade_launcher" type="dynamic" gid="568" x="1138" y="904" width="200" height="100">
+  <object id="354" name="grenade_launcher" class="dynamic" gid="568" x="1138" y="904" width="200" height="100">
    <properties>
+    <property name="amountOfAmmo" type="int" value="1"/>
     <property name="b2UserData" value="weapon_grenade_launcher"/>
     <property name="density" type="float" value="1"/>
     <property name="friction" type="float" value="0.1"/>
@@ -324,18 +325,19 @@
     <property name="restitution" type="float" value="0.1"/>
    </properties>
   </object>
-  <object id="357" name="grenade_launcher_ammo" type="dynamic" gid="569" x="928" y="868" width="28" height="9">
+  <object id="357" name="grenade_launcher_ammo" class="dynamic" gid="569" x="928" y="868" width="28" height="9">
    <properties>
+    <property name="amountOfAmmo" type="int" value="2"/>
     <property name="b2UserData" value="ammo_grenade_launcher"/>
-    <property name="density" type="float" value="0.2"/>
+    <property name="density" type="float" value="1"/>
     <property name="friction" type="float" value="0.1"/>
     <property name="healthPoints" type="float" value="-1"/>
     <property name="maxHealthPoints" type="float" value="-1"/>
-    <property name="restitution" type="float" value="0.05"/>
+    <property name="restitution" type="float" value="0.1"/>
    </properties>
   </object>
-  <object id="359" template="templates/box0.tx" type="dynamic" x="1099" y="811"/>
-  <object id="360" template="templates/box0.tx" type="dynamic" x="1190" y="811"/>
-  <object id="361" template="templates/box0.tx" type="dynamic" x="1281" y="811"/>
+  <object id="359" template="templates/box0.tx" class="dynamic" x="1061" y="744"/>
+  <object id="360" template="templates/box0.tx" class="dynamic" x="1191" y="680"/>
+  <object id="361" template="templates/box0.tx" class="dynamic" x="1447" y="1090"/>
  </objectgroup>
 </map>

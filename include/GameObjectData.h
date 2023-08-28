@@ -5,13 +5,30 @@
 /// </summary>
 enum ObjectType {
 	UndefinedType,
+	PlayerType,
 	PaperBoxType,
 	PepsiType,
-	BulletType,
-	WeaponGrenadeLauncherType,
-	AmmoGrenadeLauncherType
+	ObjectWeaponType,
+	ObjectAmmoType,
 };
-std::string objectTypeToString(ObjectType objectType);
+enum AmmoType
+{
+	AUndefinedType,
+	AGrenadeLauncherType,
+	AVoidType,
+
+};
+enum WeaponType
+{
+	WUndefinedType,
+	WGrenadeLauncherType,
+	WVoidType,
+
+};
+std::string objectTypeToString(const ObjectType& objectType);
+std::string ammoTypeToString(const AmmoType& ammoType);
+std::string weaponTypeToString(const WeaponType& weaponType);
+
 class GameObjectData
 {
 	/// <summary>

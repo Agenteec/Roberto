@@ -5,14 +5,33 @@
 #include "GlobalConsts.h"
 #include "GameObject.h"
 #include "GameObjectData.h"
+#include "Ammo.h"
 
 class Entity : public GameObject
 {
 public:
+	#pragma region Body
 	b2BodyDef bodyDef;
 	b2Body* body;
 	b2Fixture* fixture;
 	b2PolygonShape bodyShape;
+	#pragma endregion
+
+	/// <summary>
+	/// Боеприпасы содержащиеся в entity
+	/// </summary>
+	std::vector<Ammo> ammo;
+	/// <summary>
+	/// Иедекс оружия в руках
+	/// </summary>
+	int selectedWeaponIndex;
+	/// <summary>
+	/// Иедекс снарядов для оружия в руках
+	/// </summary>
+	int selectedAmmoIndex;
+
+
+
 	GameObjectData gameObjectData;
 	
 	Entity();
@@ -51,9 +70,23 @@ public:
 private: 
 	//Коэффициент сопротивления(Для того, чтобы объекты постепенно останавливались) 
 	float resistanceCoefficient;
-	float healthPoints, maxHealthPoints;
+	/// <summary>
+	/// Очки здоровья
+	/// </summary>
+	float healthPoints;
+	/// <summary>
+	/// Максимальные очки здоровья (-1 сущность неуязвима)
+	/// </summary>
+	float maxHealthPoints;
+
 	bool hitted;
+
+	/// <summary>
+	/// Фигура hitBox
+	/// </summary>
 	sf::Shape* hitBox;
+
+
 
 };
 

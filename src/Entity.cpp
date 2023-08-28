@@ -12,7 +12,8 @@ Entity::Entity() :
 
 void Entity::initBody(b2World* world, const sf::Vector2f &pos, const float& angle, const b2BodyType& bodyType)
 {
-	
+	//добавляем пустое оружие
+	ammo.push_back(Ammo());
 	bodyDef.type = bodyType;
 	bodyDef.position.Set(pos.x / GlobalConsts::SCALE, pos.y / GlobalConsts::SCALE);
 	bodyDef.angle =angle/180.f * b2_pi;
