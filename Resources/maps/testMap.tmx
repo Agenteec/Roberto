@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="200" height="200" tilewidth="53" tileheight="53" infinite="0" nextlayerid="5" nextobjectid="362">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="200" height="200" tilewidth="53" tileheight="53" infinite="0" nextlayerid="5" nextobjectid="369">
  <tileset firstgid="1" source="clover 1.tsx"/>
  <tileset firstgid="82" source="dirt 1.tsx"/>
  <tileset firstgid="163" source="paving 6.tsx"/>
@@ -245,16 +245,16 @@
   <object id="240" template="templates/box0.tx" class="dynamic" x="2870.15" y="2709.55"/>
   <object id="241" template="templates/box0.tx" class="dynamic" x="430.758" y="2718.64"/>
   <object id="242" template="templates/box0.tx" class="dynamic" x="1295.27" y="1036.48"/>
-  <object id="243" template="templates/box0.tx" class="dynamic" x="755" y="1036.82"/>
+  <object id="243" template="templates/box0.tx" class="dynamic" x="1717" y="1292.82"/>
   <object id="244" template="templates/box0.tx" class="dynamic" x="442.879" y="997.424"/>
   <object id="245" template="templates/box0.tx" class="dynamic" x="205.063" y="856.269" rotation="30.4699"/>
   <object id="246" template="templates/box0.tx" class="dynamic" x="309.545" y="588.333"/>
   <object id="247" template="templates/box0.tx" class="dynamic" x="509.545" y="439.848"/>
   <object id="248" template="templates/box0.tx" class="dynamic" x="836.818" y="433.788"/>
   <object id="249" template="templates/box0.tx" class="dynamic" x="1048.94" y="485.303"/>
-  <object id="250" template="templates/box0.tx" class="dynamic" x="1008" y="902"/>
-  <object id="251" template="templates/box0.tx" class="dynamic" x="1090" y="1066"/>
-  <object id="252" template="templates/box0.tx" class="dynamic" x="885.303" y="1215.61"/>
+  <object id="250" template="templates/box0.tx" class="dynamic" x="1668" y="676"/>
+  <object id="251" template="templates/box0.tx" class="dynamic" x="1592" y="924"/>
+  <object id="252" template="templates/box0.tx" class="dynamic" x="1755.3" y="1455.61"/>
   <object id="253" template="templates/box0.tx" class="dynamic" x="227.727" y="2691.36"/>
   <object id="254" template="templates/box0.tx" class="dynamic" x="76.2121" y="2748.94"/>
   <object id="255" template="templates/box0.tx" class="dynamic" x="470.152" y="727.727"/>
@@ -317,7 +317,7 @@
   <object id="354" name="grenade_launcher" class="dynamic" gid="568" x="1138" y="904" width="200" height="100">
    <properties>
     <property name="amountOfAmmo" type="int" value="1"/>
-    <property name="b2UserData" value="weapon_grenade_launcher"/>
+    <property name="b2UserData" value="weapon"/>
     <property name="density" type="float" value="1"/>
     <property name="friction" type="float" value="0.1"/>
     <property name="healthPoints" type="float" value="-1"/>
@@ -327,8 +327,8 @@
   </object>
   <object id="357" name="grenade_launcher_ammo" class="dynamic" gid="569" x="928" y="868" width="28" height="9">
    <properties>
-    <property name="amountOfAmmo" type="int" value="2"/>
-    <property name="b2UserData" value="ammo_grenade_launcher"/>
+    <property name="amountOfAmmo" type="int" value="5"/>
+    <property name="b2UserData" value="ammo"/>
     <property name="density" type="float" value="1"/>
     <property name="friction" type="float" value="0.1"/>
     <property name="healthPoints" type="float" value="-1"/>
@@ -339,5 +339,82 @@
   <object id="359" template="templates/box0.tx" class="dynamic" x="1061" y="744"/>
   <object id="360" template="templates/box0.tx" class="dynamic" x="1191" y="680"/>
   <object id="361" template="templates/box0.tx" class="dynamic" x="1447" y="1090"/>
+  <object id="362" name="grenade_launcher_ammo" class="dynamic" gid="569" x="954" y="981.5" width="28" height="9">
+   <properties>
+    <property name="amountOfAmmo" type="int" value="5"/>
+    <property name="b2UserData" value="ammo"/>
+    <property name="density" type="float" value="1"/>
+    <property name="friction" type="float" value="0.1"/>
+    <property name="healthPoints" type="float" value="-1"/>
+    <property name="maxHealthPoints" type="float" value="-1"/>
+    <property name="restitution" type="float" value="0.1"/>
+   </properties>
+  </object>
+  <object id="363" name="grenade_launcher_ammo" class="dynamic" gid="569" x="1100" y="1179.5" width="28" height="9">
+   <properties>
+    <property name="amountOfAmmo" type="int" value="5"/>
+    <property name="b2UserData" value="ammo"/>
+    <property name="density" type="float" value="1"/>
+    <property name="friction" type="float" value="0.1"/>
+    <property name="healthPoints" type="float" value="-1"/>
+    <property name="maxHealthPoints" type="float" value="-1"/>
+    <property name="restitution" type="float" value="0.1"/>
+   </properties>
+  </object>
+  <object id="364" name="grenade_launcher_ammo" class="dynamic" gid="569" x="1432" y="1183.5" width="28" height="9">
+   <properties>
+    <property name="amountOfAmmo" type="int" value="5"/>
+    <property name="b2UserData" value="ammo"/>
+    <property name="density" type="float" value="1"/>
+    <property name="friction" type="float" value="0.1"/>
+    <property name="healthPoints" type="float" value="-1"/>
+    <property name="maxHealthPoints" type="float" value="-1"/>
+    <property name="restitution" type="float" value="0.1"/>
+   </properties>
+  </object>
+  <object id="365" name="grenade_launcher_ammo" class="dynamic" gid="569" x="1208" y="1433.5" width="28" height="9">
+   <properties>
+    <property name="amountOfAmmo" type="int" value="5"/>
+    <property name="b2UserData" value="ammo"/>
+    <property name="density" type="float" value="1"/>
+    <property name="friction" type="float" value="0.1"/>
+    <property name="healthPoints" type="float" value="-1"/>
+    <property name="maxHealthPoints" type="float" value="-1"/>
+    <property name="restitution" type="float" value="0.1"/>
+   </properties>
+  </object>
+  <object id="366" name="grenade_launcher" class="dynamic" gid="568" x="142" y="1390" width="200" height="100">
+   <properties>
+    <property name="amountOfAmmo" type="int" value="1"/>
+    <property name="b2UserData" value="weapon"/>
+    <property name="density" type="float" value="1"/>
+    <property name="friction" type="float" value="0.1"/>
+    <property name="healthPoints" type="float" value="-1"/>
+    <property name="maxHealthPoints" type="float" value="-1"/>
+    <property name="restitution" type="float" value="0.1"/>
+   </properties>
+  </object>
+  <object id="367" name="grenade_launcher" class="dynamic" gid="568" x="518" y="1340" width="200" height="100">
+   <properties>
+    <property name="amountOfAmmo" type="int" value="1"/>
+    <property name="b2UserData" value="weapon"/>
+    <property name="density" type="float" value="1"/>
+    <property name="friction" type="float" value="0.1"/>
+    <property name="healthPoints" type="float" value="-1"/>
+    <property name="maxHealthPoints" type="float" value="-1"/>
+    <property name="restitution" type="float" value="0.1"/>
+   </properties>
+  </object>
+  <object id="368" name="grenade_launcher" class="dynamic" gid="568" x="798" y="1476" width="200" height="100">
+   <properties>
+    <property name="amountOfAmmo" type="int" value="1"/>
+    <property name="b2UserData" value="weapon"/>
+    <property name="density" type="float" value="1"/>
+    <property name="friction" type="float" value="0.1"/>
+    <property name="healthPoints" type="float" value="-1"/>
+    <property name="maxHealthPoints" type="float" value="-1"/>
+    <property name="restitution" type="float" value="0.1"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

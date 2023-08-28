@@ -90,6 +90,11 @@ void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 		gameObject->update(deltaTime);
 
 	}
+	for (size_t i = 0; i < player.ammo.size(); i++)
+	{
+		//std::cout << "AmountOfAmmo = " << player.ammo[i].getAmountOfAmmo() <<" Ammo type: " << ammoTypeToString(player.ammo[i].getAmmoType())<<"\nIndex: " << i<< std::endl;
+		//std::cout << "MaximumAmmo = " << player.ammo[i].getMaximumAmmo() << std::endl;
+	}
 	//std::cout << "dts = " << deltaTime.asSeconds()<<std::endl;
 }
 
@@ -175,16 +180,91 @@ void CollisionHandler::processContactEdge(Entity* entityA, b2ContactEdge* contac
 				const ObjectType& objB = entityB->gameObjectData.getGameObjectType();
 				if (objA == ObjectType::PlayerType )
 				{
-					std::cout << ANSI_COLOR_RED;
+					std::cout << ANSI_COLOR_CYAN;
 					std::cout << objectTypeToString(objA) << " collided with " << objectTypeToString(objB) << std::endl;
 					std::cout << ANSI_COLOR_RESET;
 					if (objB == ObjectType::ObjectWeaponType)
 					{
-						objectsToRemove.insert(entityB);
+						bool weapoFlaf = false;
+						for (auto weaponB : entityB->weapons)
+						{
+							for (auto weaponA : entityA->weapons)
+							{
+								bool ammoFlaf = false;
+								if (weaponA->getWeaponType() == weaponB->getWeaponType())
+								{
+									
+									for (auto& ammoA : entityA->ammo)
+									{
+										if (ammoA.getAmmoType() == weaponB->getAmmoMagazine().getAmmoType())
+										{
+											ammoA += weaponB->getAmmoMagazine();
+											ammoFlaf = true;
+											if (weaponB->getAmmoMagazine().getAmountOfAmmo()==0)
+											{
+												objectsToRemove.insert(entityB);
+											}
+											break;
+										}
+									}
+									if (!ammoFlaf)
+									{
+										Ammo ammo(weaponB->getAmmoMagazine().getAmmoType());
+										ammo += weaponB->getAmmoMagazine();
+										if (weaponB->getAmmoMagazine().getAmountOfAmmo() == 0)
+										{
+											objectsToRemove.insert(entityB);
+										}
+										entityA->ammo.push_back(ammo);
+									}
+									weapoFlaf = true;
+									break;
+								}
+									
+									
+								
+							}
+							if (!weapoFlaf)
+							{
+								Weapon* weapon = new Weapon(weaponB->getWeaponType());
+								entityA->weapons.push_back(weapon);
+								
+								objectsToRemove.insert(entityB);
+								
+							}
+						}
+						
+							
+
 					}
 					else if(objB == ObjectType::ObjectAmmoType)
 					{
-						objectsToRemove.insert(entityB);
+						bool ammoFlaf = false;
+						for (auto& ammoB : entityB->ammo)
+						{
+							for (auto& ammoA : entityA->ammo)
+							{
+								if (ammoA.getAmmoType() == ammoB.getAmmoType())
+								{
+									ammoA += ammoB;
+									ammoFlaf = true;
+									if (ammoB.getAmountOfAmmo() == 0)
+									{
+										objectsToRemove.insert(entityB);
+									}
+									break;
+								}
+							}
+							if (!ammoFlaf)
+							{
+								Ammo ammo(ammoB.getAmmoType(), true);
+
+								
+								ammo += ammoB;
+								entityA->ammo.push_back(ammo);
+
+							}
+						}
 					}
 
 				}

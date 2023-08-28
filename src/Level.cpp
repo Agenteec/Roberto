@@ -129,6 +129,7 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 						float restitution = -1.f;
 						float healthPoints = -1.f;
 						float maxHealthPoints = -1.f;
+						long amountOfAmmo = 0;
 						std::string userData = "";
 
 						for (const auto& prop : properties)
@@ -136,16 +137,18 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 							std::string propName = prop.getName();
 							if (propName == "healthPoints")
 								healthPoints = prop.getFloatValue();
-							if (propName == "maxHealthPoints")
+							else if (propName == "maxHealthPoints")
 								maxHealthPoints = prop.getFloatValue();
-							if (propName == "b2UserData")
+							else if (propName == "b2UserData")
 								userData = prop.getStringValue();
-							if (propName == "density")
+							else if (propName == "density")
 								density = prop.getFloatValue();
-							if (propName == "restitution")
+							else if (propName == "restitution")
 								restitution = prop.getFloatValue();
-							if (propName == "friction")
+							else if (propName == "friction")
 								friction = prop.getFloatValue();
+							else if (propName == "amountOfAmmo")
+								amountOfAmmo = prop.getIntValue();
 						}
 
 						Entity* entity = new Entity();
@@ -167,16 +170,29 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 							entity->gameObjectData.setGameObjectType(ObjectType::PaperBoxType);
 
 						}
-						if (userData == "weapon_grenade_launcher")
+						if (userData == "weapon")
 						{
-
+							
+							Weapon* weapon;
 							entity->gameObjectData.setGameObjectType(ObjectType::ObjectWeaponType);
+							if (object.getName() == "grenade_launcher")
+							{
+								
+								weapon = new Weapon(WeaponType::WGrenadeLauncherType, Ammo(AmmoType::AGrenadeLauncherType, amountOfAmmo, amountOfAmmo,0,0,0));
+								entity->weapons.push_back(weapon);
+							}
 
 						}
-						if (userData == "ammo_grenade_launcher")
+						if (userData == "ammo")
 						{
 
 							entity->gameObjectData.setGameObjectType(ObjectType::ObjectAmmoType);
+							if (object.getName() == "grenade_launcher_ammo")
+							{
+								Ammo ammo(AmmoType::AGrenadeLauncherType);
+								ammo.setAmountOfAmmo(amountOfAmmo);
+								entity->ammo.push_back(ammo);
+							}
 
 						}
 						b2BodyUserData& b2UserData = entity->body->GetUserData();

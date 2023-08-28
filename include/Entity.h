@@ -5,7 +5,7 @@
 #include "GlobalConsts.h"
 #include "GameObject.h"
 #include "GameObjectData.h"
-#include "Ammo.h"
+#include "Weapons/Weapons.h"
 
 class Entity : public GameObject
 {
@@ -21,6 +21,8 @@ public:
 	/// Боеприпасы содержащиеся в entity
 	/// </summary>
 	std::vector<Ammo> ammo;
+
+	std::vector<Weapon*> weapons;
 	/// <summary>
 	/// Иедекс оружия в руках
 	/// </summary>

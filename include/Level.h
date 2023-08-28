@@ -11,7 +11,7 @@
 #include <tmxlite/ObjectGroup.hpp>
 #include <tmxlite/LayerGroup.hpp>
 #include <tmxlite/TileLayer.hpp>
-
+#include "Weapons/Weapons.h"
 /// <summary>
 /// Игровой уровень
 /// </summary>

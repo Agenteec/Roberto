@@ -6,15 +6,11 @@ Player::Player() :
 	speed(0.8f),
 	hitted(false),
 	debugMode(false),
+	live(true),
 	Entity()
 {
 	setResistanceCoefficient(0.1f);
 	bodyDef.fixedRotation = true;
-
-
-
-	//Добавляем настройки оружия и боеприпасов
-	ammo.push_back(Ammo(AmmoType::AGrenadeLauncherType,0,9,65.f,5.f));
 }
 
 void Player::update(const sf::Time& deltaTime)

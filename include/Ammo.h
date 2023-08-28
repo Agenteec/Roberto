@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObjectData.h"
 
+
 class Ammo
 {
 	/// <summary>
@@ -10,34 +11,46 @@ class Ammo
 	/// <summary>
 	/// Колличество боепримасов
 	/// </summary>
-	size_t amountOfAmmo;
+	long amountOfAmmo;
 	/// <summary>
 	/// Максимальное колличество боепримасов
 	/// </summary>
-	size_t maximumAmmo;
-
+	long maximumAmmo;
+	/// <summary>
+	/// Урон снаряда(суммируется с Weapon::damage)
+	/// </summary>
 	float damage;
-
+	/// <summary>
+	/// Время полёта снаряда
+	/// </summary>
 	float lifeTime;
+
+	/// <summary>
+	/// Импульс с которым будет вылетать снаряд(сумируется с weaponPulse)
+	/// </summary>
+	float ammoPulse;
 public:
 	Ammo();
 	Ammo(
 		const AmmoType& ammoType,
-		const size_t& amountOfAmmo,
-		const size_t& maximumAmmo,
+		const long& amountOfAmmo,
+		const long& maximumAmmo,
 		const float& damage,
-		const float& lifeTime
+		const float& lifeTime,
+		const float& ammoPulse
 
 	);
+	Ammo(const AmmoType& ammoType = AmmoType::AVoidType, const bool& isEntyty = true);
+	Ammo(const Ammo& ammo);
 	
 	const AmmoType& getAmmoType();
 	void setAmmoType(const AmmoType& ammoType);
 
-	const size_t& getAmountOfAmmo();
-	void setAmountOfAmmo(const size_t& amountOfAmmo);
+	const long& getAmountOfAmmo();
+	void setAmountOfAmmo(const long& amountOfAmmo);
 
-	const size_t& getMaximumAmmo();
-	void setMaximumAmmo(const size_t& maximumAmmo);
+	const long& getMaximumAmmo();
+	void setMaximumAmmo(const long& maximumAmmo);
 
 	const float& getDamge();
 	void setDamge(const float& damage);

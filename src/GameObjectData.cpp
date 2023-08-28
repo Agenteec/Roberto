@@ -42,7 +42,7 @@ std::string ammoTypeToString(const AmmoType& ammoType)
 	case AUndefinedType:
 		return "UndefinedType";
 	default:
-		return "UndefinedType";
+		return "DefoultUndefinedType";
 	}
 }
 
