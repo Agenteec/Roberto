@@ -15,17 +15,5 @@ GrenadeLauncher::GrenadeLauncher():Weapon(
 
 void GrenadeLauncher::shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
 {
-	if (isReloading())
-	{
-		return;
-	}
-	Ammo magazine = getAmmoMagazine();
-	if (magazine.getAmountOfAmmo() == 0)
-	{
-		setReload(true);
-	}
-	else
-	{
 
-	}
 }

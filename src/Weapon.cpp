@@ -43,10 +43,22 @@ Weapon::Weapon
 
 void Weapon::shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
 {
+	if (isReloading())
+	{
+		return;
+	}
+	Ammo magazine = getAmmoMagazine();
+	if (magazine.getAmountOfAmmo() == 0)
+	{
+		setReload(true);
+	}
+	else
+	{
 
+	}
 }
 
-void Weapon::update(const float& angle)
+void Weapon::update(const float& angle, Ammo& ammo)
 {
 	if (trackingObject != nullptr)
 	{

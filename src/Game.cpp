@@ -116,6 +116,7 @@ void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 	{
 
 	}
+
 }
 
 void Game::draw(sf::RenderWindow& window)	
@@ -134,6 +135,7 @@ void Game::draw(sf::RenderWindow& window)
 	window.draw(player);
 	//if(player.getHitboxFlag()&& GlobalConsts::hitBoxOn)
 	player.draw(window);
+	camera.draw(window);
 }
 
 void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*> &contactedBodies, b2World& world, std::vector<GameObject*>& gameObjects, TextureManager& textureManager)

@@ -121,7 +121,44 @@ void Entity::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObj
 	}
 	if (!weapons.empty() && selectedWeaponIndex != -1) {
 		Weapon* w = weapons[selectedWeaponIndex];
-		w->update(angleTwoPoints(getPosition(), targetCoordinates));
+		if (!ammo.empty())
+		{
+			if (selectedAmmoIndex != -1)
+			{
+				if (ammo[selectedAmmoIndex].getAmmoType() != w->getAmmoMagazine().getAmmoType())
+				{
+					for (size_t i = 0; i < ammo.size(); i++)
+					{
+						selectedAmmoIndex = i;
+						if (ammo[i].getAmmoType() == w->getAmmoMagazine().getAmmoType())
+						{
+							break;
+						}
+					}
+				}
+
+			}
+			else
+			{
+				for (size_t i = 0; i < ammo.size(); i++)
+				{
+					selectedAmmoIndex = i;
+					if (ammo[i].getAmmoType() == w->getAmmoMagazine().getAmmoType())
+					{
+						break;
+					}
+				}
+			}
+			w->update(angleTwoPoints(getPosition(), targetCoordinates), ammo[selectedAmmoIndex]);
+		}
+		else
+		{
+			Ammo voidAmmo(AmmoType::AVoidType);
+			w->update(angleTwoPoints(getPosition(), targetCoordinates), voidAmmo);
+		}
+
+
+		
 	}
 		
 }

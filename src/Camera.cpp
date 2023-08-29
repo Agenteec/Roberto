@@ -45,10 +45,15 @@ void Camera::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 		setCenter(newPosition);
 	}
 	#pragma endregion
-	headsUpDisplay.fpsText.setPosition(this->getCenter().x + 400, this->getCenter().y - 350);
-	headsUpDisplay.draw(window);
+	headsUpDisplay.fpsText.setPosition(this->getCenter().x + window.getSize().x/1.7f, this->getCenter().y - window.getSize().y / 1.7f);
+
 	window.setView(*this);
 	
+}
+
+void Camera::draw(sf::RenderWindow& window)
+{
+	headsUpDisplay.draw(window);
 }
 
 void Camera::setMoveSpeed(const float& speed)

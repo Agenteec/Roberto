@@ -16,8 +16,8 @@ public:
 			std::cout << "Error load font!" << std::endl;
 		}
 		fpsText.setFont(font);
-		fpsText.setString(L"Привет --------------------------------------------------------------------------------------------");
-		fpsText.setCharacterSize(24);
+		fpsText.setString(L"");
+		fpsText.setCharacterSize(30);
 		fpsText.setFillColor(sf::Color::Green);
 		fpsText.setPosition(1000, 1000);
 
@@ -42,6 +42,8 @@ public:
 	void setTracking(GameObject* trackingObject);
 
 	void update(const sf::Time& deltaTime, sf::RenderWindow& window);
+
+	void draw(sf::RenderWindow& window);
 
 	void setMoveSpeed(const float& speed);
 
