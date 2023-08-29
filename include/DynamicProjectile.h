@@ -22,6 +22,10 @@ public:
 
 	void setBodyPolygonShape(const b2Vec2* vertices, const int num_segments = 4);
 
+	void update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager);
+
+	void draw(sf::RenderWindow& window);
+
 	void setBodyPosition(const sf::Vector2f& vec);
 
 	void setBodyPosition(const b2Vec2& vec);

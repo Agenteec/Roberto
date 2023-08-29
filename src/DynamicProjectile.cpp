@@ -82,6 +82,35 @@ void DynamicProjectile::setBodyPolygonShape(const b2Vec2* vertices, const int nu
 	hitBox = hitbox;
 }
 
+
+void DynamicProjectile::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
+{
+	if (body == nullptr)
+	{
+		return;
+	}
+	//applyResistance(deltaTime.asSeconds());
+	b2Vec2 pos = body->GetPosition();
+	setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
+	setRotation(body->GetAngle() * 180.f / 3.14);
+
+	if (hitBox != nullptr)
+	{
+		hitBox->setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
+		hitBox->setRotation(body->GetAngle() * 180.f / 3.14);
+	}
+
+}
+
+void DynamicProjectile::draw(sf::RenderWindow& window)
+{
+	if (GlobalConsts::hitBoxOn && hitBox != nullptr)
+	{
+		window.draw(*hitBox);
+	}
+
+}
+
 void DynamicProjectile::setBodyPosition(const sf::Vector2f& vec)
 {
 	setPosition(vec);
