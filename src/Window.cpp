@@ -47,16 +47,18 @@ void MainWindow::Display()
 				window.close();
 			gui.handleEvent(event);
 			if (guiManager.flags.onGame)
-				game.handleEvent(event);
-
+				game.handleEvent(event, window);
+				
 			if (event.type == sf::Event::KeyPressed)
 			{
-				if (event.key.code == sf::Keyboard::Escape)
+				if (!guiManager.flags.onMainMenu && event.key.code == sf::Keyboard::Escape)
 				{
-
-					guiManager.MainMenu(false);
-					guiManager.GameMenu(true);
-					
+					guiManager.flags.onGame = !guiManager.flags.onGame;
+					guiManager.GameMenu(!guiManager.flags.onGameMenu);
+				}
+				if (event.key.code == sf::Keyboard::F3)
+				{
+					GlobalConsts::hitBoxOn = !GlobalConsts::hitBoxOn;
 				}
 			}
 		}

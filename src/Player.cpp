@@ -3,13 +3,17 @@
 Player::Player() :
 	healthPoints(100.f),
 	maxHealthPoints(100.f),
-	speed(2.8f),
+	speed(0.8f),
 	hitted(false),
 	debugMode(false),
+	live(true),
 	Entity()
-{}
+{
+	setResistanceCoefficient(0.1f);
+	bodyDef.fixedRotation = true;
+}
 
-void Player::update(const sf::Time& deltaTime)
+void Player::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
 {
 	float dts = deltaTime.asSeconds();
 	if (controlFlags.upPressed)
@@ -20,7 +24,14 @@ void Player::update(const sf::Time& deltaTime)
 		body->ApplyLinearImpulseToCenter(b2Vec2 ( - 1.f * dts * speed, 0), true);
 	if (controlFlags.rightPressed)
 		body->ApplyLinearImpulseToCenter(b2Vec2(1.f * dts * speed, 0), true);
-	Entity::update(deltaTime);
+	if (controlFlags.downPressed)
+	{
+		if (!weapons.empty() && selectedWeaponIndex != -1) {
+			Weapon* w = weapons[selectedWeaponIndex];
+			w->shot(gameObjects, textureManager);
+		}
+	}
+	Entity::update(deltaTime, gameObjects, textureManager);
 }
 
 void Player::setHealthPoints(const float& healthPoints)

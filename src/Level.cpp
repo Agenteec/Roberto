@@ -122,21 +122,38 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 					{
 						const auto& properties = object.getProperties();
 						
+						//std::cout << "________________________________________________________________________________________" << ANSI_COLOR_YELLOW << object.getName() << std::endl;
+						//system("pause");
 						float density = -1.f;
 						float friction = -1.f;
 						float restitution = -1.f;
+						float healthPoints = -1.f;
+						float maxHealthPoints = -1.f;
+						long amountOfAmmo = 0;
+						std::string userData = "";
+
 						for (const auto& prop : properties)
 						{
 							std::string propName = prop.getName();
-							if (propName == "density")
+							if (propName == "healthPoints")
+								healthPoints = prop.getFloatValue();
+							else if (propName == "maxHealthPoints")
+								maxHealthPoints = prop.getFloatValue();
+							else if (propName == "b2UserData")
+								userData = prop.getStringValue();
+							else if (propName == "density")
 								density = prop.getFloatValue();
-							if (propName == "restitution")
+							else if (propName == "restitution")
 								restitution = prop.getFloatValue();
-							if (propName == "friction")
+							else if (propName == "friction")
 								friction = prop.getFloatValue();
+							else if (propName == "amountOfAmmo")
+								amountOfAmmo = prop.getIntValue();
 						}
 
 						Entity* entity = new Entity();
+						entity->setHealthPoints(healthPoints);
+						entity->setMaxHealthPoints(maxHealthPoints);
 						entity->setTexture(*textureManager->textures[object.getName()]);
 						sf::Vector2f scale = sf::Vector2f(object.getAABB().width / entity->getLocalBounds().width, object.getAABB().height / entity->getLocalBounds().height);
 						entity->setScale(scale);
@@ -147,9 +164,45 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 						{
 							entity->setPhysicalProperties(density, friction, restitution);
 						}
-						
+						if (userData == "paper_box")
+						{
+							
+							entity->gameObjectData.setGameObjectType(ObjectType::PaperBoxType);
+
+						}
+						if (userData == "weapon")
+						{
+							
+							Weapon* weapon;
+							entity->gameObjectData.setGameObjectType(ObjectType::ObjectWeaponType);
+							if (object.getName() == "grenade_launcher")
+							{
+								
+								weapon = new Weapon(WeaponType::WGrenadeLauncherType, Ammo(AmmoType::AGrenadeLauncherType, amountOfAmmo, amountOfAmmo,0,0,0));
+								entity->weapons.push_back(weapon);
+							}
+
+						}
+						if (userData == "ammo")
+						{
+
+							entity->gameObjectData.setGameObjectType(ObjectType::ObjectAmmoType);
+							if (object.getName() == "grenade_launcher_ammo")
+							{
+								Ammo ammo(AmmoType::AGrenadeLauncherType);
+								ammo.setAmountOfAmmo(amountOfAmmo);
+								entity->ammo.push_back(ammo);
+							}
+
+						}
+						b2BodyUserData& b2UserData = entity->body->GetUserData();
+						b2UserData.pointer = reinterpret_cast<uintptr_t>(entity);
 						gameObjects.push_back(entity);
 					}
+				}
+				if (object.getClass() == "trigger")
+				{
+
 				}
 				if (object.getClass() == "static")
 				{
@@ -162,6 +215,7 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 							float density = -1.f;
 							float friction = -1.f;
 							float restitution = -1.f;
+							
 							for (const auto& prop : properties)
 							{
 								std::string propName = prop.getName();
