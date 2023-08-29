@@ -6,7 +6,11 @@ Entity::Entity() :
 	body(nullptr),
 	fixture(nullptr),
 	hitBox(nullptr),
-	resistanceCoefficient(0.1f)
+	hitted(false),
+	resistanceCoefficient(0.1f),
+	selectedAmmoIndex(-1),
+	selectedWeaponIndex(-1),
+	gameObjectData()
 {
 }
 
@@ -95,7 +99,12 @@ void Entity::setBodyPosition(const b2Vec2& vec)
 	body->SetTransform(vec, body->GetAngle());
 }
 
-void Entity::update(const sf::Time& deltaTime)
+void Entity::setTargetCoordinates(const sf::Vector2f& targetCoordinates)
+{
+	this->targetCoordinates = targetCoordinates;
+}
+
+void Entity::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
 {
 	if (body == nullptr)
 	{
@@ -111,13 +120,26 @@ void Entity::update(const sf::Time& deltaTime)
 		hitBox->setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
 		hitBox->setRotation(body->GetAngle() * 180.f / 3.14);
 	}
+	if (!weapons.empty() && selectedWeaponIndex != -1) {
+		Weapon* w = weapons[selectedWeaponIndex];
+		w->update(angleTwoPoints(getPosition(), targetCoordinates));
+	}
 		
 }
 
-void Entity::drawHitbox(sf::RenderWindow& window)
+void Entity::draw(sf::RenderWindow& window)
 {
-	window.draw(*hitBox);
+	if (GlobalConsts::hitBoxOn && hitBox != nullptr)
+	{
+		window.draw(*hitBox);
+	}
+	if (!weapons.empty() && selectedWeaponIndex != -1 ) {
+		Weapon* w = weapons[selectedWeaponIndex];
+		window.draw(*w);
+	}
+	
 }
+
 
 void Entity::setPhysicalProperties(const float& density, const float& friction, const float& restitution)
 {
@@ -171,6 +193,11 @@ const float& Entity::getHealthPoints()
 const float& Entity::getMaxHealthPoints()
 {
 	return maxHealthPoints;
+}
+
+const sf::Vector2f& Entity::getTargetCoordinates()
+{
+	return targetCoordinates;
 }
 
 const bool& Entity::isHitted()

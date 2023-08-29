@@ -131,6 +131,52 @@ const Ammo& Ammo::operator+(Ammo& other)
 	return Ammo(ammoType, result,maximumAmmo , this->damage, this->lifeTime, this->ammoPulse);
 }
 
+const Ammo& Ammo::operator-(Ammo& other)
+{
+	
+	return other + *this;
+}
+
+const Ammo& Ammo::operator+(const long& other)
+{
+	if (other < 0)
+	{
+		return (*this-(other*-1));
+	}
+	if (amountOfAmmo == maximumAmmo)
+	{
+		return *this;
+	}
+	long result = amountOfAmmo + other;
+	long newOther = 0;
+	if (result > maximumAmmo)
+	{
+		newOther = result - maximumAmmo;
+		result -= newOther;
+	}
+	return Ammo(this->ammoType, result, maximumAmmo, this->damage, this->lifeTime, this->ammoPulse);
+}
+
+const Ammo& Ammo::operator-(const long& other)
+{
+	if (other < 0)
+	{
+		return (*this + (other * -1));
+	}
+	if (amountOfAmmo <= 0)
+	{
+		return *this;
+	}
+	long result = amountOfAmmo - other;
+	long newOther = 0;
+	if (result < 0)
+	{
+		newOther = 0 - result;
+		result += newOther;
+	}
+	return Ammo(this->ammoType, result, maximumAmmo, this->damage, this->lifeTime, this->ammoPulse);
+}
+
 void Ammo::operator+=(Ammo& other)
 {
 	*this = *this + other;

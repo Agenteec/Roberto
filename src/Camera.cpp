@@ -4,8 +4,8 @@ Camera::Camera():
 	View(),
 	trackingObject(nullptr),
 	moveSpeed(2.f),
-	zoomSpeed(2.f),
-	targetZoom(1.5f),
+	zoomSpeed(2.5f),
+	targetZoom(1.4f),
 	headsUpDisplay()
 {
 

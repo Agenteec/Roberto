@@ -64,6 +64,10 @@ public:
 	/// <param name="other"></param>
 	/// <returns></returns>
 	const Ammo& operator+(Ammo& other);
+	const Ammo& operator-(Ammo& other);
+	const Ammo& operator+(const long& other);
+	const Ammo& operator-(const long& other);
+
 	void operator+=(Ammo& other);
 
 

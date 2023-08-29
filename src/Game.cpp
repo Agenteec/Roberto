@@ -47,9 +47,24 @@ void Game::init(const std::string& mapPath)
 	//Temp
 }
 
-void Game::handleEvent(sf::Event& event)
+void Game::handleEvent(sf::Event& event, sf::RenderWindow& window)
 {
-	
+
+	if (event.type == sf::Event::MouseButtonPressed)
+	{
+		if (event.key.code == sf::Mouse::Left && gameStatus == 1)
+		{
+			player.controlFlags.attackPressed = true;
+		}
+	}
+	if (event.type == sf::Event::MouseButtonReleased)
+	{
+		if (event.key.code == sf::Mouse::Left && gameStatus == 1)
+		{
+			player.controlFlags.attackPressed = false;
+		}
+	}
+
 	if (event.type == sf::Event::KeyPressed)
 	{
 		if (event.key.code == sf::Keyboard::W && gameStatus == 1)
@@ -60,6 +75,8 @@ void Game::handleEvent(sf::Event& event)
 			player.controlFlags.leftPressed = true;
 		if (event.key.code == sf::Keyboard::D && gameStatus == 1)
 			player.controlFlags.rightPressed = true;
+		if (event.key.code == sf::Keyboard::Num1 && gameStatus == 1)
+			player.selectedWeaponIndex = 0;
 	}
 	if (event.type == sf::Event::KeyReleased)
 	{
@@ -72,22 +89,27 @@ void Game::handleEvent(sf::Event& event)
 		if (event.key.code == sf::Keyboard::D)
 			player.controlFlags.rightPressed = false;
 	}
+	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+	// Преобразуем позицию мыши в координаты view
+	sf::Vector2f worldPosition = window.mapPixelToCoords(mousePosition);
+	player.setTargetCoordinates(sf::Vector2f(worldPosition));
+
 }
 
 void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
 	CollisionHandler сollisionHandler;
 	world.Step(60.f*deltaTime.asSeconds(), 8, 3);
-	player.update(deltaTime);
+	player.update(deltaTime, gameObjects, textureManager);
 	level.update(deltaTime);
 	camera.update(deltaTime, window);
 	//Объекты которые уже прошли провекру на контакт с другими объектами
 	std::set<b2Body*> contactedBodies;
-	collisionHandler.handleCollision(&player, contactedBodies, world, gameObjects, true);
+	collisionHandler.handleCollision(&player, contactedBodies, world, gameObjects, textureManager);
 	for (auto& gameObject : gameObjects)
 	{
-		collisionHandler.handleCollision(gameObject, contactedBodies, world, gameObjects );
-		gameObject->update(deltaTime);
+		collisionHandler.handleCollision(gameObject, contactedBodies, world, gameObjects, textureManager );
+		gameObject->update(deltaTime, gameObjects, textureManager);
 
 	}
 	for (size_t i = 0; i < player.ammo.size(); i++)
@@ -105,20 +127,20 @@ void Game::draw(sf::RenderWindow& window)
 	for (auto& gameObject : gameObjects)
 	{
 		window.draw(*gameObject);
-
-		if (gameObject->getHitboxFlag() && gameObject->getPhysicalObjectFlag() && GlobalConsts::hitBoxOn)
+		//gameObject->getHitboxFlag()
+		if (gameObject->getPhysicalObjectFlag())
 		{
 			Entity* entity = reinterpret_cast<Entity*>(gameObject);
-			entity->drawHitbox(window);
+			entity->draw(window);
 		}
 	}
 
 	window.draw(player);
-	if(player.getHitboxFlag()&& GlobalConsts::hitBoxOn)
-		player.drawHitbox(window);
+	//if(player.getHitboxFlag()&& GlobalConsts::hitBoxOn)
+	player.draw(window);
 }
 
-void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*> &contactedBodies, b2World& world, std::vector<GameObject*>& gameObjects, const bool& isPlayer)
+void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*> &contactedBodies, b2World& world, std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
 {
 	std::set<GameObject*> objectsToRemove;
 	if (!gameObject->getPhysicalObjectFlag())
@@ -146,7 +168,7 @@ void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*>
 		//	fixture = fixture->GetNext(); // Перейти к следующей фикстуре
 		//}
 		b2ContactEdge* contactEdge = entityA->body->GetContactList();
-		processContactEdge(entityA, contactEdge, contactedBodies, objectsToRemove, world);
+		processContactEdge(entityA, contactEdge, contactedBodies, objectsToRemove, world, textureManager);
 	}
 	else
 	{
@@ -157,7 +179,7 @@ void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*>
 	
 	removeObjects(gameObjects, objectsToRemove, world);
 }
-void CollisionHandler::processContactEdge(Entity* entityA, b2ContactEdge* contactEdge, std::set<b2Body*>& contactedBodies, std::set<GameObject*>& objectsToRemove, b2World& world)
+void CollisionHandler::processContactEdge(Entity* entityA, b2ContactEdge* contactEdge, std::set<b2Body*>& contactedBodies, std::set<GameObject*>& objectsToRemove, b2World& world, TextureManager& textureManager)
 {
 	//std::cout << contactEdge << std::endl;
 	while (contactEdge) {
@@ -180,9 +202,9 @@ void CollisionHandler::processContactEdge(Entity* entityA, b2ContactEdge* contac
 				const ObjectType& objB = entityB->gameObjectData.getGameObjectType();
 				if (objA == ObjectType::PlayerType )
 				{
-					std::cout << ANSI_COLOR_CYAN;
+					/*std::cout << ANSI_COLOR_CYAN;
 					std::cout << objectTypeToString(objA) << " collided with " << objectTypeToString(objB) << std::endl;
-					std::cout << ANSI_COLOR_RESET;
+					std::cout << ANSI_COLOR_RESET;*/
 					if (objB == ObjectType::ObjectWeaponType)
 					{
 						bool weapoFlaf = false;
@@ -224,9 +246,20 @@ void CollisionHandler::processContactEdge(Entity* entityA, b2ContactEdge* contac
 									
 								
 							}
+							//Если у игрока ещё нет такого оружия
 							if (!weapoFlaf)
 							{
-								Weapon* weapon = new Weapon(weaponB->getWeaponType());
+								Weapon* weapon = new GrenadeLauncher();
+								switch (weaponB->getWeaponType())
+								{
+								case WeaponType::WGrenadeLauncherType:
+									weapon->setTexture(*textureManager.textures["grenade_launcher"]);
+									weapon->setTrakingObject(entityA);
+									break;
+								default:
+									break;
+								}
+								
 								entityA->weapons.push_back(weapon);
 								
 								objectsToRemove.insert(entityB);

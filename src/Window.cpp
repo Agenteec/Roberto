@@ -47,8 +47,8 @@ void MainWindow::Display()
 				window.close();
 			gui.handleEvent(event);
 			if (guiManager.flags.onGame)
-				game.handleEvent(event);
-
+				game.handleEvent(event, window);
+				
 			if (event.type == sf::Event::KeyPressed)
 			{
 				if (!guiManager.flags.onMainMenu && event.key.code == sf::Keyboard::Escape)

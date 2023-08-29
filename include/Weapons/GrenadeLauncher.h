@@ -1,20 +1,14 @@
 #pragma once
 //GrenadeLauncher.h
 #include "Weapon.h"
-class GrenadeLauncher
+
+#include "Ammo/AmmoGrenadeLauncher.h"
+
+class GrenadeLauncher: public Weapon
 {
 public:
 	GrenadeLauncher();
-	~GrenadeLauncher();
-
+	void shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager) override;
 private:
 
 };
-
-GrenadeLauncher::GrenadeLauncher()
-{
-}
-
-GrenadeLauncher::~GrenadeLauncher()
-{
-}

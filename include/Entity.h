@@ -1,12 +1,12 @@
 #pragma once
-
+//Entity.h
 #include <SFML/Graphics.hpp>
 #include <box2d/box2d.h>
 #include "GlobalConsts.h"
 #include "GameObject.h"
 #include "GameObjectData.h"
-#include "Weapons/Weapons.h"
-
+#include "GameMath.h"
+#include "Weapons/GrenadeLauncher.h"
 class Entity : public GameObject
 {
 public:
@@ -50,9 +50,11 @@ public:
 
 	void setBodyPosition(const b2Vec2 &vec);
 
-	void virtual update(const sf::Time& deltaTime);
+	void setTargetCoordinates(const sf::Vector2f& targetCoordinates);
 
-	void drawHitbox(sf::RenderWindow& window);
+	virtual void update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager);
+
+	void draw(sf::RenderWindow& window) override;
 
 	void setPhysicalProperties(const float& density, const float& friction, const float& restitution);
 
@@ -66,6 +68,7 @@ public:
 	const float& getResistanceCoefficient();
 	const float& getHealthPoints();
 	const float& getMaxHealthPoints();
+	const sf::Vector2f& getTargetCoordinates();
 	const bool& isHitted();
 
 
@@ -88,7 +91,9 @@ private:
 	/// </summary>
 	sf::Shape* hitBox;
 
-
-
+	/// <summary>
+	/// Координаты для цели(для оружия)
+	/// </summary>
+	sf::Vector2f targetCoordinates;
 };
 
