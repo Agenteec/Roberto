@@ -9,8 +9,7 @@ Entity::Entity() :
 	hitted(false),
 	resistanceCoefficient(0.1f),
 	selectedAmmoIndex(-1),
-	selectedWeaponIndex(-1),
-	gameObjectData()
+	selectedWeaponIndex(-1)
 {
 }
 

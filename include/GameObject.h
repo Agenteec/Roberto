@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "TextureManager.h"
-
+#include "GameObjectData.h"
 /// <summary>
 /// Абстрактный класс игрового объекта
 /// </summary>
@@ -18,7 +18,7 @@ public:
 	void setHitboxFlag(const bool& hitboxFlag);
 	const bool& getHitboxFlag();
 	const bool& getPhysicalObjectFlag();
-
+	GameObjectData gameObjectData;
 
 private:
 	/// <summary>

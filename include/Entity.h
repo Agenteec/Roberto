@@ -31,10 +31,6 @@ public:
 	/// Иедекс снарядов для оружия в руках
 	/// </summary>
 	int selectedAmmoIndex;
-
-
-
-	GameObjectData gameObjectData;
 	
 	Entity();
 

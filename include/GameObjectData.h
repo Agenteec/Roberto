@@ -10,6 +10,7 @@ enum ObjectType {
 	PepsiType,
 	ObjectWeaponType,
 	ObjectAmmoType,
+	DynamicProjectileType
 };
 enum AmmoType
 {
@@ -36,6 +37,8 @@ class GameObjectData
 	/// </summary>
 	ObjectType objectType;
 public:
+	GameObjectData();
+	GameObjectData(const ObjectType& objectType);
 	void setGameObjectType(const ObjectType& objectType);
 	const ObjectType& getGameObjectType();
 };
