@@ -4,6 +4,7 @@
 #include "TextureManager.h"
 #include "GameObjectData.h"
 #include "HeadUpDisplay.h"
+#include <box2d/box2d.h>
 /// <summary>
 /// Абстрактный класс игрового объекта
 /// </summary>
@@ -13,7 +14,7 @@ public:
 
 	GameObject();
 
-	virtual void update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager) = 0;
+	virtual void update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager, b2World& world) = 0;
 	virtual void draw(sf::RenderWindow& window) = 0;
 	void setPhysicalObjectFlag(const bool& physicalObjectFlag);
 	void setHitboxFlag(const bool& hitboxFlag);

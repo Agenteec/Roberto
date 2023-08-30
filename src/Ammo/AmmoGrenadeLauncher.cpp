@@ -1,11 +1,11 @@
 #include "Ammo/AmmoGrenadeLauncher.h"
 
-AmmoGrenadeLauncher::AmmoGrenadeLauncher()
+GrenadeLauncherProjectaile::GrenadeLauncherProjectaile()
 	:DynamicProjectile(AmmoType::AGrenadeLauncherType)
 {
 
 }
-AmmoGrenadeLauncher::~AmmoGrenadeLauncher()
+GrenadeLauncherProjectaile::~GrenadeLauncherProjectaile()
 {
 
 }

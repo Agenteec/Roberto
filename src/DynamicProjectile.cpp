@@ -1,10 +1,14 @@
 #include "DynamicProjectile.h"
+#include "Entity.h"
 
 DynamicProjectile::DynamicProjectile():
 	Ammo(AmmoType::AVoidType),
 	body(nullptr),
 	fixture(nullptr),
 	hitBox(nullptr),
+	resistanceCoefficient(0.005f),
+	explosionRadius(20.f),
+	explosionPulse(1000.f),
 	gameObjectData(ObjectType::DynamicProjectileType)
 {
 
@@ -14,6 +18,9 @@ DynamicProjectile::DynamicProjectile(const AmmoType& ammoType):
 	body(nullptr),
 	fixture(nullptr),
 	hitBox(nullptr),
+	explosionRadius(20.f),
+	explosionPulse(1000.f),
+	resistanceCoefficient(0.005f),
 	gameObjectData(ObjectType::DynamicProjectileType)
 {
 
@@ -95,14 +102,13 @@ void DynamicProjectile::setBodyPolygonShape(const b2Vec2* vertices, const int nu
 	//Не рабочий код
 }
 
-
-void DynamicProjectile::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
+void DynamicProjectile::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager, b2World& world)
 {
 	if (body == nullptr)
 	{
 		return;
 	}
-	//applyResistance(deltaTime.asSeconds());
+	//applyResistance();
 	b2Vec2 pos = body->GetPosition();
 	setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
 	setRotation(body->GetAngle() * 180.f / 3.14);
@@ -112,7 +118,31 @@ void DynamicProjectile::update(const sf::Time& deltaTime, std::vector<GameObject
 		hitBox->setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
 		hitBox->setRotation(body->GetAngle() * 180.f / 3.14);
 	}
+	if (getLifeTime() > 0)
+	{
 
+		setLifeTime(getLifeTime() - deltaTime.asSeconds());
+	}
+	else
+	{
+		destroy(world, gameObjects);
+		world.DestroyBody(body);
+		gameObjects.erase(std::remove_if(gameObjects.begin(), gameObjects.end(),
+			[this](GameObject* obj) { return obj == this; }),
+			gameObjects.end());
+		
+	}
+	
+
+}
+
+void DynamicProjectile::applyResistance()
+{
+	const b2Vec2& velocity = body->GetLinearVelocity();
+
+	b2Vec2 resistance_force = resistanceCoefficient * velocity ;
+
+	body->ApplyLinearImpulseToCenter(resistance_force, true);
 }
 
 void DynamicProjectile::draw(sf::RenderWindow& window)
@@ -133,4 +163,97 @@ void DynamicProjectile::setBodyPosition(const sf::Vector2f& vec)
 void DynamicProjectile::setBodyPosition(const b2Vec2& vec)
 {
 	body->SetTransform(vec, body->GetAngle());
+}
+
+void DynamicProjectile::setExplodes(const bool& explodes)
+{
+	this->explodes = explodes;
+}
+
+const bool& DynamicProjectile::isExplodes()
+{
+	return explodes;
+}
+
+void DynamicProjectile::setExplosionRadius(const float& explosionRadius)
+{
+	this->explosionRadius;
+}
+
+const float& DynamicProjectile::getExplosionRadius()
+{
+	return explosionRadius;
+}
+
+void DynamicProjectile::setExplosionPulse(const float& explosionPulse)
+{
+	this->explosionPulse = explosionPulse;
+}
+
+const float& DynamicProjectile::getExplosionPulse()
+{
+	return explosionPulse;
+}
+
+void DynamicProjectile::destroy(b2World& world, std::vector<GameObject*>& gameObjects)
+{
+	b2AABB aabb;
+	aabb.lowerBound = body->GetPosition() - b2Vec2(explosionRadius, explosionRadius);
+	aabb.upperBound = body->GetPosition() + b2Vec2(explosionRadius, explosionRadius);
+	std::vector<b2Body*> bodies;
+	for (auto gameOgject: gameObjects)
+	{
+		
+		if (gameOgject->getPhysicalObjectFlag())
+		{
+			if (gameOgject->gameObjectData.getGameObjectType() == ObjectType::DynamicProjectileType)
+			{
+
+				if (reinterpret_cast<DynamicProjectile*>(gameOgject)->body != nullptr)
+				{
+					for (int32 childIndex = 0; childIndex < reinterpret_cast<DynamicProjectile*>(gameOgject)->fixture->GetShape()->GetChildCount(); ++childIndex) {
+						b2AABB fixtureAABB;
+						reinterpret_cast<DynamicProjectile*>(gameOgject)->fixture->GetShape()->ComputeAABB(&fixtureAABB, b2Transform(), childIndex);
+						if (b2TestOverlap(aabb, fixtureAABB))
+						{
+							bodies.push_back(reinterpret_cast<DynamicProjectile*>(gameOgject)->body);
+						}
+					}
+				}
+
+
+				
+			}
+			else if(gameOgject->gameObjectData.getGameObjectType() != ObjectType::UndefinedType)
+			{
+				if (reinterpret_cast<Entity*>(gameOgject)->body != nullptr)
+				{
+					for (int32 childIndex = 0; childIndex < reinterpret_cast<Entity*>(gameOgject)->fixture->GetShape()->GetChildCount(); ++childIndex) {
+						b2AABB fixtureAABB;
+						reinterpret_cast<Entity*>(gameOgject)->fixture->GetShape()->ComputeAABB(&fixtureAABB, b2Transform(), childIndex);
+						if (b2TestOverlap(aabb, fixtureAABB))
+						{
+							bodies.push_back(reinterpret_cast<Entity*>(gameOgject)->body);
+						}
+					}
+				}
+				
+			}
+		}
+		
+	}
+	for (b2Body* b : bodies) {
+		b2Vec2 bodyPos = b->GetPosition();
+		b2Vec2 explosionDir = bodyPos - b->GetPosition();
+		float distance = explosionDir.Length();
+
+		if (distance < explosionRadius) {
+			float strength = 1.0f - distance / explosionRadius;
+			b2Vec2 impulse = explosionDir;
+			impulse.Normalize();
+			impulse *= strength * (explosionPulse);
+
+			body->ApplyLinearImpulseToCenter(impulse, true);
+		}
+	}
 }

@@ -8,7 +8,7 @@ class GrenadeLauncher: public Weapon
 {
 public:
 	GrenadeLauncher();
-	void shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager) override;
+	bool shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager, GameObject* whoShot, b2World& world) override;
 private:
 
 };

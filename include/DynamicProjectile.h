@@ -3,6 +3,16 @@
 #include "GameObject.h"
 #include "GlobalConsts.h"
 #include <box2d/box2d.h>
+class MyQueryCallback : public b2QueryCallback {
+public:
+	bool ReportFixture(b2Fixture* fixture) override {
+		// Ваш код обработки объекта, например, добавление его в список
+		bodiesInRange.push_back(fixture->GetBody());
+		return true; // true, чтобы продолжить обход объектов
+	}
+
+	std::vector<b2Body*> bodiesInRange; // Список объектов в зоне взрыва
+};
 class DynamicProjectile : public Ammo, public GameObject
 {
 public:
@@ -23,7 +33,9 @@ public:
 
 	void setBodyPolygonShape(const b2Vec2* vertices, const int num_segments = 4);
 
-	void update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager);
+	void update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager, b2World& world);
+
+	void applyResistance();
 
 	void draw(sf::RenderWindow& window);
 
@@ -40,6 +52,8 @@ public:
 
 	void setExplosionPulse(const float& explosionPulse);
 	const float& getExplosionPulse();
+
+	void destroy(b2World& world, std::vector<GameObject*>& gameObjects);
 private:
 	/// <summary>
 	/// Фигура hitBox
@@ -71,4 +85,8 @@ private:
 	/// </summary>
 	float explosionPulse;
 
+	/// <summary>
+	/// Коэффициент сопроте=ивления воздуха
+	/// </summary>
+	float resistanceCoefficient;
 };

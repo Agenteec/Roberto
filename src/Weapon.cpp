@@ -11,6 +11,7 @@ Weapon::Weapon() :
 	dCooldown(0.f),
 	avable(false),
 	reloading(false),
+	cooldowning(false),
 	trackingObject(nullptr)
 {
 }
@@ -36,27 +37,38 @@ Weapon::Weapon
 	dCooldown(0.f),
 	avable(avable),
 	reloading(false),
+	cooldowning(false),
 	trackingObject(trackingObject)
 
 {
 }
 
-void Weapon::shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
+bool Weapon::shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager, GameObject* whoShot, b2World& world)
 {
-	std::cout << "Beng" << std::endl;
-	if (isReloading())
+	
+	if (reloading||cooldowning)
 	{
-		return;
+		return false;
 	}
-	Ammo magazine = getAmmoMagazine();
-	if (magazine.getAmountOfAmmo() == 0)
+	
+	if (ammoMagazine.getAmountOfAmmo() == 0)
 	{
-		setReload(true);
+		reloading = true;
+		std::cout << "Reload..." << std::endl;
+		return false;
 	}
 	else
 	{
-
+		ammoMagazine - 1;
+		if (ammoMagazine.getAmountOfAmmo() != 0)
+		{
+			cooldowning = true;
+			std::cout << "Cooldown..." << std::endl;
+		}
+		return true;
+			
 	}
+	return false;
 }
 
 void Weapon::update(const float& dts, const float& angle, Ammo& ammo)
@@ -79,17 +91,37 @@ void Weapon::update(const float& dts, const float& angle, Ammo& ammo)
 	if (reloading)
 	{
 		if (ammo.getAmountOfAmmo() > 0) {
-
+			dReloadTime += dts;
 			if (dReloadTime >= reloadTime)
 			{
 				dReloadTime = 0.f;
-
+				reloading = false;
+				ammoMagazine += ammo;
 			}
 		}
 		else
 		{
 			dReloadTime = 0;
 			reloading = false;
+		}
+	}
+
+	//Перезарядка внутри ствольной коробки
+	if (cooldowning)
+	{
+		if (ammoMagazine.getAmountOfAmmo() > 0) {
+			dCooldown += dts;
+			if (dCooldown >= cooldown)
+			{
+				dCooldown = 0.f;
+				cooldowning = false;
+
+			}
+		}
+		else
+		{
+			dCooldown = 0;
+			cooldowning = false;
 		}
 	}
 
@@ -183,6 +215,16 @@ const bool& Weapon::isReloading()
 void Weapon::setReload(const bool& reloading)
 {
 	this->reloading = reloading;
+}
+
+const bool& Weapon::isCooldowning()
+{
+	return cooldowning;
+}
+
+void Weapon::setCooldowning(const bool& cooldowning)
+{
+	this->cooldowning = cooldowning;
 }
 
 GameObject* Weapon::getTrakingObject()

@@ -3,8 +3,11 @@
 #include "GameObject.h"
 #include "TextureManager.h"
 #include <SFML/Graphics.hpp>
+#include <box2d/box2d.h>
 class Weapon : public sf::Sprite
 {
+
+
 	/// <summary>
 	/// Привязка к entity
 	/// </summary>
@@ -18,6 +21,10 @@ class Weapon : public sf::Sprite
 	/// </summary>
 	Ammo ammoMagazine;
 	
+	/// <summary>
+	/// Угол поворота ствола
+	/// </summary>
+	float angle;
 
 	/// <summary>
 	/// Импульс с которым будет вылетать снаряд(сумируется с ammoPulse)
@@ -59,6 +66,11 @@ class Weapon : public sf::Sprite
 	/// </summary>
 	bool reloading;
 
+	/// <summary>
+	/// Флаг перерыва пежду выстрелами
+	/// </summary>
+	bool cooldowning;
+
 
 public:
 	Weapon();
@@ -76,7 +88,7 @@ public:
 
 	);
 
-	virtual void shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager);
+	virtual bool shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager, GameObject* whoShot, b2World& world);
 
 	void update(const float& dts,const float& angle, Ammo& ammo);
 
@@ -101,11 +113,17 @@ public:
 	const float& getAccuracy();
 	void setAccuracy(const float& accuracy);
 
+	const float& getAngle();
+	void setAngle(const float& angle);
+
 	const bool& isAvable();
 	void setAvable(const bool& avable);
 
 	const bool& isReloading();
 	void setReload(const bool& reloading);
+
+	const bool& isCooldowning();
+	void setCooldowning(const bool& cooldowning);
 
 	GameObject* getTrakingObject();
 	void setTrakingObject(GameObject* trakingObject);

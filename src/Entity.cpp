@@ -7,9 +7,10 @@ Entity::Entity() :
 	fixture(nullptr),
 	hitBox(nullptr),
 	hitted(false),
-	resistanceCoefficient(0.1f),
+	resistanceCoefficient(1.1f),
 	selectedAmmoIndex(-1),
-	selectedWeaponIndex(-1)
+	selectedWeaponIndex(-1),
+	maxVelocity(0.1f)
 {
 	HUD::Label label;
 	label.type = HUD::FpsType;
@@ -121,7 +122,7 @@ void Entity::setTargetCoordinates(const sf::Vector2f& targetCoordinates)
 	this->targetCoordinates = targetCoordinates;
 }
 
-void Entity::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
+void Entity::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager, b2World& world)
 {
 	float dts = deltaTime.asSeconds();
 	if (body == nullptr)
@@ -221,11 +222,22 @@ void Entity::setPhysicalProperties(const float& density, const float& friction, 
 
 void Entity::applyResistance(const float& deltaTime)
 {
-	b2Vec2 velocity = body->GetLinearVelocity();
+	const b2Vec2& velocity = body->GetLinearVelocity();
+	if (velocity.Length()> maxVelocity)
+	{
+		b2Vec2 resistance_force = -resistanceCoefficient* deltaTime * velocity;
 
-	b2Vec2 resistance_force = -resistanceCoefficient * velocity ;
+		body->ApplyForceToCenter(resistance_force, true);
+	}
+	else
+	{
+		b2Vec2 resistance_force = -resistanceCoefficient/2.f* deltaTime * velocity;
 
-	body->ApplyForceToCenter(resistance_force, true);
+		body->ApplyForceToCenter(resistance_force, true);
+	}
+	
+
+	
 
 
 }
@@ -246,6 +258,11 @@ void Entity::setMaxHealthPoints(const float& maxHealthPoints)
 	this->maxHealthPoints = maxHealthPoints;
 }
 
+void Entity::setMaxVelocity(const float& maxVelocity)
+{
+	this->maxVelocity = maxVelocity;
+}
+
 void Entity::setHittedFlag(const bool& hitted)
 {
 	this->hitted = hitted;
@@ -264,6 +281,11 @@ const float& Entity::getHealthPoints()
 const float& Entity::getMaxHealthPoints()
 {
 	return maxHealthPoints;
+}
+
+const float& Entity::getMaxVelocity()
+{
+	return maxVelocity;
 }
 
 const sf::Vector2f& Entity::getTargetCoordinates()

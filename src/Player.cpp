@@ -1,7 +1,7 @@
 #include "Player.h"
 
 Player::Player() :
-	speed(0.8f),
+	speed(0.1f),
 	debugMode(false),
 	live(true),
 	Entity()
@@ -9,11 +9,11 @@ Player::Player() :
 	setMaxHealthPoints(100.f);
 	setHealthPoints(100.f);
 
-	setResistanceCoefficient(0.1f);
+	setResistanceCoefficient(8.5f);
 	bodyDef.fixedRotation = true;
 }
 
-void Player::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
+void Player::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager, b2World& world)
 {
 	float dts = deltaTime.asSeconds();
 	if (controlFlags.upPressed)
@@ -30,10 +30,10 @@ void Player::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObj
 		if (!weapons.empty() && selectedWeaponIndex != -1) {
 			
 			Weapon* w = weapons[selectedWeaponIndex];
-			w->shot(gameObjects, textureManager);
+			w->shot(gameObjects, textureManager,this, world);
 		}
 	}
-	Entity::update(deltaTime, gameObjects, textureManager);
+	Entity::update(deltaTime, gameObjects, textureManager, world);
 }
 
 void Player::setSpeed(const float& speed)

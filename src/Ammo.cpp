@@ -36,7 +36,7 @@ Ammo::Ammo(const AmmoType& ammoType, const bool& isEntyty)
 	{
 	case AmmoType::AGrenadeLauncherType:
 		
-		*this = Ammo(ammoType,0,isEntyty?9:1, 65.f, 5.f, 20);
+		*this = Ammo(ammoType,0,isEntyty?30:4, 65.f, 5.f, 20);
 		break;
 	case AmmoType::AVoidType:
 		*this = Ammo(ammoType, 0, 0, 0, 0, 0);
@@ -174,6 +174,7 @@ const Ammo& Ammo::operator-(const long& other)
 		newOther = 0 - result;
 		result += newOther;
 	}
+	this->amountOfAmmo = result;
 	return Ammo(this->ammoType, result, maximumAmmo, this->damage, this->lifeTime, this->ammoPulse);
 }
 

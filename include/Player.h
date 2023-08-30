@@ -29,7 +29,7 @@ public:
 	Player();
 	ControlFlags controlFlags;
 
-	void update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager) override;
+	void update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager, b2World& world) override;
 
 	void setSpeed(const float& speed);
 	void setHittedFlag(const bool& hitted);

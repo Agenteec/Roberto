@@ -102,7 +102,7 @@ void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
 	CollisionHandler сollisionHandler;
 	world.Step(60.f*deltaTime.asSeconds(), 8, 3);
-	player.update(deltaTime, gameObjects, textureManager);
+	player.update(deltaTime, gameObjects, textureManager, world);
 	level.update(deltaTime);
 	camera.update(deltaTime, window);
 	//Объекты которые уже прошли провекру на контакт с другими объектами
@@ -110,8 +110,8 @@ void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 	collisionHandler.handleCollision(&player, contactedBodies, world, gameObjects, textureManager);
 	for (auto& gameObject : gameObjects)
 	{
-		collisionHandler.handleCollision(gameObject, contactedBodies, world, gameObjects, textureManager );
-		gameObject->update(deltaTime, gameObjects, textureManager);
+		//collisionHandler.handleCollision(gameObject, contactedBodies, world, gameObjects, textureManager );
+		gameObject->update(deltaTime, gameObjects, textureManager, world);
 
 	}
 	for (size_t i = 0; i < player.ammo.size(); i++)
