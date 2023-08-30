@@ -1,6 +1,13 @@
 #include "Camera.h"
 
-Camera::Camera(): 
+void Camera::updateHUD(const float& dts, sf::RenderWindow& window)
+{
+	
+	headsUpDisplay.fpsText.setString("FPS: " + std::to_string(static_cast<int>(1.f / dts)));
+	headsUpDisplay.fpsText.setPosition(getCenter().x + window.getSize().x / 1.7f, getCenter().y - window.getSize().y / 1.7f);
+}
+
+Camera::Camera():
 	View(),
 	trackingObject(nullptr),
 	moveSpeed(2.f),
@@ -19,7 +26,6 @@ void Camera::setTracking(GameObject* trackingObject)
 void Camera::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
 	float dts = deltaTime.asSeconds();
-	headsUpDisplay.fpsText.setString("FPS: " + std::to_string(static_cast<int>(1.f/dts)));
 	#pragma region ZOOM
 	float currentZoom = getSize().x / window.getSize().x;
 	
@@ -45,8 +51,8 @@ void Camera::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 		setCenter(newPosition);
 	}
 	#pragma endregion
-	headsUpDisplay.fpsText.setPosition(this->getCenter().x + window.getSize().x/1.7f, this->getCenter().y - window.getSize().y / 1.7f);
-
+	
+	updateHUD(dts, window);
 	window.setView(*this);
 	
 }

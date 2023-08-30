@@ -27,6 +27,7 @@ public:
 		
 		window.draw(fpsText);
 	}
+
 };
 class Camera : public sf::View
 {
@@ -36,12 +37,17 @@ class Camera : public sf::View
 	GameObject* trackingObject;
 	HeadsUpDisplay headsUpDisplay;
 	sf::RectangleShape blind;
+
+
+	void updateHUD(const float& dts, sf::RenderWindow& window);
+
 public:
 	Camera();
 
 	void setTracking(GameObject* trackingObject);
 
 	void update(const sf::Time& deltaTime, sf::RenderWindow& window);
+
 
 	void draw(sf::RenderWindow& window);
 
