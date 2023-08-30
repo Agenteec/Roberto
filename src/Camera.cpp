@@ -2,9 +2,16 @@
 
 void Camera::updateHUD(const float& dts, sf::RenderWindow& window)
 {
+	if (trackingObject != nullptr)
+	{
+		std::vector<HUD::Label>& labels = trackingObject->headUpDisplay.labels;
+		for (auto& label : labels)
+		{
+			label.text.setPosition(getCenter().x + window.getSize().x / label.positionCoefficient.x, getCenter().y - window.getSize().y / label.positionCoefficient.y);
+		}
+	}
 	
-	headsUpDisplay.fpsText.setString("FPS: " + std::to_string(static_cast<int>(1.f / dts)));
-	headsUpDisplay.fpsText.setPosition(getCenter().x + window.getSize().x / 1.7f, getCenter().y - window.getSize().y / 1.7f);
+	//headUpDisplay.fpsText.setString("FPS: " + std::to_string(static_cast<int>(1.f / dts)));
 }
 
 Camera::Camera():
@@ -12,8 +19,7 @@ Camera::Camera():
 	trackingObject(nullptr),
 	moveSpeed(2.f),
 	zoomSpeed(2.5f),
-	targetZoom(1.4f),
-	headsUpDisplay()
+	targetZoom(1.4f)
 {
 
 }
@@ -59,7 +65,7 @@ void Camera::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 
 void Camera::draw(sf::RenderWindow& window)
 {
-	headsUpDisplay.draw(window);
+	trackingObject->headUpDisplay.draw(window);
 }
 
 void Camera::setMoveSpeed(const float& speed)

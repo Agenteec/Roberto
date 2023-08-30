@@ -1,4 +1,5 @@
 #pragma once
+#include "SFML/Graphics.hpp"
 // ”правл€ющие последовательности ANSI дл€ цветов
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -12,4 +13,5 @@ class GlobalConsts
 public:
 	static const float SCALE;
 	static bool hitBoxOn;
+	static sf::Font font;
 };

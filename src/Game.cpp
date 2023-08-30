@@ -12,6 +12,8 @@ Game::Game():
 
 void Game::init(const std::string& mapPath)
 {
+	GlobalConsts::font.loadFromFile("Resources/fonts/impact.ttf");
+
 	const int texturesCount = 6;
 	//   Path \ Name
 	std::pair<std::string, std::string> textures[texturesCount] =
