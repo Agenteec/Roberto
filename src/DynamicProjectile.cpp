@@ -9,6 +9,15 @@ DynamicProjectile::DynamicProjectile():
 {
 
 }
+DynamicProjectile::DynamicProjectile(const AmmoType& ammoType):
+	Ammo(ammoType, false),
+	body(nullptr),
+	fixture(nullptr),
+	hitBox(nullptr),
+	gameObjectData(ObjectType::DynamicProjectileType)
+{
+
+}
 void DynamicProjectile::initBody(b2World* world, const sf::Vector2f& pos, const float& angle, const b2BodyType& bodyType)
 {
 	bodyDef.type = bodyType;

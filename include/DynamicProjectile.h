@@ -7,6 +7,7 @@ class DynamicProjectile : public Ammo, public GameObject
 {
 public:
 	DynamicProjectile();
+	DynamicProjectile(const AmmoType& ammoType);
 	GameObjectData gameObjectData;
 	#pragma region Body
 	b2BodyDef bodyDef;

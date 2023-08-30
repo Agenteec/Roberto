@@ -43,6 +43,7 @@ Weapon::Weapon
 
 void Weapon::shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
 {
+	std::cout << "Beng" << std::endl;
 	if (isReloading())
 	{
 		return;
@@ -58,8 +59,9 @@ void Weapon::shot(std::vector<GameObject*>& gameObjects, TextureManager& texture
 	}
 }
 
-void Weapon::update(const float& angle, Ammo& ammo)
+void Weapon::update(const float& dts, const float& angle, Ammo& ammo)
 {
+	//Поворот оружия
 	if (trackingObject != nullptr)
 	{
 		setPosition(trackingObject->getPosition());
@@ -72,6 +74,23 @@ void Weapon::update(const float& angle, Ammo& ammo)
 			setScale(getScale().x, (getScale().y < 0) ? getScale().y : getScale().y * -1.f);
 		}
 		setRotation(angle);
+	}
+	//перезарядка
+	if (reloading)
+	{
+		if (ammo.getAmountOfAmmo() > 0) {
+
+			if (dReloadTime >= reloadTime)
+			{
+				dReloadTime = 0.f;
+
+			}
+		}
+		else
+		{
+			dReloadTime = 0;
+			reloading = false;
+		}
 	}
 
 }

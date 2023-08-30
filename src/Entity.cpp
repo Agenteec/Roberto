@@ -116,11 +116,12 @@ void Entity::setTargetCoordinates(const sf::Vector2f& targetCoordinates)
 
 void Entity::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
 {
+	float dts = deltaTime.asSeconds();
 	if (body == nullptr)
 	{
 		return;
 	}
-	applyResistance(deltaTime.asSeconds());
+	applyResistance(dts);
 	b2Vec2 pos = body->GetPosition();
 	setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
 	setRotation(body->GetAngle() * 180.f / 3.14);
@@ -160,12 +161,12 @@ void Entity::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObj
 					}
 				}
 			}
-			w->update(angleTwoPoints(getPosition(), targetCoordinates), ammo[selectedAmmoIndex]);
+			w->update(dts,angleTwoPoints(getPosition(), targetCoordinates), ammo[selectedAmmoIndex]);
 		}
 		else
 		{
 			Ammo voidAmmo(AmmoType::AVoidType);
-			w->update(angleTwoPoints(getPosition(), targetCoordinates), voidAmmo);
+			w->update(dts,angleTwoPoints(getPosition(), targetCoordinates), voidAmmo);
 		}
 
 

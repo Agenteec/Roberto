@@ -78,7 +78,7 @@ public:
 
 	virtual void shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager);
 
-	void update(const float& angle, Ammo& ammo);
+	void update(const float& dts,const float& angle, Ammo& ammo);
 
 	const WeaponType& getWeaponType();
 	void setWeaponType(const WeaponType& weaponType);

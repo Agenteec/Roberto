@@ -2,7 +2,7 @@
 
 GrenadeLauncher::GrenadeLauncher():Weapon(
 	WeaponType::WGrenadeLauncherType,
-	Ammo(AmmoType::AGrenadeLauncherType),
+	Ammo(AmmoType::AGrenadeLauncherType, false),
 	20.f,
 	1.f,
 	1.f,
@@ -15,5 +15,5 @@ GrenadeLauncher::GrenadeLauncher():Weapon(
 
 void GrenadeLauncher::shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
 {
-
+	Weapon::shot( gameObjects, textureManager);
 }

@@ -24,9 +24,11 @@ void Player::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObj
 		body->ApplyLinearImpulseToCenter(b2Vec2 ( - 1.f * dts * speed, 0), true);
 	if (controlFlags.rightPressed)
 		body->ApplyLinearImpulseToCenter(b2Vec2(1.f * dts * speed, 0), true);
-	if (controlFlags.downPressed)
+	if (controlFlags.attackPressed)
 	{
+		
 		if (!weapons.empty() && selectedWeaponIndex != -1) {
+			
 			Weapon* w = weapons[selectedWeaponIndex];
 			w->shot(gameObjects, textureManager);
 		}

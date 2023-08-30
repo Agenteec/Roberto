@@ -1,7 +1,7 @@
 #include "Ammo/AmmoGrenadeLauncher.h"
 
 AmmoGrenadeLauncher::AmmoGrenadeLauncher()
-	:Ammo(AmmoType::AGrenadeLauncherType)
+	:DynamicProjectile(AmmoType::AGrenadeLauncherType)
 {
 
 }
