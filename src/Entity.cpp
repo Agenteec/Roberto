@@ -175,7 +175,7 @@ void Entity::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObj
 					label.text.setString("Ammo: " + std::to_string(static_cast<long>(w->getAmmoMagazine().getAmountOfAmmo())) + "/" + std::to_string(static_cast<long>(ammo[selectedAmmoIndex].getAmountOfAmmo())));
 			}
 			
-			w->update(angleTwoPoints(getPosition(), targetCoordinates), ammo[selectedAmmoIndex]);
+			w->update(dts,angleTwoPoints(getPosition(), targetCoordinates), ammo[selectedAmmoIndex]);
 		}
 		else
 		{
