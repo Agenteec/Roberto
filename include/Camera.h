@@ -21,7 +21,6 @@ public:
 
 	void update(const sf::Time& deltaTime, sf::RenderWindow& window);
 
-
 	void draw(sf::RenderWindow& window);
 
 	void setMoveSpeed(const float& speed);
