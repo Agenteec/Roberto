@@ -37,7 +37,14 @@ private:
 	sf::Shape* hitBox;
 
 	/// <summary>
-	/// Координаты для цели(для оружия)
+	/// Координаты для цели(для снаряда)
 	/// </summary>
 	sf::Vector2f targetCoordinates;
+
+	/// <summary>
+	/// Запоминаем сущность, которая сделала выстрел
+	/// </summary>
+	GameObject* whoShot;
+
+
 };
