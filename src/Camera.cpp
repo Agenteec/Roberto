@@ -10,8 +10,6 @@ void Camera::updateHUD(const float& dts, sf::RenderWindow& window)
 			label.text.setPosition(getCenter().x + window.getSize().x / label.positionCoefficient.x, getCenter().y - window.getSize().y / label.positionCoefficient.y);
 		}
 	}
-	
-	//headUpDisplay.fpsText.setString("FPS: " + std::to_string(static_cast<int>(1.f / dts)));
 }
 
 Camera::Camera():

@@ -14,11 +14,18 @@ Entity::Entity() :
 	HUD::Label label;
 	label.type = HUD::FpsType;
 	label.text.setFont(GlobalConsts::font);
-	label.text.setString(L"ABOBA");
 	label.text.setCharacterSize(30);
 	label.text.setFillColor(sf::Color::Green);
-	label.text.setPosition(1000, 1000);
 	label.positionCoefficient = sf::Vector2f(1.7f, 1.7f);
+	headUpDisplay.labels.push_back(label);
+
+	label.type = HUD::AmmoType;
+	label.text.setCharacterSize(50);
+	label.positionCoefficient = sf::Vector2f(1.8f, -1.7f);
+	headUpDisplay.labels.push_back(label);
+
+	label.type = HUD::HealthPointType;
+	label.positionCoefficient = sf::Vector2f(-1.5f, -1.7f);
 	headUpDisplay.labels.push_back(label);
 }
 
@@ -158,6 +165,13 @@ void Entity::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObj
 					}
 				}
 			}
+
+			for (auto& label : headUpDisplay.labels)
+			{
+				if (label.type == HUD::AmmoType)
+					label.text.setString("Ammo: " + std::to_string(static_cast<long>(w->getAmmoMagazine().getAmountOfAmmo())) + "/" + std::to_string(static_cast<long>(ammo[selectedAmmoIndex].getAmountOfAmmo())));
+			}
+			
 			w->update(angleTwoPoints(getPosition(), targetCoordinates), ammo[selectedAmmoIndex]);
 		}
 		else
@@ -165,11 +179,20 @@ void Entity::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObj
 			Ammo voidAmmo(AmmoType::AVoidType);
 			w->update(angleTwoPoints(getPosition(), targetCoordinates), voidAmmo);
 		}
-
-
-		
 	}
-		
+
+	for (auto& label : headUpDisplay.labels)
+	{
+		switch (label.type)
+		{
+		case HUD::FpsType:
+			label.text.setString("FPS: " + std::to_string(static_cast<int>(1.f / deltaTime.asSeconds())));
+			break;
+		case HUD::HealthPointType:
+			label.text.setString("HP: " + std::to_string(static_cast<int>(healthPoints)));
+			break;
+		}
+	}
 }
 
 void Entity::draw(sf::RenderWindow& window)

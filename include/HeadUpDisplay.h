@@ -10,7 +10,7 @@ namespace HUD
 	{
 		FpsType,
 		HealthPointType,
-		Ammotype,
+		AmmoType,
 	};
 	struct Label 
 	{
@@ -28,8 +28,6 @@ namespace HUD
 		std::vector<Label> labels;
 		HeadUpDisplay()
 		{
-			
-
 		}
 		void draw(sf::RenderWindow& window)
 		{
