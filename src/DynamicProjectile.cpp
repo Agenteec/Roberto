@@ -15,6 +15,7 @@ void DynamicProjectile::initBody(b2World* world, const sf::Vector2f& pos, const 
 	bodyDef.position.Set(pos.x / GlobalConsts::SCALE, pos.y / GlobalConsts::SCALE);
 	bodyDef.angle = angle / 180.f * b2_pi;
 	body = world->CreateBody(&bodyDef);
+	body->SetBullet(true);
 }
 
 void DynamicProjectile::setBodyOvalShape(const float& radius_x, const float& radius_y, const int num_segments, const float& density)
@@ -35,6 +36,7 @@ void DynamicProjectile::setBodyOvalShape(const float& radius_x, const float& rad
 	fixture = body->CreateFixture(&bodyShape, density);
 
 	b2Vec2 entityPosition = body->GetPosition();
+	body->SetBullet(true);
 	hitbox->setPosition(entityPosition.x, entityPosition.y);
 	hitbox->setFillColor(sf::Color(0, 255, 0, 50));
 	hitbox->setOutlineColor(sf::Color::Green);
@@ -48,7 +50,7 @@ void DynamicProjectile::setBodyBoxShape(const sf::Vector2f& size, const float& d
 	b2Vec2 boxSize(size.x * getScale().x / 2.f / GlobalConsts::SCALE, size.y * getScale().y / 2.f / GlobalConsts::SCALE);
 	bodyShape.SetAsBox(boxSize.x, boxSize.y);
 	fixture = body->CreateFixture(&bodyShape, density);
-
+	body->SetBullet(true);
 	b2Vec2 entityPosition = body->GetPosition();
 	sf::RectangleShape* hitbox;
 	hitbox = new sf::RectangleShape(sf::Vector2f(boxSize.x * GlobalConsts::SCALE * 2, boxSize.y * GlobalConsts::SCALE * 2));
@@ -63,6 +65,7 @@ void DynamicProjectile::setBodyBoxShape(const sf::Vector2f& size, const float& d
 
 void DynamicProjectile::setBodyPolygonShape(const b2Vec2* vertices, const int num_segments)
 {
+	//Не рабочий код
 	bodyShape.Set(vertices, num_segments);
 
 	sf::ConvexShape* hitbox;
@@ -80,6 +83,7 @@ void DynamicProjectile::setBodyPolygonShape(const b2Vec2* vertices, const int nu
 	hitbox->setOutlineColor(sf::Color::Green);
 	hitbox->setOutlineThickness(2.0f);
 	hitBox = hitbox;
+	//Не рабочий код
 }
 
 

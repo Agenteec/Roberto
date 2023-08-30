@@ -30,6 +30,15 @@ public:
 
 	void setBodyPosition(const b2Vec2& vec);
 	#pragma endregion
+
+	void setExplodes(const bool& explodes);
+	const bool& isExplodes();
+
+	void setExplosionRadius(const float& explosionRadius);
+	const float& getExplosionRadius();
+
+	void setExplosionPulse(const float& explosionPulse);
+	const float& getExplosionPulse();
 private:
 	/// <summary>
 	/// Фигура hitBox
@@ -46,5 +55,19 @@ private:
 	/// </summary>
 	GameObject* whoShot;
 
+	/// <summary>
+	/// Взрывается ли снаряд?
+	/// </summary>
+	bool explodes;
+
+	/// <summary>
+	/// Радиус взрыва
+	/// </summary>
+	float explosionRadius;
+
+	/// <summary>
+	/// Импульс взрыва
+	/// </summary>
+	float explosionPulse;
 
 };

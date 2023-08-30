@@ -2,7 +2,6 @@
 
 void Camera::updateHUD(const float& dts, sf::RenderWindow& window)
 {
-	
 	headsUpDisplay.fpsText.setString("FPS: " + std::to_string(static_cast<int>(1.f / dts)));
 	headsUpDisplay.fpsText.setPosition(getCenter().x + window.getSize().x / 1.7f, getCenter().y - window.getSize().y / 1.7f);
 }

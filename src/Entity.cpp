@@ -68,6 +68,7 @@ void Entity::setBodyBoxShape(const sf::Vector2f& size, const float& density)
 
 void Entity::setBodyPolygonShape(const b2Vec2* vertices, const int num_segments)
 {
+	//Не рабочий код
 	bodyShape.Set(vertices, num_segments);
 
 	sf::ConvexShape* hitbox;
@@ -85,6 +86,7 @@ void Entity::setBodyPolygonShape(const b2Vec2* vertices, const int num_segments)
 	hitbox->setOutlineColor(sf::Color::Green);
 	hitbox->setOutlineThickness(2.0f);
 	hitBox = hitbox;
+	//Не рабочий код
 }
 
 void Entity::setBodyPosition(const sf::Vector2f& vec)
