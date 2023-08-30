@@ -11,6 +11,15 @@ Entity::Entity() :
 	selectedAmmoIndex(-1),
 	selectedWeaponIndex(-1)
 {
+	HUD::Label label;
+	label.type = HUD::FpsType;
+	label.text.setFont(GlobalConsts::font);
+	label.text.setString(L"ABOBA");
+	label.text.setCharacterSize(30);
+	label.text.setFillColor(sf::Color::Green);
+	label.text.setPosition(1000, 1000);
+	label.positionCoefficient = sf::Vector2f(1.7f, 1.7f);
+	headUpDisplay.labels.push_back(label);
 }
 
 void Entity::initBody(b2World* world, const sf::Vector2f &pos, const float& angle, const b2BodyType& bodyType)

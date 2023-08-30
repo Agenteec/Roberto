@@ -3,7 +3,6 @@
 #include <iostream>
 #include "GameObject.h"
 
-
 class Camera : public sf::View
 {
 	float moveSpeed;

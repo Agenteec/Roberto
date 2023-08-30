@@ -3,6 +3,7 @@
 #include <vector>
 #include "TextureManager.h"
 #include "GameObjectData.h"
+#include "HeadUpDisplay.h"
 /// <summary>
 /// Абстрактный класс игрового объекта
 /// </summary>
@@ -19,6 +20,7 @@ public:
 	const bool& getHitboxFlag();
 	const bool& getPhysicalObjectFlag();
 	GameObjectData gameObjectData;
+	HUD::HeadUpDisplay headUpDisplay;
 
 private:
 	/// <summary>
