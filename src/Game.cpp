@@ -45,6 +45,7 @@ void Game::init(const std::string& mapPath)
 	b2BodyUserData& b2UserData = player.body->GetUserData();
 	b2UserData.pointer = reinterpret_cast<uintptr_t>(&player);
 	camera.setTracking(&player);
+	gameObjects.push_back(&player);
 
 	//Temp
 }
@@ -102,15 +103,15 @@ void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
 	CollisionHandler сollisionHandler;
 	world.Step(60.f*deltaTime.asSeconds(), 8, 3);
-	player.update(deltaTime, gameObjects, textureManager, world);
+	//player.update(deltaTime, gameObjects, textureManager, world);
 	level.update(deltaTime);
 	camera.update(deltaTime, window);
 	//Объекты которые уже прошли провекру на контакт с другими объектами
 	std::set<b2Body*> contactedBodies;
-	collisionHandler.handleCollision(&player, contactedBodies, world, gameObjects, textureManager);
+	//collisionHandler.handleCollision(&player, contactedBodies, world, gameObjects, textureManager);
 	for (auto& gameObject : gameObjects)
 	{
-		//collisionHandler.handleCollision(gameObject, contactedBodies, world, gameObjects, textureManager );
+		collisionHandler.handleCollision(gameObject, contactedBodies, world, gameObjects, textureManager );
 		gameObject->update(deltaTime, gameObjects, textureManager, world);
 
 	}
@@ -134,9 +135,8 @@ void Game::draw(sf::RenderWindow& window)
 		}
 	}
 
-	window.draw(player);
-	//if(player.getHitboxFlag()&& GlobalConsts::hitBoxOn)
-	player.draw(window);
+	//window.draw(player);
+	//player.draw(window);
 	camera.draw(window);
 }
 
@@ -145,6 +145,7 @@ void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*>
 	std::set<GameObject*> objectsToRemove;
 	if (!gameObject->getPhysicalObjectFlag())
 		return;
+	//std::cout << objectTypeToString(gameObject->gameObjectData.getGameObjectType()) << std::endl;
 	//Достаём указательна базовый класс Entity
 	if (gameObject->gameObjectData.getGameObjectType() == ObjectType::DynamicProjectileType)
 	{
@@ -161,7 +162,7 @@ void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*>
 		b2ContactEdge* contactEdge = dynamicProjectileA->body->GetContactList();
 		processContactEdge(dynamicProjectileA, contactEdge, contactedBodies, objectsToRemove, world, textureManager);
 	}
-	else
+	else if(gameObject->gameObjectData.getGameObjectType() != ObjectType::UndefinedType)
 	{
 		Entity* entityA = reinterpret_cast<Entity*>(gameObject);
 		if (entityA->body == nullptr)
@@ -196,9 +197,15 @@ void CollisionHandler::processContactEdge(GameObject* objectA, b2ContactEdge* co
 
 
 			if (objectB != nullptr) {
-				const ObjectType& objA = objectA->gameObjectData.getGameObjectType();
-				const ObjectType& objB = objectB->gameObjectData.getGameObjectType();
+				 ObjectType objA = objectA->gameObjectData.getGameObjectType();
+				 ObjectType objB = objectB->gameObjectData.getGameObjectType();
+				 
+				if (objA == ObjectType::ObjectWeaponType || objA == ObjectType::ObjectAmmoType)
+				{
+					std::swap(objectA, objectB);
+					std::swap(objA, objB);
 
+				}
 				if (objA == ObjectType::PlayerType )
 				{
 					Entity* entityA = reinterpret_cast<Entity*>(objectA);

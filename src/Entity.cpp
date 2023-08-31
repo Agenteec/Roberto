@@ -7,7 +7,7 @@ Entity::Entity() :
 	fixture(nullptr),
 	hitBox(nullptr),
 	hitted(false),
-	resistanceCoefficient(1.1f),
+	resistanceCoefficient(0.03f),
 	selectedAmmoIndex(-1),
 	selectedWeaponIndex(-1),
 	maxVelocity(0.1f)
@@ -36,6 +36,8 @@ void Entity::initBody(b2World* world, const sf::Vector2f &pos, const float& angl
 	bodyDef.position.Set(pos.x / GlobalConsts::SCALE, pos.y / GlobalConsts::SCALE);
 	bodyDef.angle =angle/180.f * b2_pi;
 	body = world->CreateBody(&bodyDef);
+	body->SetLinearDamping(resistanceCoefficient);
+	body->SetAngularDamping(resistanceCoefficient);
 }
 
 void Entity::setBodyOvalShape(const float &radius_x, const float &radius_y, const int num_segments, const float& density)
@@ -129,7 +131,6 @@ void Entity::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObj
 	{
 		return;
 	}
-	applyResistance(dts);
 	b2Vec2 pos = body->GetPosition();
 	setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
 	setRotation(body->GetAngle() * 180.f / 3.14);
@@ -220,32 +221,15 @@ void Entity::setPhysicalProperties(const float& density, const float& friction, 
 	fixture->SetRestitution(restitution);
 }
 
-void Entity::applyResistance(const float& deltaTime)
-{
-	const b2Vec2& velocity = body->GetLinearVelocity();
-	if (velocity.Length()> maxVelocity)
-	{
-		b2Vec2 resistance_force = -resistanceCoefficient* deltaTime * velocity;
-
-		body->ApplyForceToCenter(resistance_force, true);
-	}
-	else
-	{
-		b2Vec2 resistance_force = -resistanceCoefficient/2.f* deltaTime * velocity;
-
-		body->ApplyForceToCenter(resistance_force, true);
-	}
-	
-
-	
-
-
-}
 
 
 void Entity::setResistanceCoefficient(const float& resistanceCoefficient)
 {
 	this->resistanceCoefficient = resistanceCoefficient;
+	if (body != nullptr)
+	{
+		body->SetLinearDamping(resistanceCoefficient);
+	}
 }
 
 void Entity::setHealthPoints(const float& healthPoints)

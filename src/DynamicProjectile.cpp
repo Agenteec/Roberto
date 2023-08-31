@@ -6,9 +6,9 @@ DynamicProjectile::DynamicProjectile():
 	body(nullptr),
 	fixture(nullptr),
 	hitBox(nullptr),
-	resistanceCoefficient(0.005f),
-	explosionRadius(20.f),
-	explosionPulse(1000.f),
+	resistanceCoefficient(0.015f),
+	explosionRadius(5.f),
+	explosionPulse(0.5f),
 	gameObjectData(ObjectType::DynamicProjectileType)
 {
 
@@ -18,9 +18,9 @@ DynamicProjectile::DynamicProjectile(const AmmoType& ammoType):
 	body(nullptr),
 	fixture(nullptr),
 	hitBox(nullptr),
-	explosionRadius(20.f),
-	explosionPulse(1000.f),
-	resistanceCoefficient(0.005f),
+	explosionRadius(5.f),
+	explosionPulse(0.5f),
+	resistanceCoefficient(0.015f),
 	gameObjectData(ObjectType::DynamicProjectileType)
 {
 
@@ -32,6 +32,8 @@ void DynamicProjectile::initBody(b2World* world, const sf::Vector2f& pos, const 
 	bodyDef.angle = angle / 180.f * b2_pi;
 	body = world->CreateBody(&bodyDef);
 	body->SetBullet(true);
+	body->SetLinearDamping(resistanceCoefficient);
+	
 }
 
 void DynamicProjectile::setBodyOvalShape(const float& radius_x, const float& radius_y, const int num_segments, const float& density)
@@ -211,14 +213,15 @@ void DynamicProjectile::destroy(b2World& world, std::vector<GameObject*>& gameOb
 
 				if (reinterpret_cast<DynamicProjectile*>(gameOgject)->body != nullptr)
 				{
-					for (int32 childIndex = 0; childIndex < reinterpret_cast<DynamicProjectile*>(gameOgject)->fixture->GetShape()->GetChildCount(); ++childIndex) {
+	/*				for (int32 childIndex = 0; childIndex < reinterpret_cast<DynamicProjectile*>(gameOgject)->fixture->GetShape()->GetChildCount(); ++childIndex) {
 						b2AABB fixtureAABB;
 						reinterpret_cast<DynamicProjectile*>(gameOgject)->fixture->GetShape()->ComputeAABB(&fixtureAABB, b2Transform(), childIndex);
 						if (b2TestOverlap(aabb, fixtureAABB))
 						{
-							bodies.push_back(reinterpret_cast<DynamicProjectile*>(gameOgject)->body);
+							
 						}
-					}
+					}*/
+					bodies.push_back(reinterpret_cast<DynamicProjectile*>(gameOgject)->body);
 				}
 
 
@@ -228,14 +231,16 @@ void DynamicProjectile::destroy(b2World& world, std::vector<GameObject*>& gameOb
 			{
 				if (reinterpret_cast<Entity*>(gameOgject)->body != nullptr)
 				{
-					for (int32 childIndex = 0; childIndex < reinterpret_cast<Entity*>(gameOgject)->fixture->GetShape()->GetChildCount(); ++childIndex) {
+	/*				for (int32 childIndex = 0; childIndex < reinterpret_cast<Entity*>(gameOgject)->fixture->GetShape()->GetChildCount(); ++childIndex) {
 						b2AABB fixtureAABB;
 						reinterpret_cast<Entity*>(gameOgject)->fixture->GetShape()->ComputeAABB(&fixtureAABB, b2Transform(), childIndex);
 						if (b2TestOverlap(aabb, fixtureAABB))
 						{
-							bodies.push_back(reinterpret_cast<Entity*>(gameOgject)->body);
+							
 						}
-					}
+
+					}*/
+					bodies.push_back(reinterpret_cast<Entity*>(gameOgject)->body);
 				}
 				
 			}
@@ -244,7 +249,7 @@ void DynamicProjectile::destroy(b2World& world, std::vector<GameObject*>& gameOb
 	}
 	for (b2Body* b : bodies) {
 		b2Vec2 bodyPos = b->GetPosition();
-		b2Vec2 explosionDir = bodyPos - b->GetPosition();
+		b2Vec2 explosionDir = bodyPos - body->GetPosition();
 		float distance = explosionDir.Length();
 
 		if (distance < explosionRadius) {
@@ -253,7 +258,7 @@ void DynamicProjectile::destroy(b2World& world, std::vector<GameObject*>& gameOb
 			impulse.Normalize();
 			impulse *= strength * (explosionPulse);
 
-			body->ApplyLinearImpulseToCenter(impulse, true);
+			b->ApplyLinearImpulseToCenter(impulse, true);
 		}
 	}
 }

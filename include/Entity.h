@@ -54,8 +54,6 @@ public:
 
 	void setPhysicalProperties(const float& density, const float& friction, const float& restitution);
 
-	void applyResistance(const float& deltaTime);
-
 	void setResistanceCoefficient(const float& resistanceCoefficient);
 
 	void setHealthPoints(const float& healthPoints);

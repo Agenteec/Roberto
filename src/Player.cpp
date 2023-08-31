@@ -1,7 +1,7 @@
 #include "Player.h"
 
 Player::Player() :
-	speed(0.1f),
+	speed(0.4f),
 	debugMode(false),
 	live(true),
 	Entity()
@@ -9,7 +9,8 @@ Player::Player() :
 	setMaxHealthPoints(100.f);
 	setHealthPoints(100.f);
 
-	setResistanceCoefficient(8.5f);
+	setResistanceCoefficient(1.f);
+
 	bodyDef.fixedRotation = true;
 }
 

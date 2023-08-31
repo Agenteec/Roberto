@@ -41,7 +41,6 @@ bool GrenadeLauncher::shot(std::vector<GameObject*>& gameObjects, TextureManager
 		b2BodyUserData& b2UserData = projectile->body->GetUserData();
 		b2UserData.pointer = reinterpret_cast<uintptr_t>(projectile);
 
-
 		projectile->body->ApplyLinearImpulseToCenter(b2Vec2(0.005f * cosRadiand,0.005f * sinRadians), true);
 		gameObjects.push_back(projectile);
 	}
