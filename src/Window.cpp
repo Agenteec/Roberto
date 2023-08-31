@@ -9,7 +9,7 @@ MainWindow::MainWindow() :
 MainWindow::MainWindow(const Settings& settings) :
 	window(settings.videoSettings.videoMode, "Roberto", (settings.videoSettings.fullscreen ? sf::Style::Fullscreen : sf::Style::Default), settings.videoSettings.ñontext)
 {
-	window.setFramerateLimit(60);
+	window.setFramerateLimit(0);
 	gui.setTarget(window);
 }
 
