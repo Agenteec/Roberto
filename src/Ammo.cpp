@@ -36,7 +36,7 @@ Ammo::Ammo(const AmmoType& ammoType, const bool& isEntyty)
 	{
 	case AmmoType::AGrenadeLauncherType:
 		
-		*this = Ammo(ammoType,0,isEntyty?30:4, 65.f, 5.f, 20);
+		*this = Ammo(ammoType,0,isEntyty?30:4, 65.f, 2.5f, 20);
 		break;
 	case AmmoType::AVoidType:
 		*this = Ammo(ammoType, 0, 0, 0, 0, 0);
