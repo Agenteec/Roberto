@@ -88,7 +88,7 @@ public:
 
 	);
 
-	virtual bool shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager, GameObject* whoShot, b2World& world);
+	virtual const bool& shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager, GameObject* whoShot, b2World& world);
 
 	void update(const float& dts,const float& angle, Ammo& ammo);
 

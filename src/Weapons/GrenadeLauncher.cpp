@@ -13,7 +13,7 @@ GrenadeLauncher::GrenadeLauncher():Weapon(
 
 }
 
-bool GrenadeLauncher::shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager, GameObject* whoShot, b2World& world)
+const bool& GrenadeLauncher::shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager, GameObject* whoShot, b2World& world)
 {
 	bool Shoting = Weapon::shot(gameObjects, textureManager, whoShot, world);
 	if (Shoting)

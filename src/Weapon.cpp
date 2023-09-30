@@ -43,7 +43,7 @@ Weapon::Weapon
 {
 }
 
-bool Weapon::shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager, GameObject* whoShot, b2World& world)
+const bool& Weapon::shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager, GameObject* whoShot, b2World& world)
 {
 	
 	if (reloading||cooldowning)

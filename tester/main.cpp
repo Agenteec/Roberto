@@ -3,6 +3,7 @@
 #include "../include/SFMLOrthogonalLayer.hpp"
 #include <vector>
 #include <iostream>
+#include <Thor/Animations/Animator.hpp>
 
 struct WASD
 {
