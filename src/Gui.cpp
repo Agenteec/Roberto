@@ -1,6 +1,6 @@
 ﻿#include "Gui.h"
 
-void GUI::MainMenuInit(tgui::Gui& gui)
+void GUI::MainMenuInit(auto& gui)
 {
 	mainMenuWindow = tgui::Group::create();
 	mainMenuWindow->setSize("100%", "100%");
@@ -62,7 +62,7 @@ GUI::GUI():
 
 }
 
-void GUI::GameMenuInit(tgui::Gui& gui)
+void GUI::GameMenuInit(auto& gui)
 {
 	gameMenuWindow = tgui::Group::create();
 	gameMenuWindow->setSize("100%", "100%");
@@ -100,7 +100,7 @@ void GUI::GameMenuInit(tgui::Gui& gui)
 	gui.add(gameMenuWindow);
 }
 
-void GUI::SettingsMenuInit(tgui::Gui& gui)
+void GUI::SettingsMenuInit(auto& gui)
 {
 	settingsMenuWindow = tgui::Group::create();
 	settingsMenuWindow->setSize("100%", "100%");
@@ -175,7 +175,7 @@ void GUI::SettingsMenu(const bool& flag)
 	flags.onSettingsMenu = flag;
 }
 
-void GUI::TestMenuInit(tgui::Gui& gui)
+void GUI::TestMenuInit(auto& gui)
 {
 
 }

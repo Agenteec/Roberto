@@ -92,7 +92,8 @@ void Game::handleEvent(sf::Event& event, sf::RenderWindow& window)
 		if (event.key.code == sf::Keyboard::D)
 			player.controlFlags.rightPressed = false;
 	}
-	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+	
+	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);;
 	// ѕреобразуем позицию мыши в координаты view
 	sf::Vector2f worldPosition = window.mapPixelToCoords(mousePosition);
 	player.setTargetCoordinates(sf::Vector2f(worldPosition));

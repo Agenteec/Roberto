@@ -38,9 +38,11 @@ find_package(box2d CONFIG REQUIRED)
 
 find_package(nlohmann_json CONFIG REQUIRED)
 
-find_package(TGUI CONFIG REQUIRED)
 
 find_package(OpenSSL REQUIRED)
+
+find_package(TGUI CONFIG REQUIRED)
+
 
 #Настройка конфигурации
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
