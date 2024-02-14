@@ -1,19 +1,20 @@
 #include "Player.h"
 
 Player::Player() :
-	healthPoints(100.f),
-	maxHealthPoints(100.f),
-	speed(0.8f),
-	hitted(false),
+	speed(0.09f),
 	debugMode(false),
 	live(true),
 	Entity()
 {
+	setMaxHealthPoints(100.f);
+	setHealthPoints(100.f);
+
 	setResistanceCoefficient(0.1f);
+
 	bodyDef.fixedRotation = true;
 }
 
-void Player::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
+void Player::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager, b2World& world)
 {
 	float dts = deltaTime.asSeconds();
 	if (controlFlags.upPressed)
@@ -24,24 +25,16 @@ void Player::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObj
 		body->ApplyLinearImpulseToCenter(b2Vec2 ( - 1.f * dts * speed, 0), true);
 	if (controlFlags.rightPressed)
 		body->ApplyLinearImpulseToCenter(b2Vec2(1.f * dts * speed, 0), true);
-	if (controlFlags.downPressed)
+	if (controlFlags.attackPressed)
 	{
+		
 		if (!weapons.empty() && selectedWeaponIndex != -1) {
+			
 			Weapon* w = weapons[selectedWeaponIndex];
-			w->shot(gameObjects, textureManager);
+			w->shot(gameObjects, textureManager,this, world);
 		}
 	}
-	Entity::update(deltaTime, gameObjects, textureManager);
-}
-
-void Player::setHealthPoints(const float& healthPoints)
-{
-	this->healthPoints = healthPoints;
-}
-
-void Player::setMaxHealthPoints(const float& maxHealthPoints)
-{
-	this->maxHealthPoints = maxHealthPoints;
+	Entity::update(deltaTime, gameObjects, textureManager, world);
 }
 
 void Player::setSpeed(const float& speed)
@@ -49,34 +42,15 @@ void Player::setSpeed(const float& speed)
 	this->speed = speed;
 }
 
-void Player::setHittedFlag(const bool& hitted)
-{
-	this->hitted = hitted;
-}
 
 void Player::setDebugMode(const bool& mode)
 {
 	this->debugMode = mode;
 }
 
-const float& Player::getHealthPoints()
-{
-	return healthPoints;
-}
-
-const float& Player::getMaxHealthPoints()
-{
-	return maxHealthPoints;
-}
-
 const float& Player::getSpeed()
 {
 	return speed;
-}
-
-const bool& Player::isHitted()
-{
-	return hitted;
 }
 
 const bool& Player::getDebugMode()

@@ -1,7 +1,7 @@
 #pragma once
 //Entity.h
 #include <SFML/Graphics.hpp>
-#include <box2d/box2d.h>
+
 #include "GlobalConsts.h"
 #include "GameObject.h"
 #include "GameObjectData.h"
@@ -31,10 +31,6 @@ public:
 	/// Иедекс снарядов для оружия в руках
 	/// </summary>
 	int selectedAmmoIndex;
-
-
-
-	GameObjectData gameObjectData;
 	
 	Entity();
 
@@ -52,22 +48,26 @@ public:
 
 	void setTargetCoordinates(const sf::Vector2f& targetCoordinates);
 
-	virtual void update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager);
+	virtual void update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager, b2World& world);
 
 	void draw(sf::RenderWindow& window) override;
 
 	void setPhysicalProperties(const float& density, const float& friction, const float& restitution);
 
-	void applyResistance(const float& deltaTime);
-
 	void setResistanceCoefficient(const float& resistanceCoefficient);
+
 	void setHealthPoints(const float& healthPoints);
+
 	void setMaxHealthPoints(const float& maxHealthPoints);
+
+	void setMaxVelocity(const float& maxVelocity);
+
 	void setHittedFlag(const bool& hitted);
 
 	const float& getResistanceCoefficient();
 	const float& getHealthPoints();
 	const float& getMaxHealthPoints();
+	const float& getMaxVelocity();
 	const sf::Vector2f& getTargetCoordinates();
 	const bool& isHitted();
 
@@ -85,6 +85,12 @@ private:
 	float maxHealthPoints;
 
 	bool hitted;
+
+
+	/// <summary>
+	/// Максимальная скорость объекта
+	/// </summary>
+	float maxVelocity;
 
 	/// <summary>
 	/// Фигура hitBox

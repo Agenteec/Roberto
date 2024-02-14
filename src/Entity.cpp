@@ -7,11 +7,27 @@ Entity::Entity() :
 	fixture(nullptr),
 	hitBox(nullptr),
 	hitted(false),
-	resistanceCoefficient(0.1f),
+	resistanceCoefficient(0.03f),
 	selectedAmmoIndex(-1),
 	selectedWeaponIndex(-1),
-	gameObjectData()
+	maxVelocity(0.1f)
 {
+	HUD::Label label;
+	label.type = HUD::FpsType;
+	label.text.setFont(GlobalConsts::font);
+	label.text.setCharacterSize(30);
+	label.text.setFillColor(sf::Color::Green);
+	label.positionCoefficient = sf::Vector2f(1.7f, 1.7f);
+	headUpDisplay.labels.push_back(label);
+
+	label.type = HUD::AmmoType;
+	label.text.setCharacterSize(50);
+	label.positionCoefficient = sf::Vector2f(1.8f, -1.7f);
+	headUpDisplay.labels.push_back(label);
+
+	label.type = HUD::HealthPointType;
+	label.positionCoefficient = sf::Vector2f(-1.5f, -1.7f);
+	headUpDisplay.labels.push_back(label);
 }
 
 void Entity::initBody(b2World* world, const sf::Vector2f &pos, const float& angle, const b2BodyType& bodyType)
@@ -20,6 +36,8 @@ void Entity::initBody(b2World* world, const sf::Vector2f &pos, const float& angl
 	bodyDef.position.Set(pos.x / GlobalConsts::SCALE, pos.y / GlobalConsts::SCALE);
 	bodyDef.angle =angle/180.f * b2_pi;
 	body = world->CreateBody(&bodyDef);
+	body->SetLinearDamping(resistanceCoefficient);
+	body->SetAngularDamping(resistanceCoefficient);
 }
 
 void Entity::setBodyOvalShape(const float &radius_x, const float &radius_y, const int num_segments, const float& density)
@@ -69,6 +87,7 @@ void Entity::setBodyBoxShape(const sf::Vector2f& size, const float& density)
 
 void Entity::setBodyPolygonShape(const b2Vec2* vertices, const int num_segments)
 {
+	//Не рабочий код
 	bodyShape.Set(vertices, num_segments);
 
 	sf::ConvexShape* hitbox;
@@ -86,6 +105,7 @@ void Entity::setBodyPolygonShape(const b2Vec2* vertices, const int num_segments)
 	hitbox->setOutlineColor(sf::Color::Green);
 	hitbox->setOutlineThickness(2.0f);
 	hitBox = hitbox;
+	//Не рабочий код
 }
 
 void Entity::setBodyPosition(const sf::Vector2f& vec)
@@ -104,13 +124,13 @@ void Entity::setTargetCoordinates(const sf::Vector2f& targetCoordinates)
 	this->targetCoordinates = targetCoordinates;
 }
 
-void Entity::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
+void Entity::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObjects, TextureManager& textureManager, b2World& world)
 {
+	float dts = deltaTime.asSeconds();
 	if (body == nullptr)
 	{
 		return;
 	}
-	applyResistance(deltaTime.asSeconds());
 	b2Vec2 pos = body->GetPosition();
 	setPosition(pos.x * GlobalConsts::SCALE, pos.y * GlobalConsts::SCALE);
 	setRotation(body->GetAngle() * 180.f / 3.14);
@@ -122,9 +142,62 @@ void Entity::update(const sf::Time& deltaTime, std::vector<GameObject*>& gameObj
 	}
 	if (!weapons.empty() && selectedWeaponIndex != -1) {
 		Weapon* w = weapons[selectedWeaponIndex];
-		w->update(angleTwoPoints(getPosition(), targetCoordinates));
+		if (!ammo.empty())
+		{
+			if (selectedAmmoIndex != -1)
+			{
+				if (ammo[selectedAmmoIndex].getAmmoType() != w->getAmmoMagazine().getAmmoType())
+				{
+					for (size_t i = 0; i < ammo.size(); i++)
+					{
+						selectedAmmoIndex = i;
+						if (ammo[i].getAmmoType() == w->getAmmoMagazine().getAmmoType())
+						{
+							break;
+						}
+					}
+				}
+
+			}
+			else
+			{
+				for (size_t i = 0; i < ammo.size(); i++)
+				{
+					selectedAmmoIndex = i;
+					if (ammo[i].getAmmoType() == w->getAmmoMagazine().getAmmoType())
+					{
+						break;
+					}
+				}
+			}
+
+			for (auto& label : headUpDisplay.labels)
+			{
+				if (label.type == HUD::AmmoType)
+					label.text.setString("Ammo: " + std::to_string(static_cast<long>(w->getAmmoMagazine().getAmountOfAmmo())) + "/" + std::to_string(static_cast<long>(ammo[selectedAmmoIndex].getAmountOfAmmo())));
+			}
+			
+			w->update(dts,angleTwoPoints(getPosition(), targetCoordinates), ammo[selectedAmmoIndex]);
+		}
+		else
+		{
+			Ammo voidAmmo(AmmoType::AVoidType);
+			w->update(dts,angleTwoPoints(getPosition(), targetCoordinates), voidAmmo);
+		}
 	}
-		
+
+	for (auto& label : headUpDisplay.labels)
+	{
+		switch (label.type)
+		{
+		case HUD::FpsType:
+			label.text.setString("FPS: " + std::to_string(static_cast<int>(1.f / deltaTime.asSeconds())));
+			break;
+		case HUD::HealthPointType:
+			label.text.setString("HP: " + std::to_string(static_cast<int>(healthPoints)));
+			break;
+		}
+	}
 }
 
 void Entity::draw(sf::RenderWindow& window)
@@ -148,21 +221,15 @@ void Entity::setPhysicalProperties(const float& density, const float& friction, 
 	fixture->SetRestitution(restitution);
 }
 
-void Entity::applyResistance(const float& deltaTime)
-{
-	b2Vec2 velocity = body->GetLinearVelocity();
-
-	b2Vec2 resistance_force = -resistanceCoefficient * velocity ;
-
-	body->ApplyForceToCenter(resistance_force, true);
-
-
-}
 
 
 void Entity::setResistanceCoefficient(const float& resistanceCoefficient)
 {
 	this->resistanceCoefficient = resistanceCoefficient;
+	if (body != nullptr)
+	{
+		body->SetLinearDamping(resistanceCoefficient);
+	}
 }
 
 void Entity::setHealthPoints(const float& healthPoints)
@@ -173,6 +240,11 @@ void Entity::setHealthPoints(const float& healthPoints)
 void Entity::setMaxHealthPoints(const float& maxHealthPoints)
 {
 	this->maxHealthPoints = maxHealthPoints;
+}
+
+void Entity::setMaxVelocity(const float& maxVelocity)
+{
+	this->maxVelocity = maxVelocity;
 }
 
 void Entity::setHittedFlag(const bool& hitted)
@@ -193,6 +265,11 @@ const float& Entity::getHealthPoints()
 const float& Entity::getMaxHealthPoints()
 {
 	return maxHealthPoints;
+}
+
+const float& Entity::getMaxVelocity()
+{
+	return maxVelocity;
 }
 
 const sf::Vector2f& Entity::getTargetCoordinates()

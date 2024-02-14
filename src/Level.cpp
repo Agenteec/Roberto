@@ -160,6 +160,7 @@ void Level::parse(std::vector<GameObject*>& gameObjects, TextureManager* texture
 						entity->setOrigin(sf::Vector2f(entity->getLocalBounds().width / 2.f, entity->getLocalBounds().height / 2.f));
 						entity->initBody(&world, sf::Vector2f(object.getPosition().x + entity->getLocalBounds().width* scale.x / 2.f, object.getPosition().y - entity->getLocalBounds().height * scale.y / 2.f), object.getRotation());
 						entity->setBodyBoxShape(sf::Vector2f(entity->getLocalBounds().width, entity->getLocalBounds().height), density<0.f?1.f:density );//if(density < 0) density = 1.f; else density = customDensity
+						entity->setPhysicalObjectFlag(true);
 						if (density >= 0.f && friction >= 0.f && restitution >= 0)
 						{
 							entity->setPhysicalProperties(density, friction, restitution);

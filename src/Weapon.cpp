@@ -11,6 +11,7 @@ Weapon::Weapon() :
 	dCooldown(0.f),
 	avable(false),
 	reloading(false),
+	cooldowning(false),
 	trackingObject(nullptr)
 {
 }
@@ -36,18 +37,43 @@ Weapon::Weapon
 	dCooldown(0.f),
 	avable(avable),
 	reloading(false),
+	cooldowning(false),
 	trackingObject(trackingObject)
 
 {
 }
 
-void Weapon::shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
+const bool& Weapon::shot(std::vector<GameObject*>& gameObjects, TextureManager& textureManager, GameObject* whoShot, b2World& world)
 {
-
+	
+	if (reloading||cooldowning)
+	{
+		return false;
+	}
+	
+	if (ammoMagazine.getAmountOfAmmo() == 0)
+	{
+		reloading = true;
+		std::cout << "Reload..." << std::endl;
+		return false;
+	}
+	else
+	{
+		ammoMagazine - 1;
+		if (ammoMagazine.getAmountOfAmmo() != 0)
+		{
+			cooldowning = true;
+			std::cout << "Cooldown..." << std::endl;
+		}
+		return true;
+			
+	}
+	return false;
 }
 
-void Weapon::update(const float& angle)
+void Weapon::update(const float& dts, const float& angle, Ammo& ammo)
 {
+	//Поворот оружия
 	if (trackingObject != nullptr)
 	{
 		setPosition(trackingObject->getPosition());
@@ -60,6 +86,43 @@ void Weapon::update(const float& angle)
 			setScale(getScale().x, (getScale().y < 0) ? getScale().y : getScale().y * -1.f);
 		}
 		setRotation(angle);
+	}
+	//перезарядка
+	if (reloading)
+	{
+		if (ammo.getAmountOfAmmo() > 0) {
+			dReloadTime += dts;
+			if (dReloadTime >= reloadTime)
+			{
+				dReloadTime = 0.f;
+				reloading = false;
+				ammoMagazine += ammo;
+			}
+		}
+		else
+		{
+			dReloadTime = 0;
+			reloading = false;
+		}
+	}
+
+	//Перезарядка внутри ствольной коробки
+	if (cooldowning)
+	{
+		if (ammoMagazine.getAmountOfAmmo() > 0) {
+			dCooldown += dts;
+			if (dCooldown >= cooldown)
+			{
+				dCooldown = 0.f;
+				cooldowning = false;
+
+			}
+		}
+		else
+		{
+			dCooldown = 0;
+			cooldowning = false;
+		}
 	}
 
 }
@@ -152,6 +215,16 @@ const bool& Weapon::isReloading()
 void Weapon::setReload(const bool& reloading)
 {
 	this->reloading = reloading;
+}
+
+const bool& Weapon::isCooldowning()
+{
+	return cooldowning;
+}
+
+void Weapon::setCooldowning(const bool& cooldowning)
+{
+	this->cooldowning = cooldowning;
 }
 
 GameObject* Weapon::getTrakingObject()

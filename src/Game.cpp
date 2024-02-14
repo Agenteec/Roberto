@@ -1,5 +1,5 @@
 #include "Game.h"
-#include <algorithm>
+
 
 
 
@@ -12,6 +12,8 @@ Game::Game():
 
 void Game::init(const std::string& mapPath)
 {
+	GlobalConsts::font.loadFromFile("Resources/fonts/impact.ttf");
+
 	const int texturesCount = 6;
 	//   Path \ Name
 	std::pair<std::string, std::string> textures[texturesCount] =
@@ -43,6 +45,7 @@ void Game::init(const std::string& mapPath)
 	b2BodyUserData& b2UserData = player.body->GetUserData();
 	b2UserData.pointer = reinterpret_cast<uintptr_t>(&player);
 	camera.setTracking(&player);
+	gameObjects.push_back(&player);
 
 	//Temp
 }
@@ -89,7 +92,8 @@ void Game::handleEvent(sf::Event& event, sf::RenderWindow& window)
 		if (event.key.code == sf::Keyboard::D)
 			player.controlFlags.rightPressed = false;
 	}
-	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+	
+	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);;
 	// Преобразуем позицию мыши в координаты view
 	sf::Vector2f worldPosition = window.mapPixelToCoords(mousePosition);
 	player.setTargetCoordinates(sf::Vector2f(worldPosition));
@@ -100,24 +104,23 @@ void Game::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
 	CollisionHandler сollisionHandler;
 	world.Step(60.f*deltaTime.asSeconds(), 8, 3);
-	player.update(deltaTime, gameObjects, textureManager);
+	//player.update(deltaTime, gameObjects, textureManager, world);
 	level.update(deltaTime);
 	camera.update(deltaTime, window);
 	//Объекты которые уже прошли провекру на контакт с другими объектами
 	std::set<b2Body*> contactedBodies;
-	collisionHandler.handleCollision(&player, contactedBodies, world, gameObjects, textureManager);
+	//collisionHandler.handleCollision(&player, contactedBodies, world, gameObjects, textureManager);
 	for (auto& gameObject : gameObjects)
 	{
 		collisionHandler.handleCollision(gameObject, contactedBodies, world, gameObjects, textureManager );
-		gameObject->update(deltaTime, gameObjects, textureManager);
+		gameObject->update(deltaTime, gameObjects, textureManager, world);
 
 	}
 	for (size_t i = 0; i < player.ammo.size(); i++)
 	{
-		//std::cout << "AmountOfAmmo = " << player.ammo[i].getAmountOfAmmo() <<" Ammo type: " << ammoTypeToString(player.ammo[i].getAmmoType())<<"\nIndex: " << i<< std::endl;
-		//std::cout << "MaximumAmmo = " << player.ammo[i].getMaximumAmmo() << std::endl;
+
 	}
-	//std::cout << "dts = " << deltaTime.asSeconds()<<std::endl;
+
 }
 
 void Game::draw(sf::RenderWindow& window)	
@@ -127,17 +130,15 @@ void Game::draw(sf::RenderWindow& window)
 	for (auto& gameObject : gameObjects)
 	{
 		window.draw(*gameObject);
-		//gameObject->getHitboxFlag()
 		if (gameObject->getPhysicalObjectFlag())
 		{
-			Entity* entity = reinterpret_cast<Entity*>(gameObject);
-			entity->draw(window);
+			gameObject->draw(window);
 		}
 	}
 
-	window.draw(player);
-	//if(player.getHitboxFlag()&& GlobalConsts::hitBoxOn)
-	player.draw(window);
+	//window.draw(player);
+	//player.draw(window);
+	camera.draw(window);
 }
 
 void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*> &contactedBodies, b2World& world, std::vector<GameObject*>& gameObjects, TextureManager& textureManager)
@@ -145,43 +146,42 @@ void CollisionHandler::handleCollision(GameObject* gameObject, std::set<b2Body*>
 	std::set<GameObject*> objectsToRemove;
 	if (!gameObject->getPhysicalObjectFlag())
 		return;
+	//std::cout << objectTypeToString(gameObject->gameObjectData.getGameObjectType()) << std::endl;
 	//Достаём указательна базовый класс Entity
-	Entity* entityA = reinterpret_cast<Entity*>(gameObject);
+	if (gameObject->gameObjectData.getGameObjectType() == ObjectType::DynamicProjectileType)
+	{
+		DynamicProjectile* dynamicProjectileA = reinterpret_cast<DynamicProjectile*>(gameObject);
+		if (dynamicProjectileA->body == nullptr)
+			return;
 
-	if (entityA->body == nullptr)
-		return;
-	entityA->body->GetFixtureList();
-	contactedBodies.insert(entityA->body);
-	b2Fixture* fixture = entityA->body->GetFixtureList();
-	if (fixture->GetShape()->GetType() == b2Shape::e_polygon) {
-		
-		//while (fixture) {
-		//	b2ContactEdge* contactEdge = fixture->GetContactList(); // Получите указатель на контакт фикстуры
+		dynamicProjectileA->body->GetFixtureList();
 
-		//	while (contactEdge) {
-		//		// Обработка контакта
-		//		// ...
+		contactedBodies.insert(dynamicProjectileA->body);
 
-		//		contactEdge = contactEdge->next; // Перейти к следующему контакту
-		//	}
+		b2Fixture* fixture = dynamicProjectileA->body->GetFixtureList();
 
-		//	fixture = fixture->GetNext(); // Перейти к следующей фикстуре
-		//}
+		b2ContactEdge* contactEdge = dynamicProjectileA->body->GetContactList();
+		processContactEdge(dynamicProjectileA, contactEdge, contactedBodies, objectsToRemove, world, textureManager);
+	}
+	else if(gameObject->gameObjectData.getGameObjectType() != ObjectType::UndefinedType)
+	{
+		Entity* entityA = reinterpret_cast<Entity*>(gameObject);
+		if (entityA->body == nullptr)
+			return;
+
+		entityA->body->GetFixtureList();
+
+		contactedBodies.insert(entityA->body);
+
+		b2Fixture* fixture = entityA->body->GetFixtureList();
+
 		b2ContactEdge* contactEdge = entityA->body->GetContactList();
 		processContactEdge(entityA, contactEdge, contactedBodies, objectsToRemove, world, textureManager);
 	}
-	else
-	{
-		/*b2ContactEdge* contactEdge = entityA->body->GetContactList();
-		processContactEdge(entityA,contactEdge, contactedBodies, objectsToRemove, world);*/
-		
-	}
-	
 	removeObjects(gameObjects, objectsToRemove, world);
 }
-void CollisionHandler::processContactEdge(Entity* entityA, b2ContactEdge* contactEdge, std::set<b2Body*>& contactedBodies, std::set<GameObject*>& objectsToRemove, b2World& world, TextureManager& textureManager)
+void CollisionHandler::processContactEdge(GameObject* objectA, b2ContactEdge* contactEdge, std::set<b2Body*>& contactedBodies, std::set<GameObject*>& objectsToRemove, b2World& world, TextureManager& textureManager)
 {
-	//std::cout << contactEdge << std::endl;
 	while (contactEdge) {
 		if (contactEdge->contact->IsTouching()) {
 			//Выявлено столкновение с объектом
@@ -192,21 +192,27 @@ void CollisionHandler::processContactEdge(Entity* entityA, b2ContactEdge* contac
 				continue;
 			}
 			//Достаём указательна базовый класс Entity
+			//Смотрим, что это за объект
+			GameObject* objectB = reinterpret_cast<GameObject*>(contactEdge->other->GetUserData().pointer);
 
-			Entity* entityB = reinterpret_cast<Entity*>(contactEdge->other->GetUserData().pointer);
 
 
+			if (objectB != nullptr) {
+				 ObjectType objA = objectA->gameObjectData.getGameObjectType();
+				 ObjectType objB = objectB->gameObjectData.getGameObjectType();
+				 
+				if (objA == ObjectType::ObjectWeaponType || objA == ObjectType::ObjectAmmoType)
+				{
+					std::swap(objectA, objectB);
+					std::swap(objA, objB);
 
-			if (entityA != nullptr && entityB != nullptr) {
-				const ObjectType& objA = entityA->gameObjectData.getGameObjectType();
-				const ObjectType& objB = entityB->gameObjectData.getGameObjectType();
+				}
 				if (objA == ObjectType::PlayerType )
 				{
-					/*std::cout << ANSI_COLOR_CYAN;
-					std::cout << objectTypeToString(objA) << " collided with " << objectTypeToString(objB) << std::endl;
-					std::cout << ANSI_COLOR_RESET;*/
+					Entity* entityA = reinterpret_cast<Entity*>(objectA);
 					if (objB == ObjectType::ObjectWeaponType)
 					{
+						Entity* entityB = reinterpret_cast<Entity*>(objectB);
 						bool weapoFlaf = false;
 						for (auto weaponB : entityB->weapons)
 						{
@@ -272,6 +278,7 @@ void CollisionHandler::processContactEdge(Entity* entityA, b2ContactEdge* contac
 					}
 					else if(objB == ObjectType::ObjectAmmoType)
 					{
+						Entity* entityB = reinterpret_cast<Entity*>(objectB);
 						bool ammoFlaf = false;
 						for (auto& ammoB : entityB->ammo)
 						{
@@ -301,18 +308,9 @@ void CollisionHandler::processContactEdge(Entity* entityA, b2ContactEdge* contac
 					}
 
 				}
-				else
+				else if(objA == ObjectType::DynamicProjectileType)
 				{
 					
-					//objectsToRemove.insert(entityB);
-					
-					//std::cout << ANSI_COLOR_BLUE;
-					//std::cout << objectTypeToString(objA) << " collided with " << objectTypeToString(objB) << std::endl;
-					//std::cout << ANSI_COLOR_RESET;
-				}
-				if (true)
-				{
-
 				}
 
 			}

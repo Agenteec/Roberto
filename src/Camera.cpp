@@ -1,12 +1,23 @@
 #include "Camera.h"
 
-Camera::Camera(): 
+void Camera::updateHUD(const float& dts, sf::RenderWindow& window)
+{
+	if (trackingObject != nullptr)
+	{
+		std::vector<HUD::Label>& labels = trackingObject->headUpDisplay.labels;
+		for (auto& label : labels)
+		{
+			label.text.setPosition(getCenter().x + window.getSize().x / label.positionCoefficient.x, getCenter().y - window.getSize().y / label.positionCoefficient.y);
+		}
+	}
+}
+
+Camera::Camera():
 	View(),
 	trackingObject(nullptr),
 	moveSpeed(2.f),
 	zoomSpeed(2.5f),
-	targetZoom(1.4f),
-	headsUpDisplay()
+	targetZoom(1.4f)
 {
 
 }
@@ -19,7 +30,6 @@ void Camera::setTracking(GameObject* trackingObject)
 void Camera::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 {
 	float dts = deltaTime.asSeconds();
-	headsUpDisplay.fpsText.setString("FPS: " + std::to_string(static_cast<int>(1.f/dts)));
 	#pragma region ZOOM
 	float currentZoom = getSize().x / window.getSize().x;
 	
@@ -45,10 +55,15 @@ void Camera::update(const sf::Time& deltaTime, sf::RenderWindow& window)
 		setCenter(newPosition);
 	}
 	#pragma endregion
-	headsUpDisplay.fpsText.setPosition(this->getCenter().x + 400, this->getCenter().y - 350);
-	headsUpDisplay.draw(window);
+	
+	updateHUD(dts, window);
 	window.setView(*this);
 	
+}
+
+void Camera::draw(sf::RenderWindow& window)
+{
+	trackingObject->headUpDisplay.draw(window);
 }
 
 void Camera::setMoveSpeed(const float& speed)

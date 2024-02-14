@@ -1,5 +1,14 @@
 #include "GameObjectData.h"
 
+GameObjectData::GameObjectData():objectType(ObjectType::UndefinedType)
+{
+}
+
+GameObjectData::GameObjectData(const ObjectType& objectType) :objectType(objectType)
+{
+
+}
+
 void GameObjectData::setGameObjectType(const ObjectType& objectType)
 {
 	this->objectType = objectType;
@@ -26,6 +35,8 @@ std::string objectTypeToString(const ObjectType& objectType)
 		return "WeaponType";
 	case ObjectAmmoType:
 		return "AmmoType";
+	case DynamicProjectileType:
+		return "DynamicProjectileType";
 	default:
 		return "UndefinedType";
 	}

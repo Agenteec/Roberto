@@ -8,6 +8,8 @@
 #include "Level.h"
 #include "TextureManager.h"
 #include "GlobalConsts.h"
+#include <algorithm>
+#include <DynamicProjectile.h>
 
 /// <summary>
 /// Класс для обработки сколкновений
@@ -16,7 +18,7 @@ class CollisionHandler {
 public:
 	//Обработка столкновений
 	void handleCollision(GameObject* gameObject, std::set<b2Body*>& contactedBodies, b2World& world, std::vector<GameObject*>& gameObjects, TextureManager& textureManager);
-	void processContactEdge(Entity* entityA, b2ContactEdge* contactEdge, std::set<b2Body*>& contactedBodies, std::set<GameObject*>& objectsToRemove, b2World& world, TextureManager& textureManager);
+	void processContactEdge(GameObject* objectA, b2ContactEdge* contactEdge, std::set<b2Body*>& contactedBodies, std::set<GameObject*>& objectsToRemove, b2World& world, TextureManager& textureManager);
 	void removeObjects(std::vector<GameObject*>& gameObjects, std::set<GameObject*>& objectsToRemove, b2World& world);
 	
 };

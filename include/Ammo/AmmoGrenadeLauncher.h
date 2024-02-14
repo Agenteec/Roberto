@@ -1,12 +1,13 @@
-#pragma once
-//#include "Entity.h"
-#include "Ammo.h"
 
-class AmmoGrenadeLauncher:public Ammo
+#pragma once
+#include "Ammo.h"
+#include "DynamicProjectile.h"
+
+class GrenadeLauncherProjectaile:public DynamicProjectile
 {
 public:
-	AmmoGrenadeLauncher();
-	~AmmoGrenadeLauncher();
+	GrenadeLauncherProjectaile();
+	~GrenadeLauncherProjectaile();
 
 private:
 

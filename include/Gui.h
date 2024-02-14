@@ -34,10 +34,10 @@ public:
 	void GameMenu(const bool& flag);
 	void MainMenu(const bool& flag);
 	void TestsMenu(int& test);
-	void GameMenuInit(tgui::Gui& gui);
-	void MainMenuInit(tgui::Gui& gui);
-	void SettingsMenuInit(tgui::Gui& gui);
-	void TestMenuInit(tgui::Gui& gui);
+	void GameMenuInit(auto& gui);
+	void MainMenuInit(auto& gui);
+	void SettingsMenuInit(auto& gui);
+	void TestMenuInit(auto& gui);
 	Flags flags;
 	tgui::Group::Ptr mainMenuWindow;
 	tgui::Group::Ptr gameMenuWindow;

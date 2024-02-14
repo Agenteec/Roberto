@@ -68,6 +68,8 @@ public:
 	const Ammo& operator+(const long& other);
 	const Ammo& operator-(const long& other);
 
+
+
 	void operator+=(Ammo& other);
 
 
